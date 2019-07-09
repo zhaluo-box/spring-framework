@@ -41,11 +41,22 @@ import org.springframework.util.ObjectUtils;
  * @see Resource#getInputStream()
  * @see java.io.Reader
  * @see java.nio.charset.Charset
+ * ----------------
+ * 用于对资源文件的编码进行处理.
+ * 		主要逻辑 getReader () 方法;
+ * 属性:
+ * 			Resource
+ * 			字符集编码
+ * 			Charset
  */
 public class EncodedResource implements InputStreamSource {
 
+
 	private final Resource resource;
 
+	/**
+	 * 字符集编码;
+	 */
 	@Nullable
 	private final String encoding;
 
@@ -134,14 +145,18 @@ public class EncodedResource implements InputStreamSource {
 	 * @throws IOException if opening the Reader failed
 	 * @see #requiresReader()
 	 * @see #getInputStream()
+	 *  先判断charset  再判断 编码 两者都不存在 就直接返回一个字符输入流
 	 */
 	public Reader getReader() throws IOException {
+		// 如果charset 不为null
 		if (this.charset != null) {
 			return new InputStreamReader(this.resource.getInputStream(), this.charset);
 		}
+		// 又如果编码不为null
 		else if (this.encoding != null) {
 			return new InputStreamReader(this.resource.getInputStream(), this.encoding);
 		}
+		//最后
 		else {
 			return new InputStreamReader(this.resource.getInputStream());
 		}

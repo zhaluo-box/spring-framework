@@ -40,6 +40,8 @@ import org.springframework.util.StringUtils;
  * @since 28.12.2003
  * @see ClassLoader#getResourceAsStream(String)
  * @see Class#getResourceAsStream(String)
+ * ------------------
+ * ClassPathResource
  */
 public class ClassPathResource extends AbstractFileResolvingResource {
 
@@ -74,6 +76,11 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	 * @param classLoader the class loader to load the resource with,
 	 * or {@code null} for the thread context class loader
 	 * @see ClassLoader#getResourceAsStream(String)
+	 * ---------------------------
+	 * 构造.
+	 * 		先验证path是否为空
+	 * 		然后验证path 是否已''/	" 开头
+	 * 			以'/' 开头 截取 其余部分;
 	 */
 	public ClassPathResource(String path, @Nullable ClassLoader classLoader) {
 		Assert.notNull(path, "Path must not be null");
@@ -82,6 +89,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 			pathToUse = pathToUse.substring(1);
 		}
 		this.path = pathToUse;
+		// 如果classLoader  不为null 就用传递过来的类加载器.为空 就用ClassUtils 工具获取默认的类加载器;
 		this.classLoader = (classLoader != null ? classLoader : ClassUtils.getDefaultClassLoader());
 	}
 
@@ -167,18 +175,23 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	@Override
 	public InputStream getInputStream() throws IOException {
 		InputStream is;
+		//  如果字节码不为null
 		if (this.clazz != null) {
 			is = this.clazz.getResourceAsStream(this.path);
 		}
+		// 如果 类加载器 不为null
 		else if (this.classLoader != null) {
 			is = this.classLoader.getResourceAsStream(this.path);
 		}
+		// path不为null
 		else {
 			is = ClassLoader.getSystemResourceAsStream(this.path);
 		}
+		// 输入流为null ,抛出异常
 		if (is == null) {
 			throw new FileNotFoundException(getDescription() + " cannot be opened because it does not exist");
 		}
+		// 一切正常返回
 		return is;
 	}
 

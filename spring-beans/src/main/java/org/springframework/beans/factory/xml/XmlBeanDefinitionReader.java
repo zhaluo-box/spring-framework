@@ -75,25 +75,35 @@ import org.springframework.util.xml.XmlValidationModeDetector;
  * @see org.springframework.beans.factory.support.DefaultListableBeanFactory
  * @see org.springframework.context.support.GenericApplicationContext
  */
+
+/**
+ *  BeanDefinition xmlReader 读取
+ *      重要的方法 :
+ *      	loadBeanDefinitions()
+ */
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Indicates that the validation should be disabled.
+	 * 表示应禁用验证。
 	 */
 	public static final int VALIDATION_NONE = XmlValidationModeDetector.VALIDATION_NONE;
 
 	/**
 	 * Indicates that the validation mode should be detected automatically.
+	 * 表示应自动检测验证模式。
 	 */
 	public static final int VALIDATION_AUTO = XmlValidationModeDetector.VALIDATION_AUTO;
 
 	/**
 	 * Indicates that DTD validation should be used.
+	 * 表示应使用DTD验证
 	 */
 	public static final int VALIDATION_DTD = XmlValidationModeDetector.VALIDATION_DTD;
 
 	/**
 	 * Indicates that XSD validation should be used.
+	 * 表示应使用XSD验证
 	 */
 	public static final int VALIDATION_XSD = XmlValidationModeDetector.VALIDATION_XSD;
 
@@ -295,16 +305,19 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	/**
 	 * Load bean definitions from the specified XML file.
-	 * @param resource the resource descriptor for the XML file
-	 * @return the number of bean definitions found
-	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
+	 * 从指定的文件中加载定义的bean
+	 * @param resource the resource descriptor for the XML file xml文件源
+	 * @return the number of bean definitions found  找到的bean定义数
+	 * @throws BeanDefinitionStoreException in case of loading or parsing errors 解析错误
 	 */
 	@Override
 	public int loadBeanDefinitions(Resource resource) throws BeanDefinitionStoreException {
+		// 先对Resource 进行封装 转成 EncodedResource
 		return loadBeanDefinitions(new EncodedResource(resource));
 	}
 
 	/**
+	 * 从指定的文件中加载定义的bean
 	 * Load bean definitions from the specified XML file.
 	 * @param encodedResource the resource descriptor for the XML file,
 	 * allowing to specify an encoding to use for parsing the file
@@ -312,27 +325,38 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 * @throws BeanDefinitionStoreException in case of loading or parsing errors
 	 */
 	public int loadBeanDefinitions(EncodedResource encodedResource) throws BeanDefinitionStoreException {
+		// 验证参数encodedResource 不为null
 		Assert.notNull(encodedResource, "EncodedResource must not be null");
+
+		// 打印日志前先判断 然后 才进行msg 的字符串拼接,这种情况主要为了避免复杂的日志
 		if (logger.isInfoEnabled()) {
 			logger.info("Loading XML bean definitions from " + encodedResource);
 		}
 
+		// 通过属性来记录已经加载的资源;
+		// threadlocal : this.resourcesCurrentlyBeingLoaded
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();
 		if (currentResources == null) {
 			currentResources = new HashSet<>(4);
 			this.resourcesCurrentlyBeingLoaded.set(currentResources);
 		}
+		// add 方法只能添加不存在的元素.如果元素存在则 添加失败
 		if (!currentResources.add(encodedResource)) {
 			throw new BeanDefinitionStoreException(
 					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
 		}
 		try {
+			// 从Resource--> encodedResource --> inputStream;
 			InputStream inputStream = encodedResource.getResource().getInputStream();
 			try {
+				// 从 inputStream --> inputSource
 				InputSource inputSource = new InputSource(inputStream);
+				// 如果字符集编码不为null
 				if (encodedResource.getEncoding() != null) {
+					//  inputSource 继承 encodedResource 的字符集编码
 					inputSource.setEncoding(encodedResource.getEncoding());
 				}
+				//  核心逻辑实现;
 				return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 			}
 			finally {

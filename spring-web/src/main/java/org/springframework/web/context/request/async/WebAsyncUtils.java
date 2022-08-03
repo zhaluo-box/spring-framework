@@ -35,9 +35,7 @@ public abstract class WebAsyncUtils {
 	/**
 	 * The name attribute containing the {@link WebAsyncManager}.
 	 */
-	public static final String WEB_ASYNC_MANAGER_ATTRIBUTE =
-			WebAsyncManager.class.getName() + ".WEB_ASYNC_MANAGER";
-
+	public static final String WEB_ASYNC_MANAGER_ATTRIBUTE = WebAsyncManager.class.getName() + ".WEB_ASYNC_MANAGER";
 
 	/**
 	 * Obtain the {@link WebAsyncManager} for the current request, or if not
@@ -77,7 +75,8 @@ public abstract class WebAsyncUtils {
 	/**
 	 * Create an AsyncWebRequest instance. By default, an instance of
 	 * {@link StandardServletAsyncWebRequest} gets created.
-	 * @param request the current request
+	 *
+	 * @param request  the current request
 	 * @param response the current response
 	 * @return an AsyncWebRequest instance (never {@code null})
 	 */

@@ -20,9 +20,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
+ * 引导程序[启动]监听器 启动和关闭 spring  root 容器
  * Bootstrap listener to start up and shut down Spring's root {@link WebApplicationContext}.
  * Simply delegates to {@link ContextLoader} as well as to {@link ContextCleanupListener}.
- *
  * <p>As of Spring 3.1, {@code ContextLoaderListener} supports injecting the root web
  * application context via the {@link #ContextLoaderListener(WebApplicationContext)}
  * constructor, allowing for programmatic configuration in Servlet 3.0+ environments.
@@ -30,9 +30,9 @@ import javax.servlet.ServletContextListener;
  *
  * @author Juergen Hoeller
  * @author Chris Beams
- * @since 17.02.2003
  * @see #setContextInitializers
  * @see org.springframework.web.WebApplicationInitializer
+ * @since 17.02.2003
  */
 public class ContextLoaderListener extends ContextLoader implements ServletContextListener {
 
@@ -48,6 +48,7 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	 * the attribute name {@link WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE}
 	 * and the Spring application context will be closed when the {@link #contextDestroyed}
 	 * lifecycle method is invoked on this listener.
+	 *
 	 * @see ContextLoader
 	 * @see #ContextLoaderListener(WebApplicationContext)
 	 * @see #contextInitialized(ServletContextEvent)
@@ -86,6 +87,7 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 	 * WebApplicationContext#ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE} and the Spring
 	 * application context will be closed when the {@link #contextDestroyed} lifecycle
 	 * method is invoked on this listener.
+	 *
 	 * @param context the application context to manage
 	 * @see #contextInitialized(ServletContextEvent)
 	 * @see #contextDestroyed(ServletContextEvent)
@@ -94,15 +96,14 @@ public class ContextLoaderListener extends ContextLoader implements ServletConte
 		super(context);
 	}
 
-
 	/**
+	 * 初始化 root web 上下文
 	 * Initialize the root web application context.
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		initWebApplicationContext(event.getServletContext());
 	}
-
 
 	/**
 	 * Close the root web application context.

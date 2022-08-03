@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.beans.factory.config.BeanDefinition</OriginalElement>
+  <nodes>
+    <node x="215.0" y="242.0">org.springframework.beans.factory.support.RootBeanDefinition</node>
+    <node x="98.46323529411768" y="0.0">org.springframework.beans.BeanMetadataElement</node>
+    <node x="589.0" y="477.0">org.springframework.beans.factory.xml.XmlBeanDefinitionReader</node>
+    <node x="202.0" y="162.0">org.springframework.beans.factory.support.AbstractBeanDefinition</node>
+    <node x="429.0" y="242.0">org.springframework.beans.factory.support.GenericBeanDefinition</node>
+    <node x="0.0" y="552.0">org.springframework.beans.factory.support.BeanDefinitionRegistry</node>
+    <node x="290.0" y="397.0">org.springframework.beans.factory.support.AbstractBeanDefinitionReader</node>
+    <node x="283.0" y="477.0">org.springframework.beans.factory.support.PropertiesBeanDefinitionReader</node>
+    <node x="334.4632352941177" y="0.0">org.springframework.core.AttributeAccessor</node>
+    <node x="0.0" y="477.0">org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader</node>
+    <node x="321.0" y="317.0">org.springframework.beans.factory.support.BeanDefinitionReader</node>
+    <node x="0.0" y="242.0">org.springframework.beans.factory.support.ChildBeanDefinition</node>
+    <node x="233.0" y="80.0">org.springframework.beans.factory.config.BeanDefinition</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.beans.factory.support.AbstractBeanDefinitionReader" target="org.springframework.beans.factory.support.BeanDefinitionReader" relationship="REALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.AbstractBeanDefinition" target="org.springframework.beans.factory.config.BeanDefinition" relationship="REALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.RootBeanDefinition" target="org.springframework.beans.factory.support.AbstractBeanDefinition" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.PropertiesBeanDefinitionReader" target="org.springframework.beans.factory.support.AbstractBeanDefinitionReader" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader" target="org.springframework.beans.factory.support.AbstractBeanDefinitionReader" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="131.5" y="452.0" />
+      <point x="426.0" y="452.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.config.BeanDefinition" target="org.springframework.beans.BeanMetadataElement" relationship="INTERFACE_GENERALIZATION">
+      <point x="-39.5" y="-15.0" />
+      <point x="272.5" y="55.0" />
+      <point x="260.4632352941177" y="55.0" />
+      <point x="54.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.xml.XmlBeanDefinitionReader" target="org.springframework.beans.factory.support.AbstractBeanDefinitionReader" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="708.0" y="452.0" />
+      <point x="426.0" y="452.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.GenericBeanDefinition" target="org.springframework.beans.factory.support.AbstractBeanDefinition" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="536.0" y="217.0" />
+      <point x="312.0" y="217.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.AbstractBeanDefinition" target="org.springframework.beans.BeanMetadataElement" relationship="REALIZATION">
+      <point x="-73.33333333333331" y="-15.0" />
+      <point x="238.66666666666669" y="136.0" />
+      <point x="200.625" y="136.0" />
+      <point x="200.625" y="55.0" />
+      <point x="152.46323529411768" y="55.0" />
+      <point x="-54.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.ChildBeanDefinition" target="org.springframework.beans.factory.support.AbstractBeanDefinition" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="97.5" y="217.0" />
+      <point x="312.0" y="217.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.config.BeanDefinition" target="org.springframework.core.AttributeAccessor" relationship="INTERFACE_GENERALIZATION">
+      <point x="39.5" y="-15.0" />
+      <point x="351.5" y="55.0" />
+      <point x="380.7132352941177" y="55.0" />
+      <point x="-46.25" y="15.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.AbstractBeanDefinition" target="org.springframework.core.AttributeAccessor" relationship="REALIZATION">
+      <point x="73.33333333333331" y="-15.0" />
+      <point x="385.3333333333333" y="136.0" />
+      <point x="431.125" y="136.0" />
+      <point x="431.125" y="55.0" />
+      <point x="473.2132352941177" y="55.0" />
+      <point x="46.25" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="413.5" y="253.5" />
+  <SelectedNodes>
+    <node>org.springframework.beans.factory.support.BeanDefinitionRegistry</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

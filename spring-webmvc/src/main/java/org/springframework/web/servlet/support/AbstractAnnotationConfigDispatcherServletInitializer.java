@@ -24,7 +24,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 /**
  * {@link org.springframework.web.WebApplicationInitializer WebApplicationInitializer}
  * to register a {@code DispatcherServlet} and use Java-based Spring configuration.
- *
  * <p>Implementations are required to implement:
  * <ul>
  * <li>{@link #getRootConfigClasses()} -- for "root" application context (non-web
@@ -32,7 +31,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
  * <li>{@link #getServletConfigClasses()} -- for {@code DispatcherServlet}
  * application context (Spring MVC infrastructure) configuration.
  * </ul>
- *
  * <p>If an application context hierarchy is not required, applications may
  * return all configuration via {@link #getRootConfigClasses()} and return
  * {@code null} from {@link #getServletConfigClasses()}.
@@ -41,8 +39,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
  * @author Chris Beams
  * @since 3.2
  */
-public abstract class AbstractAnnotationConfigDispatcherServletInitializer
-		extends AbstractDispatcherServletInitializer {
+public abstract class AbstractAnnotationConfigDispatcherServletInitializer extends AbstractDispatcherServletInitializer {
 
 	/**
 	 * {@inheritDoc}
@@ -58,8 +55,7 @@ public abstract class AbstractAnnotationConfigDispatcherServletInitializer
 			AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 			context.register(configClasses);
 			return context;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -71,7 +67,9 @@ public abstract class AbstractAnnotationConfigDispatcherServletInitializer
 	 */
 	@Override
 	protected WebApplicationContext createServletApplicationContext() {
+		// 创建一个注解配置类型 web 上下文
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
+		// 获取配置类，并注册
 		Class<?>[] configClasses = getServletConfigClasses();
 		if (!ObjectUtils.isEmpty(configClasses)) {
 			context.register(configClasses);
@@ -82,6 +80,7 @@ public abstract class AbstractAnnotationConfigDispatcherServletInitializer
 	/**
 	 * Specify {@code @Configuration} and/or {@code @Component} classes for the
 	 * {@linkplain #createRootApplicationContext() root application context}.
+	 *
 	 * @return the configuration for the root application context, or {@code null}
 	 * if creation and registration of a root context is not desired
 	 */
@@ -91,6 +90,7 @@ public abstract class AbstractAnnotationConfigDispatcherServletInitializer
 	/**
 	 * Specify {@code @Configuration} and/or {@code @Component} classes for the
 	 * {@linkplain #createServletApplicationContext() Servlet application context}.
+	 *
 	 * @return the configuration for the Servlet application context, or
 	 * {@code null} if all configuration is specified through root config classes.
 	 */

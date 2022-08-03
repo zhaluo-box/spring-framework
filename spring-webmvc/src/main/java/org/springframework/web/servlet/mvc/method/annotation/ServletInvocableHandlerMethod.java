@@ -49,7 +49,6 @@ import org.springframework.web.util.NestedServletException;
  * values through a registered {@link HandlerMethodReturnValueHandler} and
  * also supports setting the response status based on a method-level
  * {@code @ResponseStatus} annotation.
- *
  * <p>A {@code null} return value (including void) may be interpreted as the
  * end of request processing in combination with a {@code @ResponseStatus}
  * annotation, a not-modified check condition
@@ -67,7 +66,6 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 	@Nullable
 	private HandlerMethodReturnValueHandlerComposite returnValueHandlers;
 
-
 	/**
 	 * Creates an instance from the given handler and method.
 	 */
@@ -82,7 +80,6 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		super(handlerMethod);
 	}
 
-
 	/**
 	 * Register {@link HandlerMethodReturnValueHandler} instances to use to
 	 * handle return values.
@@ -91,17 +88,17 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		this.returnValueHandlers = returnValueHandlers;
 	}
 
-
 	/**
 	 * Invoke the method and handle the return value through one of the
 	 * configured {@link HandlerMethodReturnValueHandler HandlerMethodReturnValueHandlers}.
-	 * @param webRequest the current request
+	 *
+	 * @param webRequest   the current request
 	 * @param mavContainer the ModelAndViewContainer for this request
 	 * @param providedArgs "given" arguments matched by type (not resolved)
 	 */
-	public void invokeAndHandle(ServletWebRequest webRequest, ModelAndViewContainer mavContainer,
-			Object... providedArgs) throws Exception {
+	public void invokeAndHandle(ServletWebRequest webRequest, ModelAndViewContainer mavContainer, Object... providedArgs) throws Exception {
 
+		// 在这里通过反射调用controller 中的method方法
 		Object returnValue = invokeForRequest(webRequest, mavContainer, providedArgs);
 		setResponseStatus(webRequest);
 
@@ -111,8 +108,7 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 				mavContainer.setRequestHandled(true);
 				return;
 			}
-		}
-		else if (StringUtils.hasText(getResponseStatusReason())) {
+		} else if (StringUtils.hasText(getResponseStatusReason())) {
 			mavContainer.setRequestHandled(true);
 			return;
 		}
@@ -120,10 +116,10 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		mavContainer.setRequestHandled(false);
 		Assert.state(this.returnValueHandlers != null, "No return value handlers");
 		try {
-			this.returnValueHandlers.handleReturnValue(
-					returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
-		}
-		catch (Exception ex) {
+			// 在这里通过返回值处理器进行二次处理
+			// 例如: 如果方法加了@requestBody 注解,就把结果序列化json 格式再返回
+			this.returnValueHandlers.handleReturnValue(returnValue, getReturnValueType(returnValue), mavContainer, webRequest);
+		} catch (Exception ex) {
 			if (logger.isTraceEnabled()) {
 				logger.trace(formatErrorForReturnValue(returnValue), ex);
 			}
@@ -145,8 +141,7 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 			String reason = getResponseStatusReason();
 			if (StringUtils.hasText(reason)) {
 				response.sendError(status.value(), reason);
-			}
-			else {
+			} else {
 				response.setStatus(status.value());
 			}
 		}
@@ -157,6 +152,7 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 
 	/**
 	 * Does the given request qualify as "not modified"?
+	 *
 	 * @see ServletWebRequest#checkNotModified(long)
 	 * @see ServletWebRequest#checkNotModified(String)
 	 */
@@ -176,9 +172,8 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 	}
 
 	private String formatErrorForReturnValue(@Nullable Object returnValue) {
-		return "Error handling return value=[" + returnValue + "]" +
-				(returnValue != null ? ", type=" + returnValue.getClass().getName() : "") +
-				" in " + toString();
+		return "Error handling return value=[" + returnValue + "]" + (returnValue != null ? ", type=" + returnValue.getClass().getName() : "") + " in "
+			   + toString();
 	}
 
 	/**
@@ -190,7 +185,6 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 	ServletInvocableHandlerMethod wrapConcurrentResult(Object result) {
 		return new ConcurrentResultHandlerMethod(result, new ConcurrentResultMethodParameter(result));
 	}
-
 
 	/**
 	 * A nested subclass of {@code ServletInvocableHandlerMethod} that uses a
@@ -206,8 +200,7 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 			super((Callable<Object>) () -> {
 				if (result instanceof Exception) {
 					throw (Exception) result;
-				}
-				else if (result instanceof Throwable) {
+				} else if (result instanceof Throwable) {
 					throw new NestedServletException("Async processing failed", (Throwable) result);
 				}
 				return result;
@@ -253,7 +246,6 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		}
 	}
 
-
 	/**
 	 * MethodParameter subclass based on the actual return value type or if
 	 * that's null falling back on the generic type within the declared async
@@ -270,8 +262,8 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 			super(-1);
 			this.returnValue = returnValue;
 			this.returnType = (returnValue instanceof ReactiveTypeHandler.CollectedValuesList ?
-					((ReactiveTypeHandler.CollectedValuesList) returnValue).getReturnType() :
-					ResolvableType.forType(super.getGenericParameterType()).getGeneric());
+							   ((ReactiveTypeHandler.CollectedValuesList) returnValue).getReturnType() :
+							   ResolvableType.forType(super.getGenericParameterType()).getGeneric());
 		}
 
 		public ConcurrentResultMethodParameter(ConcurrentResultMethodParameter original) {
@@ -300,9 +292,8 @@ public class ServletInvocableHandlerMethod extends InvocableHandlerMethod {
 		public <T extends Annotation> boolean hasMethodAnnotation(Class<T> annotationType) {
 			// Ensure @ResponseBody-style handling for values collected from a reactive type
 			// even if actual return type is ResponseEntity<Flux<T>>
-			return (super.hasMethodAnnotation(annotationType) ||
-					(annotationType == ResponseBody.class &&
-							this.returnValue instanceof ReactiveTypeHandler.CollectedValuesList));
+			return (super.hasMethodAnnotation(annotationType) || (annotationType == ResponseBody.class
+																  && this.returnValue instanceof ReactiveTypeHandler.CollectedValuesList));
 		}
 
 		@Override

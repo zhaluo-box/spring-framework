@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.context.event.ApplicationEventMulticaster</OriginalElement>
+  <nodes>
+    <node x="6.0" y="160.0">org.springframework.context.event.SimpleApplicationEventMulticaster</node>
+    <node x="0.0" y="80.0">org.springframework.context.event.AbstractApplicationEventMulticaster</node>
+    <node x="31.0" y="0.0">org.springframework.context.event.ApplicationEventMulticaster</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.context.event.AbstractApplicationEventMulticaster" target="org.springframework.context.event.ApplicationEventMulticaster" relationship="REALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.context.event.SimpleApplicationEventMulticaster" target="org.springframework.context.event.AbstractApplicationEventMulticaster" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="129.0" y="15.0" />
+  <SelectedNodes>
+    <node>org.springframework.context.event.ApplicationEventMulticaster</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

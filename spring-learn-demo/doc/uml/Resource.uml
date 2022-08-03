@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.core.io.Resource</OriginalElement>
+  <nodes>
+    <node x="445.125" y="80.0">org.springframework.core.io.support.EncodedResource</node>
+    <node x="354.625" y="0.0">org.springframework.core.io.InputStreamSource</node>
+    <node x="259.5" y="242.0">org.springframework.core.io.ClassPathResource</node>
+    <node x="467.5" y="242.0">org.springframework.web.context.support.ServletContextResource</node>
+    <node x="41.5" y="242.0">org.springframework.core.io.FileSystemResource</node>
+    <node x="0.0" y="160.0">org.springframework.core.io.WritableResource</node>
+    <node x="305.125" y="80.0">org.springframework.core.io.Resource</node>
+    <node x="262.5" y="160.0">org.springframework.core.io.AbstractResource</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.core.io.FileSystemResource" target="org.springframework.core.io.WritableResource" relationship="REALIZATION">
+      <point x="-49.5" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.io.support.EncodedResource" target="org.springframework.core.io.InputStreamSource" relationship="REALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="537.125" y="55.0" />
+      <point x="499.375" y="55.0" />
+      <point x="48.25" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.io.Resource" target="org.springframework.core.io.InputStreamSource" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="365.125" y="55.0" />
+      <point x="402.875" y="55.0" />
+      <point x="-48.25" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.io.ClassPathResource" target="org.springframework.core.io.AbstractResource" relationship="GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.support.ServletContextResource" target="org.springframework.core.io.Resource" relationship="REALIZATION">
+      <point x="57.25" y="-15.0" />
+      <point x="639.25" y="140.0" />
+      <point x="496.375" y="140.0" />
+      <point x="496.375" y="130.0" />
+      <point x="395.125" y="130.0" />
+      <point x="30.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.io.FileSystemResource" target="org.springframework.core.io.AbstractResource" relationship="GENERALIZATION">
+      <point x="49.5" y="-15.0" />
+      <point x="190.0" y="216.0" />
+      <point x="353.5" y="216.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.io.AbstractResource" target="org.springframework.core.io.Resource" relationship="REALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="353.5" y="140.0" />
+      <point x="496.375" y="140.0" />
+      <point x="496.375" y="130.0" />
+      <point x="395.125" y="130.0" />
+      <point x="30.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.core.io.WritableResource" target="org.springframework.core.io.Resource" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-15.0" />
+      <point x="91.0" y="140.0" />
+      <point x="335.125" y="140.0" />
+      <point x="-30.0" y="15.0" />
+    </edge>
+    <edge source="org.springframework.web.context.support.ServletContextResource" target="org.springframework.core.io.AbstractResource" relationship="GENERALIZATION">
+      <point x="-57.25" y="-15.0" />
+      <point x="524.75" y="216.0" />
+      <point x="353.5" y="216.0" />
+      <point x="0.0" y="15.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="348.5" y="136.0" />
+  <SelectedNodes>
+    <node>org.springframework.core.io.support.EncodedResource</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

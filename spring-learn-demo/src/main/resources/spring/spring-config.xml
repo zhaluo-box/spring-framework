@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="helloService" class="com.example.spring.learn.service.DefaultWelcomeService" init-method="initMethod" destroy-method="destroyMethod"/>
+
+	<!-- 1.使用类的无参构造函数创建 -->
+	<bean id="user1" class="com.example.spring.learn.common.entity.User" lazy-init="true" primary="true" scope="singleton"/>
+
+	<!-- 2. 使用静态工厂进行创建	-->
+	<!--	Class的值,不是写User对象的全路径,而是写静态工厂的全路径-->
+	<bean id="user2" class="com.example.spring.learn.common.entity.factory.StaticFactory" factory-method="getUser" scope="singleton"/>
+
+	<!-- 3. 使用实例工厂进行创建	-->
+	<!--	需要先创建 factoryBean对象,在通过factoryBean 对象进行调用-->
+	<bean id="userFactory" class="com.example.spring.learn.common.entity.factory.UserFactory"/>
+	<bean id="user3" factory-bean="userFactory" factory-method="getUser" scope="singleton"/>
+
+	<bean id="userFactoryBean" class="com.example.spring.learn.common.entity.factory.UserFactoryBean"/>
+
+	<bean id="postProcessor" class="com.example.spring.learn.config.WelcomeBeanPostProcessor"/>
+
+</beans>

@@ -39,7 +39,6 @@ import org.springframework.web.servlet.FrameworkServlet;
 /**
  * Base class for {@link org.springframework.web.WebApplicationInitializer}
  * implementations that register a {@link DispatcherServlet} in the servlet context.
- *
  * <p>Most applications should consider extending the Spring Java config subclass
  * {@link AbstractAnnotationConfigDispatcherServletInitializer}.
  *
@@ -57,7 +56,6 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	 */
 	public static final String DEFAULT_SERVLET_NAME = "dispatcher";
 
-
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
@@ -73,29 +71,37 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	 * <p>Further customization can be achieved by overriding {@link
 	 * #customizeRegistration(ServletRegistration.Dynamic)} or
 	 * {@link #createDispatcherServlet(WebApplicationContext)}.
+	 *
 	 * @param servletContext the context to register the servlet against
 	 */
 	protected void registerDispatcherServlet(ServletContext servletContext) {
+		// 获取servlet 名称
 		String servletName = getServletName();
 		Assert.hasLength(servletName, "getServletName() must not return null or empty");
 
+		// 创建 spring web ioc 容器
 		WebApplicationContext servletAppContext = createServletApplicationContext();
 		Assert.notNull(servletAppContext, "createServletApplicationContext() must not return null");
 
+		// 创建dispatcherServlet实例
 		FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext);
 		Assert.notNull(dispatcherServlet, "createDispatcherServlet(WebApplicationContext) must not return null");
 		dispatcherServlet.setContextInitializers(getServletApplicationContextInitializers());
 
 		ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, dispatcherServlet);
 		if (registration == null) {
-			throw new IllegalStateException("Failed to register servlet with name '" + servletName + "'. " +
-					"Check if there is another servlet registered under the same name.");
+			throw new IllegalStateException(
+					"Failed to register servlet with name '" + servletName + "'. " + "Check if there is another servlet registered under the same name.");
 		}
 
+		// 添加启动顺序
 		registration.setLoadOnStartup(1);
+		// 添加映射
 		registration.addMapping(getServletMappings());
+		// 添加异步Async 支持，默认是支持
 		registration.setAsyncSupported(isAsyncSupported());
 
+		// 请求过滤器，可以在此处控制编码
 		Filter[] filters = getServletFilters();
 		if (!ObjectUtils.isEmpty(filters)) {
 			for (Filter filter : filters) {
@@ -109,6 +115,7 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	/**
 	 * Return the name under which the {@link DispatcherServlet} will be registered.
 	 * Defaults to {@link #DEFAULT_SERVLET_NAME}.
+	 *
 	 * @see #registerDispatcherServlet(ServletContext)
 	 */
 	protected String getServletName() {
@@ -121,6 +128,7 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	 * {@link DispatcherServlet#DispatcherServlet(WebApplicationContext)}. As such,
 	 * it typically contains controllers, view resolvers, locale resolvers, and other
 	 * web-related beans.
+	 *
 	 * @see #registerDispatcherServlet(ServletContext)
 	 */
 	protected abstract WebApplicationContext createServletApplicationContext();
@@ -138,10 +146,11 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	/**
 	 * Specify application context initializers to be applied to the servlet-specific
 	 * application context that the {@code DispatcherServlet} is being created with.
-	 * @since 4.2
+	 *
 	 * @see #createServletApplicationContext()
 	 * @see DispatcherServlet#setContextInitializers
 	 * @see #getRootApplicationContextInitializers()
+	 * @since 4.2
 	 */
 	@Nullable
 	protected ApplicationContextInitializer<?>[] getServletApplicationContextInitializers() {
@@ -151,12 +160,14 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	/**
 	 * Specify the servlet mapping(s) for the {@code DispatcherServlet} &mdash;
 	 * for example {@code "/"}, {@code "/app"}, etc.
+	 *
 	 * @see #registerDispatcherServlet(ServletContext)
 	 */
 	protected abstract String[] getServletMappings();
 
 	/**
 	 * Specify filters to add and map to the {@code DispatcherServlet}.
+	 *
 	 * @return an array of filters or {@code null}
 	 * @see #registerServletFilter(ServletContext, Filter)
 	 */
@@ -178,8 +189,9 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	 * </ul>
 	 * <p>If the above defaults are not suitable or insufficient, override this
 	 * method and register filters directly with the {@code ServletContext}.
+	 *
 	 * @param servletContext the servlet context to register filters with
-	 * @param filter the filter to be registered
+	 * @param filter         the filter to be registered
 	 * @return the filter registration
 	 */
 	protected FilterRegistration.Dynamic registerServletFilter(ServletContext servletContext, Filter filter) {
@@ -190,8 +202,8 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 			int counter = 0;
 			while (registration == null) {
 				if (counter == 100) {
-					throw new IllegalStateException("Failed to register filter with name '" + filterName + "'. " +
-							"Check if there is another filter registered under the same name.");
+					throw new IllegalStateException(
+							"Failed to register filter with name '" + filterName + "'. " + "Check if there is another filter registered under the same name.");
 				}
 				registration = servletContext.addFilter(filterName + "#" + counter, filter);
 				counter++;
@@ -221,6 +233,7 @@ public abstract class AbstractDispatcherServletInitializer extends AbstractConte
 	/**
 	 * Optionally perform further registration customization once
 	 * {@link #registerDispatcherServlet(ServletContext)} has completed.
+	 *
 	 * @param registration the {@code DispatcherServlet} registration to be customized
 	 * @see #registerDispatcherServlet(ServletContext)
 	 */

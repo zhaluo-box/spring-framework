@@ -57,7 +57,6 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
  * Creates {@link RequestMappingInfo} instances from type and method-level
  * {@link RequestMapping @RequestMapping} annotations in
  * {@link Controller @Controller} classes.
- *
  * <p><strong>Deprecation Note:</strong></p> In 5.2.4,
  * {@link #setUseSuffixPatternMatch(boolean) useSuffixPatternMatch} and
  * {@link #setUseRegisteredSuffixPatternMatch(boolean) useRegisteredSuffixPatternMatch}
@@ -72,8 +71,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMappi
  * @author Sam Brannen
  * @since 3.1
  */
-public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMapping
-		implements MatchableHandlerMapping, EmbeddedValueResolverAware {
+public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMapping implements MatchableHandlerMapping, EmbeddedValueResolverAware {
 
 	private boolean useSuffixPatternMatch = true;
 
@@ -90,13 +88,13 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	private RequestMappingInfo.BuilderConfiguration config = new RequestMappingInfo.BuilderConfiguration();
 
-
 	/**
 	 * Whether to use suffix pattern match (".*") when matching patterns to
 	 * requests. If enabled a method mapped to "/users" also matches to "/users.*".
 	 * <p>The default value is {@code true}.
 	 * <p>Also see {@link #setUseRegisteredSuffixPatternMatch(boolean)} for
 	 * more fine-grained control over specific suffixes to allow.
+	 *
 	 * @deprecated as of 5.2.4. See class level comment about deprecation of
 	 * path extension config options. As there is no replacement for this method,
 	 * for the time being it's necessary to set it to {@code false}. In 5.3
@@ -114,6 +112,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 * is generally recommended to reduce ambiguity and to avoid issues such as
 	 * when a "." appears in the path for other reasons.
 	 * <p>By default this is set to "false".
+	 *
 	 * @deprecated as of 5.2.4. See class level comment about deprecation of
 	 * path extension config options.
 	 */
@@ -139,6 +138,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 * {@code Predicate}. The prefix for the first matching predicate is used.
 	 * <p>Consider using {@link org.springframework.web.method.HandlerTypePredicate
 	 * HandlerTypePredicate} to group controllers.
+	 *
 	 * @param prefixes a map with path prefixes as key
 	 * @since 5.1
 	 */
@@ -148,6 +148,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * The configured path prefixes as a read-only, possibly empty map.
+	 *
 	 * @since 5.1
 	 */
 	public Map<String, Predicate<Class<?>>> getPathPrefixes() {
@@ -189,9 +190,9 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		super.afterPropertiesSet();
 	}
 
-
 	/**
 	 * Whether to use registered suffixes for pattern matching.
+	 *
 	 * @deprecated as of 5.2.4. See class-level note on the deprecation of path
 	 * extension config options.
 	 */
@@ -202,6 +203,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Whether to use registered suffixes for pattern matching.
+	 *
 	 * @deprecated as of 5.2.4. See class-level note on the deprecation of path
 	 * extension config options.
 	 */
@@ -219,6 +221,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Return the file extensions to use for suffix pattern matching.
+	 *
 	 * @deprecated as of 5.2.4. See class-level note on the deprecation of path
 	 * extension config options.
 	 */
@@ -229,7 +232,6 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		return this.config.getFileExtensions();
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 * <p>Expects a handler to have either a type-level @{@link Controller}
@@ -237,13 +239,13 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 */
 	@Override
 	protected boolean isHandler(Class<?> beanType) {
-		return (AnnotatedElementUtils.hasAnnotation(beanType, Controller.class) ||
-				AnnotatedElementUtils.hasAnnotation(beanType, RequestMapping.class));
+		return (AnnotatedElementUtils.hasAnnotation(beanType, Controller.class) || AnnotatedElementUtils.hasAnnotation(beanType, RequestMapping.class));
 	}
 
 	/**
 	 * Uses method and type-level @{@link RequestMapping} annotations to create
 	 * the RequestMappingInfo.
+	 *
 	 * @return the created RequestMappingInfo, or {@code null} if the method
 	 * does not have a {@code @RequestMapping} annotation.
 	 * @see #getCustomMethodCondition(Method)
@@ -252,15 +254,21 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	@Override
 	@Nullable
 	protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
+		// 创建方法上面的RequestMapping 信息  : method
 		RequestMappingInfo info = createRequestMappingInfo(method);
 		if (info != null) {
+			// 创建类上面的requestMapping 信息 : handlerType
 			RequestMappingInfo typeInfo = createRequestMappingInfo(handlerType);
+			// 如果类上有requestMapping 注解信息,则组合信息
 			if (typeInfo != null) {
 				info = typeInfo.combine(info);
 			}
+			// 获取路径前缀
 			String prefix = getPathPrefix(handlerType);
+			// 前缀 不为空
 			if (prefix != null) {
-				info = RequestMappingInfo.paths(prefix).options(this.config).build().combine(info);
+				// 构建并组合信息
+				info = RequestMappingInfo.paths(prefix).build().combine(info);
 			}
 		}
 		return info;
@@ -284,14 +292,16 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 * Delegates to {@link #createRequestMappingInfo(RequestMapping, RequestCondition)},
 	 * supplying the appropriate custom {@link RequestCondition} depending on whether
 	 * the supplied {@code annotatedElement} is a class or method.
+	 *
 	 * @see #getCustomTypeCondition(Class)
 	 * @see #getCustomMethodCondition(Method)
 	 */
 	@Nullable
 	private RequestMappingInfo createRequestMappingInfo(AnnotatedElement element) {
+		// 如果该函数含有@requestMapping 注解,则根据其注解信息生成requestMapping 实例
+		// 否则返回空
 		RequestMapping requestMapping = AnnotatedElementUtils.findMergedAnnotation(element, RequestMapping.class);
-		RequestCondition<?> condition = (element instanceof Class ?
-				getCustomTypeCondition((Class<?>) element) : getCustomMethodCondition((Method) element));
+		RequestCondition<?> condition = (element instanceof Class ? getCustomTypeCondition((Class<?>) element) : getCustomMethodCondition((Method) element));
 		return (requestMapping != null ? createRequestMappingInfo(requestMapping, condition) : null);
 	}
 
@@ -303,6 +313,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 * <p>Consider extending {@link AbstractRequestCondition} for custom
 	 * condition types and using {@link CompositeRequestCondition} to provide
 	 * multiple custom conditions.
+	 *
 	 * @param handlerType the handler type for which to create the condition
 	 * @return the condition, or {@code null}
 	 */
@@ -319,6 +330,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 * <p>Consider extending {@link AbstractRequestCondition} for custom
 	 * condition types and using {@link CompositeRequestCondition} to provide
 	 * multiple custom conditions.
+	 *
 	 * @param method the handler method for which to create the condition
 	 * @return the condition, or {@code null}
 	 */
@@ -333,10 +345,12 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	 * a directly declared annotation, a meta-annotation, or the synthesized
 	 * result of merging annotation attributes within an annotation hierarchy.
 	 */
-	protected RequestMappingInfo createRequestMappingInfo(
-			RequestMapping requestMapping, @Nullable RequestCondition<?> customCondition) {
+	protected RequestMappingInfo createRequestMappingInfo(RequestMapping requestMapping, @Nullable RequestCondition<?> customCondition) {
 
+		// 这里是建造者模式,
 		RequestMappingInfo.Builder builder = RequestMappingInfo
+				// 对路径进行解析,在path中支持SpEL表达式
+				// requestMappingHandlerMapping 实现了EmbeddedValueResolverAware 这个接口
 				.paths(resolveEmbeddedValuesInPatterns(requestMapping.path()))
 				.methods(requestMapping.method())
 				.params(requestMapping.params())
@@ -352,13 +366,13 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 
 	/**
 	 * Resolve placeholder values in the given array of patterns.
+	 *
 	 * @return a new array with updated patterns
 	 */
 	protected String[] resolveEmbeddedValuesInPatterns(String[] patterns) {
 		if (this.embeddedValueResolver == null) {
 			return patterns;
-		}
-		else {
+		} else {
 			String[] resolvedPatterns = new String[patterns.length];
 			for (int i = 0; i < patterns.length; i++) {
 				resolvedPatterns[i] = this.embeddedValueResolver.resolveStringValue(patterns[i]);
@@ -408,22 +422,25 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	protected CorsConfiguration initCorsConfiguration(Object handler, Method method, RequestMappingInfo mappingInfo) {
 		HandlerMethod handlerMethod = createHandlerMethod(handler, method);
 		Class<?> beanType = handlerMethod.getBeanType();
+		// 寻找类上与方法上的跨域注解信息
 		CrossOrigin typeAnnotation = AnnotatedElementUtils.findMergedAnnotation(beanType, CrossOrigin.class);
 		CrossOrigin methodAnnotation = AnnotatedElementUtils.findMergedAnnotation(method, CrossOrigin.class);
-
+		// 类上 方法上都为空则直接返回null
 		if (typeAnnotation == null && methodAnnotation == null) {
 			return null;
 		}
-
+		// 不为空 新建跨域配置信息
 		CorsConfiguration config = new CorsConfiguration();
 		updateCorsConfig(config, typeAnnotation);
 		updateCorsConfig(config, methodAnnotation);
 
+		// 配置中跨域允许的方法为空,则添加所有方法
 		if (CollectionUtils.isEmpty(config.getAllowedMethods())) {
 			for (RequestMethod allowedMethod : mappingInfo.getMethodsCondition().getMethods()) {
 				config.addAllowedMethod(allowedMethod.name());
 			}
 		}
+		// 配置应用许可的默认值
 		return config.applyPermitDefaultValues();
 	}
 
@@ -447,13 +464,12 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		String allowCredentials = resolveCorsAnnotationValue(annotation.allowCredentials());
 		if ("true".equalsIgnoreCase(allowCredentials)) {
 			config.setAllowCredentials(true);
-		}
-		else if ("false".equalsIgnoreCase(allowCredentials)) {
+		} else if ("false".equalsIgnoreCase(allowCredentials)) {
 			config.setAllowCredentials(false);
-		}
-		else if (!allowCredentials.isEmpty()) {
-			throw new IllegalStateException("@CrossOrigin's allowCredentials value must be \"true\", \"false\", " +
-					"or an empty string (\"\"): current value is [" + allowCredentials + "]");
+		} else if (!allowCredentials.isEmpty()) {
+			throw new IllegalStateException(
+					"@CrossOrigin's allowCredentials value must be \"true\", \"false\", " + "or an empty string (\"\"): current value is [" + allowCredentials
+					+ "]");
 		}
 
 		if (annotation.maxAge() >= 0) {
@@ -465,8 +481,7 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 		if (this.embeddedValueResolver != null) {
 			String resolved = this.embeddedValueResolver.resolveStringValue(value);
 			return (resolved != null ? resolved : "");
-		}
-		else {
+		} else {
 			return value;
 		}
 	}

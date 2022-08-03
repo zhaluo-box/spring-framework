@@ -1,0 +1,26 @@
+
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'org.springframework'
+version '5.2.0.RELEASE'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+    compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+    compileOnly group: 'javax.servlet.jsp', name: 'javax.servlet.jsp-api', version: '2.3.3'
+    compile(project(":spring-webmvc"))
+    testImplementation 'junit:junit:4.11'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+test {
+    useJUnitPlatform()
+}

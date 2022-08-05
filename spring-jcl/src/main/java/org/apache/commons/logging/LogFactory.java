@@ -22,7 +22,6 @@ package org.apache.commons.logging;
  * by the JCL-over-SLF4J bridge and should be source as well as binary
  * compatible with all common use of the Commons Logging API (in particular:
  * with {@code LogFactory.getLog(Class/String)} field initializers).
- *
  * <p>This implementation does not support Commons Logging's original provider
  * detection. It rather only checks for the presence of the Log4j 2.x API
  * and the SLF4J 1.7 API in the Spring Framework classpath, falling back to
@@ -34,13 +33,11 @@ package org.apache.commons.logging;
  * without an external logging provider, Spring does not require any extra jar
  * on the classpath anymore since this embedded log factory automatically
  * delegates to {@code java.util.logging} in such a scenario.
- *
  * <p><b>Note that this Commons Logging variant is only meant to be used for
  * infrastructure logging purposes in the core framework and in extensions.</b>
  * It also serves as a common bridge for third-party libraries using the
  * Commons Logging API, e.g. Apache HttpClient, and HtmlUnit, bringing
  * them into the same consistent arrangement without any extra bridge jars.
- *
  * <p><b>For logging need in application code, prefer direct use of Log4j 2.x
  * or SLF4J or {@code java.util.logging}.</b> Simply put Log4j 2.x or Logback
  * (or another SLF4J provider) onto your classpath, without any extra bridges,
@@ -53,6 +50,7 @@ public abstract class LogFactory {
 
 	/**
 	 * Convenience method to return a named logger.
+	 *
 	 * @param clazz containing Class from which a log name will be derived
 	 */
 	public static Log getLog(Class<?> clazz) {
@@ -61,28 +59,31 @@ public abstract class LogFactory {
 
 	/**
 	 * Convenience method to return a named logger.
+	 *
 	 * @param name logical name of the <code>Log</code> instance to be returned
 	 */
 	public static Log getLog(String name) {
 		return LogAdapter.createLog(name);
 	}
 
-
 	/**
 	 * This method only exists for compatibility with unusual Commons Logging API
 	 * usage like e.g. {@code LogFactory.getFactory().getInstance(Class/String)}.
+	 *
 	 * @see #getInstance(Class)
 	 * @see #getInstance(String)
 	 * @deprecated in favor of {@link #getLog(Class)}/{@link #getLog(String)}
 	 */
 	@Deprecated
 	public static LogFactory getFactory() {
-		return new LogFactory() {};
+		return new LogFactory() {
+		};
 	}
 
 	/**
 	 * Convenience method to return a named logger.
 	 * <p>This variant just dispatches straight to {@link #getLog(Class)}.
+	 *
 	 * @param clazz containing Class from which a log name will be derived
 	 * @deprecated in favor of {@link #getLog(Class)}
 	 */
@@ -94,6 +95,7 @@ public abstract class LogFactory {
 	/**
 	 * Convenience method to return a named logger.
 	 * <p>This variant just dispatches straight to {@link #getLog(String)}.
+	 *
 	 * @param name logical name of the <code>Log</code> instance to be returned
 	 * @deprecated in favor of {@link #getLog(String)}
 	 */

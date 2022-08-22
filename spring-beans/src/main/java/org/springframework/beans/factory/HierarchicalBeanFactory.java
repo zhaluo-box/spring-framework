@@ -29,7 +29,7 @@ import org.springframework.lang.Nullable;
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 07.07.2003
- * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#setParentBeanFactory
+ * @see org.springframework.beans.factory.config.ConfigurableBeanFactory#setParentBeanFactory  设置父Bean工厂
  */
 public interface HierarchicalBeanFactory extends BeanFactory {
 

@@ -49,11 +49,13 @@ import org.springframework.lang.Nullable;
  * and {@code containsBeanDefinition}, the methods in this interface
  * are not designed for frequent invocation. Implementations may be slow.
  *
+ *  扩展了BeanFactory接口, 提供了方法查询有关bean 与BeanDefinition 相关的列表接口
+ *
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @since 16 April 2001
  * @see HierarchicalBeanFactory
- * @see BeanFactoryUtils
+ * @see BeanFactoryUtils 查看工厂工具类
  */
 public interface ListableBeanFactory extends BeanFactory {
 

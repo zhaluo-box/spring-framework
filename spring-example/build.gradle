@@ -9,8 +9,8 @@ repositories {
     mavenLocal()
     maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
     maven { url "https://repo.spring.io/libs-spring-framework-build" }
-    maven { url "https://maven.aliyun.com/nexus/content/groups/public/"}
-    maven { url "https://maven.aliyun.com/nexus/content/repositories/jcenter"}
+    maven { url "https://maven.aliyun.com/nexus/content/groups/public/" }
+    maven { url "https://maven.aliyun.com/nexus/content/repositories/jcenter" }
     maven { url "https://repo.spring.io/snapshot" } // Reactor
     maven { url "https://oss.jfrog.org/artifactory/oss-snapshot-local" } // RSocket
     mavenCentral()
@@ -18,18 +18,19 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+//    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
+//    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.36'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
+//    testImplementation group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.36', ext: 'pom'
+
 
     compile(project(":spring-context"))
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
 }
 
 test {
     useJUnitPlatform()
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 30bc14ebc4 (新建module spring example)

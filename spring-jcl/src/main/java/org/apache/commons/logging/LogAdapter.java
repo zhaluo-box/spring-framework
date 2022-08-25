@@ -36,6 +36,9 @@ import org.slf4j.spi.LocationAwareLogger;
  */
 final class LogAdapter {
 
+	/**
+	 * log4j2 中的一个类
+	 */
 	private static final String LOG4J_SPI = "org.apache.logging.log4j.spi.ExtendedLogger";
 
 	private static final String LOG4J_SLF4J_PROVIDER = "org.apache.logging.slf4j.SLF4JProvider";
@@ -44,14 +47,20 @@ final class LogAdapter {
 
 	private static final String SLF4J_API = "org.slf4j.Logger";
 
+	/**
+	 * 通过下面的静态块进行实例化
+	 */
 	private static final LogApi logApi;
 
 	static {
+		// 如果classpath 下存在log4j2
 		if (isPresent(LOG4J_SPI)) {
+			// 如果log4j-to-slf4j 桥接器与slf4j 同时存在的时候使用 slf4j, log4j2 好在是一个实实在在的实现类,
+			// 而slf4j 很可能是一个抽象门面,很可能没有具体的实现类,所以log4j2优先于slf4j
 			if (isPresent(LOG4J_SLF4J_PROVIDER) && isPresent(SLF4J_SPI)) {
 				// log4j-to-slf4j bridge -> we'll rather go with the SLF4J SPI;
 				// however, we still prefer Log4j over the plain SLF4J API since
-				// the latter does not have location awareness support.
+				// the latter does not have location awareness support (位置感知支持).
 				logApi = LogApi.SLF4J_LAL;
 			} else {
 				// Use Log4j 2.x directly, including location awareness support
@@ -79,10 +88,13 @@ final class LogAdapter {
 	 */
 	public static Log createLog(String name) {
 		switch (logApi) {
+		// log4j2
 		case LOG4J:
 			return Log4jAdapter.createLog(name);
+		// slf4j-all
 		case SLF4J_LAL:
 			return Slf4jAdapter.createLocationAwareLog(name);
+		// slf4j
 		case SLF4J:
 			return Slf4jAdapter.createLog(name);
 		default:

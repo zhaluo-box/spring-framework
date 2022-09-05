@@ -19,7 +19,9 @@ public class Main {
 		//		}
 
 		//		public Sub(Main main) {
-		//			System.out.println("采用Main 构造");
+		//			System.out.
+		//
+		//			("采用Main 构造");
 		//		}
 	}
 

@@ -576,7 +576,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 				// Invoke factory processors registered as beans in the context.
 				// 激活在容器注册为Bean的BeanFactoryPostProcessors
-				// 对于注解容器， @see org.springframework.context.annotation.ConfigurationClassPostProcessor#postProcessBeanFactory(ConfigurableListableBeanFactory) */
+				// 对于注解容器，
+				// @see org.springframework.context.annotation.ConfigurationClassPostProcessor#postProcessBeanFactory(ConfigurableListableBeanFactory) */
 				// 方法扫描应用中的所有BeanDefinition并注册到容器中
 				invokeBeanFactoryPostProcessors(beanFactory);
 

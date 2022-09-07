@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.beans.factory.annotation.InjectionMetadata</OriginalElement>
+  <nodes>
+    <node x="52.0" y="108.0">org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement</node>
+    <node x="568.0" y="36.0">org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.ResourceElement</node>
+    <node x="289.5" y="84.0">org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor.PersistenceElement</node>
+    <node x="577.5" y="84.0">org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.EjbRefElement</node>
+    <node x="275.0" y="132.0">org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement</node>
+    <node x="548.0" y="-12.0">org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.WebServiceRefElement</node>
+    <node x="-174.5" y="-67.0">org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.LifecycleMetadata</node>
+    <node x="264.0" y="180.0">org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredMethodElement</node>
+    <node x="302.0" y="35.99999999999999">org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.LookupElement</node>
+    <node x="-175.0" y="108.0">org.springframework.beans.factory.annotation.InjectionMetadata</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.ResourceElement" target="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.LookupElement" relationship="GENERALIZATION">
+      <point x="-84.5" y="0.0" />
+      <point x="79.0" y="0.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.WebServiceRefElement" target="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.LookupElement" relationship="GENERALIZATION">
+      <point x="-104.5" y="0.0" />
+      <point x="523.0" y="2.0" />
+      <point x="523.0" y="49.99999999999999" />
+      <point x="79.0" y="0.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement" target="org.springframework.beans.factory.annotation.InjectionMetadata" relationship="INNER_CLASS">
+      <point x="-81.0" y="0.0" />
+      <point x="88.5" y="0.0" />
+    </edge>
+    <edge source="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor.PersistenceElement" target="org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement" relationship="GENERALIZATION">
+      <point x="-91.5" y="0.0" />
+      <point x="239.0" y="98.0" />
+      <point x="239.0" y="122.0" />
+      <point x="81.0" y="0.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredMethodElement" target="org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement" relationship="GENERALIZATION">
+      <point x="-117.0" y="0.0" />
+      <point x="239.0" y="194.0" />
+      <point x="239.0" y="122.0" />
+      <point x="81.0" y="0.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.LookupElement" target="org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement" relationship="GENERALIZATION">
+      <point x="-79.0" y="0.0" />
+      <point x="239.0" y="49.99999999999999" />
+      <point x="239.0" y="122.0" />
+      <point x="81.0" y="0.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.EjbRefElement" target="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.LookupElement" relationship="GENERALIZATION">
+      <point x="-75.0" y="0.0" />
+      <point x="523.0" y="98.0" />
+      <point x="523.0" y="49.99999999999999" />
+      <point x="79.0" y="0.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.AutowiredFieldElement" target="org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement" relationship="GENERALIZATION">
+      <point x="-106.0" y="0.0" />
+      <point x="239.0" y="146.0" />
+      <point x="239.0" y="122.0" />
+      <point x="81.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="570.0" y="96.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

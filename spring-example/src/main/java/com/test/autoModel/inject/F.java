@@ -14,10 +14,10 @@ public class F {
 	@Autowired
 	I a;//Ia
 
-	//	@Resource
+	@Resource
 	G g;
 
-	//	@Autowired
+	@Autowired
 	L l;
 
 	K k;

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor</OriginalElement>
+  <nodes>
+    <node x="-99.0" y="230.0">org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor</node>
+    <node x="241.66666666666663" y="148.0">org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor</node>
+    <node x="53.287698412698376" y="320.0">org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor</node>
+    <node x="373.968253968254" y="66.0">org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor</node>
+    <node x="232.66666666666674" y="230.0">org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter</node>
+    <node x="280.04166666666663" y="-14.0">org.springframework.beans.factory.config.BeanPostProcessor</node>
+    <node x="497.05158730158723" y="320.0">org.springframework.context.annotation.CommonAnnotationBeanPostProcessor</node>
+    <node x="797.218253968254" y="230.0">org.springframework.beans.factory.annotation.InjectionMetadata</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" target="org.springframework.beans.factory.config.BeanPostProcessor" relationship="REALIZATION">
+      <point x="52.08333333333337" y="-14.0" />
+      <point x="716.468253968254" y="0.0" />
+      <point x="114.5" y="0.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" target="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor" relationship="REALIZATION">
+      <point x="15.000079365079387" y="-14.0" />
+      <point x="142.91674603174602" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor" target="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor" relationship="INTERFACE_GENERALIZATION">
+      <point x="105.1349206349206" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" target="org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor" relationship="REALIZATION">
+      <point x="3.0158730163520886E-4" y="-14.0" />
+      <point x="228.288" y="289.0" />
+      <point x="56.833" y="289.0" />
+      <point x="-3.3333333334439885E-4" y="14.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor" target="org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor" relationship="REALIZATION">
+      <point x="7.936507938666182E-5" y="-14.0" />
+      <point x="664.385" y="289.0" />
+      <point x="56.833" y="289.0" />
+      <point x="-3.3333333334439885E-4" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor" target="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter" relationship="GENERALIZATION">
+      <point x="15.000301587301635" y="-14.0" />
+      <point x="-188.0453333333333" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor" target="org.springframework.beans.factory.config.BeanPostProcessor" relationship="INTERFACE_GENERALIZATION">
+      <point x="-2.5396825401458045E-4" y="-14.0" />
+      <point x="536.468" y="40.0" />
+      <point x="394.542" y="40.0" />
+      <point x="3.3333333334439885E-4" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor" target="org.springframework.beans.factory.config.BeanPostProcessor" relationship="INTERFACE_GENERALIZATION">
+      <point x="-3.3333333334439885E-4" y="-14.0" />
+      <point x="56.833" y="40.0" />
+      <point x="394.542" y="40.0" />
+      <point x="3.3333333334439885E-4" y="14.0" />
+    </edge>
+    <edge source="org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter" target="org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor" relationship="REALIZATION">
+      <point x="5.6843418860808015E-14" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="437.99999999999994" y="167.0" />
+  <SelectedNodes>
+    <node>org.springframework.beans.factory.annotation.InjectionMetadata</node>
+  </SelectedNodes>
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

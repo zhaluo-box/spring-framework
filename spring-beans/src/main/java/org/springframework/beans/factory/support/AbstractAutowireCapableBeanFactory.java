@@ -1087,13 +1087,15 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @param beanType the actual type of the managed bean instance
 	 * @param beanName the name of the bean
 	 * @see MergedBeanDefinitionPostProcessor#postProcessMergedBeanDefinition
+	 * @see org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#postProcessMergedBeanDefinition(RootBeanDefinition, Class, String)
+	 * @see org.springframework.context.annotation.CommonAnnotationBeanPostProcessor#postProcessMergedBeanDefinition(RootBeanDefinition, Class, String)
 	 */
 	protected void applyMergedBeanDefinitionPostProcessors(RootBeanDefinition mbd, Class<?> beanType, String beanName) {
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
 			if (bp instanceof MergedBeanDefinitionPostProcessor) {
 				MergedBeanDefinitionPostProcessor bdp = (MergedBeanDefinitionPostProcessor) bp;
 				// 重点关注Autowired AnnotationBeanProcessor ,该类会把@Autowire 等标记的
-				// 需要依赖注入的成员变量或者方法实例给记录下来, 方便后续populateBean使用
+				// 需要依赖注入的成员变量或者方法实例给记录下来 (cache InjectionMetadata), 方便后续populateBean使用
 				bdp.postProcessMergedBeanDefinition(mbd, beanType, beanName);
 			}
 		}
@@ -1426,7 +1428,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
-					// 在这里会对@Autowired 标记的属性进行依赖注入
+					// 在这里会对@Autowired @value @inject @resource 等标记的属性或者方法进行依赖注入
 					PropertyValues pvsToUse = ibp.postProcessProperties(pvs, bw.getWrappedInstance(), beanName);
 					if (pvsToUse == null) {
 						if (filteredPds == null) {

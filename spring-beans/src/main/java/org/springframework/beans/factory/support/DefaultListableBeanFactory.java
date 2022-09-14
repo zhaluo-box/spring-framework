@@ -1316,6 +1316,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private Object resolveMultipleBeans(DependencyDescriptor descriptor, @Nullable String beanName, @Nullable Set<String> autowiredBeanNames,
 										@Nullable TypeConverter typeConverter) {
 
+		// 依赖的类型
 		Class<?> type = descriptor.getDependencyType();
 
 		if (descriptor instanceof StreamDependencyDescriptor) {
@@ -1376,6 +1377,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 			Object result = converter.convertIfNecessary(matchingBeans.values(), type);
 			if (result instanceof List) {
 				if (((List<?>) result).size() > 1) {
+					// 排序 与order有关
 					Comparator<Object> comparator = adaptDependencyComparator(matchingBeans);
 					if (comparator != null) {
 						((List<?>) result).sort(comparator);

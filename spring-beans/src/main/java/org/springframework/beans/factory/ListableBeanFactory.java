@@ -24,6 +24,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.lang.Nullable;
 
 /**
+ *
  * Extension of the {@link BeanFactory} interface to be implemented by bean factories
  * that can enumerate all their bean instances, rather than attempting bean lookup
  * by name one by one as requested by clients. BeanFactory implementations that
@@ -50,6 +51,7 @@ import org.springframework.lang.Nullable;
  * are not designed for frequent invocation. Implementations may be slow.
  *
  *  扩展了BeanFactory接口, 提供了方法查询有关bean 与BeanDefinition 相关的列表接口
+ *  主要根据类型查询 集合类型的Bean
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -60,6 +62,7 @@ import org.springframework.lang.Nullable;
 public interface ListableBeanFactory extends BeanFactory {
 
 	/**
+	 * 是否包含BeanDefinition
 	 * Check if this bean factory contains a bean definition with the given name.
 	 * <p>Does not consider any hierarchy this factory may participate in,
 	 * and ignores any singleton beans that have been registered by
@@ -71,6 +74,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	boolean containsBeanDefinition(String beanName);
 
 	/**
+	 * 统计 beanDefinition 数量
 	 * Return the number of beans defined in the factory.
 	 * <p>Does not consider any hierarchy this factory may participate in,
 	 * and ignores any singleton beans that have been registered by
@@ -80,6 +84,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	int getBeanDefinitionCount();
 
 	/**
+	 * BeanDefinition 名称列表
 	 * Return the names of all beans defined in this factory.
 	 * <p>Does not consider any hierarchy this factory may participate in,
 	 * and ignores any singleton beans that have been registered by
@@ -153,6 +158,7 @@ public interface ListableBeanFactory extends BeanFactory {
 	String[] getBeanNamesForType(ResolvableType type, boolean includeNonSingletons, boolean allowEagerInit);
 
 	/**
+	 * 返回一个名称 匹配根据指定的类型（包含子类）
 	 * Return the names of beans matching the given type (including subclasses),
 	 * judging from either bean definitions or the value of {@code getObjectType}
 	 * in the case of FactoryBeans.

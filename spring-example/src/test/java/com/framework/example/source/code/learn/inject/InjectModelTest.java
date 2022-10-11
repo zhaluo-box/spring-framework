@@ -21,9 +21,8 @@ public class InjectModelTest {
 	public void testResourceInject() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.scan("com.framework.example.inject");
-
 		context.refresh();
-
 		context.getBean(UserService.class);
+		context.close();
 	}
 }

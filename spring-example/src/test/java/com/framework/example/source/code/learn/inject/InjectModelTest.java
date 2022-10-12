@@ -16,6 +16,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  */
 public class InjectModelTest {
 
+	/**
+	 * {@link org.springframework.beans.factory.annotation.InjectionMetadata}
+	 * {@link org.springframework.beans.factory.annotation.InjectionMetadata.InjectedElement 与其派生类}
+	 * {@link org.springframework.beans.factory.config.DependencyDescriptor 依赖描述器}
+	 */
 	@Test
 	@DisplayName("测试Resource与Autowired")
 	public void testResourceInject() {

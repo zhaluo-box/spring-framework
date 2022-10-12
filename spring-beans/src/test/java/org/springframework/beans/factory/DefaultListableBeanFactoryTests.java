@@ -45,6 +45,7 @@ import javax.security.auth.Subject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -780,23 +781,30 @@ class DefaultListableBeanFactoryTests {
 	}
 
 	@Test
+	@DisplayName("测试能否引用父类Bean的别名 通过ChildBeanDefinition")
 	void canReferenceParentBeanFromChildViaAlias() {
 		final String EXPECTED_NAME = "Juergen";
 		final int EXPECTED_AGE = 41;
 
+		// 父类设置了属性值
 		RootBeanDefinition parentDefinition = new RootBeanDefinition(TestBean.class);
 		parentDefinition.setAbstract(true);
 		parentDefinition.getPropertyValues().add("name", EXPECTED_NAME);
 		parentDefinition.getPropertyValues().add("age", EXPECTED_AGE);
 
+		// 子类没有
 		ChildBeanDefinition childDefinition = new ChildBeanDefinition("alias");
 
+		// 注册beanDefinition
 		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
 		factory.registerBeanDefinition("parent", parentDefinition);
 		factory.registerBeanDefinition("child", childDefinition);
 		factory.registerAlias("parent", "alias");
 
+		// 获取子类Bean
 		TestBean child = factory.getBean("child", TestBean.class);
+
+		// 验证子类有没有继承父类的属性
 		assertThat(child.getName()).isEqualTo(EXPECTED_NAME);
 		assertThat(child.getAge()).isEqualTo(EXPECTED_AGE);
 		BeanDefinition mergedBeanDefinition1 = factory.getMergedBeanDefinition("child");

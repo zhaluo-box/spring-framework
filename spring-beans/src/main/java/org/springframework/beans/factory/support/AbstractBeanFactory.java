@@ -1041,13 +1041,12 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	/**
+	 * 通过给定的Bean名称返回一个合并的BeanDefinition
 	 * Return a 'merged' BeanDefinition for the given bean name,
 	 * merging a child bean definition with its parent if necessary.
-	 * <p>This {@code getMergedBeanDefinition} considers bean definition
-	 * in ancestors as well.
+	 * <p>This {@code getMergedBeanDefinition} considers bean definition in ancestors as well.
 	 *
-	 * @param name the name of the bean to retrieve the merged definition for
-	 *             (may be an alias)
+	 * @param name the name of the bean to retrieve the merged definition for   (maybe an alias)
 	 * @return a (potentially merged) RootBeanDefinition for the given bean
 	 * @throws NoSuchBeanDefinitionException if there is no bean with the given name
 	 * @throws BeanDefinitionStoreException  in case of an invalid bean definition

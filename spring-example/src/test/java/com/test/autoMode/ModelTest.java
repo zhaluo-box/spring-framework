@@ -38,6 +38,7 @@ public class ModelTest {
 		//N n = context.getBean(M.class).getN();
 		//ExampleBean exampleBean = context.getBean(A.class).getExampleBean();
 		//log.debug("n ==[{}]",n );
+		context.close();
 	}
 
 	/**
@@ -53,8 +54,8 @@ public class ModelTest {
 		//singletonObjects.get("f")
 		I i = context.getBean(F.class).getA();
 		log.debug("i==[{}]", i);
-
 		//K k = context.getBean(F.class).getK();
+		context.close();
 	}
 
 	/**
@@ -122,6 +123,6 @@ public class ModelTest {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.scan("com.test.autoModel.dependsOn");
 		context.refresh();
-
+		context.close();
 	}
 }

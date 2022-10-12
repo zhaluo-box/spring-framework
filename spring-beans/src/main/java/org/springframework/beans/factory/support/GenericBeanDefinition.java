@@ -25,17 +25,17 @@ import org.springframework.util.ObjectUtils;
  * Like any bean definition, it allows for specifying a class plus optionally
  * constructor argument values and property values. Additionally, deriving from a
  * parent bean definition can be flexibly configured through the "parentName" property.
- *
  * <p>In general, use this {@code GenericBeanDefinition} class for the purpose of
  * registering user-visible bean definitions (which a post-processor might operate on,
  * potentially even reconfiguring the parent name). Use {@code RootBeanDefinition} /
  * {@code ChildBeanDefinition} where parent/child relationships happen to be pre-determined.
+ * 通用基本的BeanDefinition
  *
  * @author Juergen Hoeller
- * @since 2.5
  * @see #setParentName
  * @see RootBeanDefinition
  * @see ChildBeanDefinition
+ * @since 2.5
  */
 @SuppressWarnings("serial")
 public class GenericBeanDefinition extends AbstractBeanDefinition {
@@ -43,10 +43,10 @@ public class GenericBeanDefinition extends AbstractBeanDefinition {
 	@Nullable
 	private String parentName;
 
-
 	/**
 	 * Create a new GenericBeanDefinition, to be configured through its bean
 	 * properties and configuration methods.
+	 *
 	 * @see #setBeanClass
 	 * @see #setScope
 	 * @see #setConstructorArgumentValues
@@ -59,12 +59,12 @@ public class GenericBeanDefinition extends AbstractBeanDefinition {
 	/**
 	 * Create a new GenericBeanDefinition as deep copy of the given
 	 * bean definition.
+	 *
 	 * @param original the original bean definition to copy from
 	 */
 	public GenericBeanDefinition(BeanDefinition original) {
 		super(original);
 	}
-
 
 	@Override
 	public void setParentName(@Nullable String parentName) {
@@ -76,7 +76,6 @@ public class GenericBeanDefinition extends AbstractBeanDefinition {
 	public String getParentName() {
 		return this.parentName;
 	}
-
 
 	@Override
 	public AbstractBeanDefinition cloneBeanDefinition() {

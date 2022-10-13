@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
  * @author zl
  */
 @Data
-@Accessors
+@Accessors(chain = true)
 public class User {
 
 	private int id;

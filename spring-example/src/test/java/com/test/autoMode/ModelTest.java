@@ -1,16 +1,17 @@
 package com.test.autoMode;
 
+import com.test.autoModel.config.ModelConfig;
+import com.test.autoModel.defaults.A;
 import com.test.autoModel.inject.F;
 import com.test.autoModel.inject.I;
 import com.test.autoModel.lookup.LC;
 import com.test.autoModel.order.E;
 import com.test.autoModel.order.T;
-import com.test.autoModel.config.ModelConfig;
-import com.test.autoModel.defaults.A;
 import com.test.autoModel.statics.ObjectFactory;
 import com.test.autoModel.statics.SupplierFactory;
 import com.test.autoModel.util.ModelBeanFactoryPostProcessor;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -79,6 +80,7 @@ public class ModelTest {
 	 * spring优先选用supplier
 	 */
 	@Test
+	@DisplayName("测试工厂方法实例工厂方法、supplier  spring优先选用supplier")
 	public void staticsModel() {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		//context.scan("com.test.autoModel.statics");

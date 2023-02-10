@@ -3,6 +3,16 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="user" class="com.framework.example.common.entity.User"/>
 	<alias name="user" alias="example-user"/>
+
+	<bean id="user" class="com.framework.example.common.entity.User">
+		<property name="age" value="12"/>
+		<property name="id" value="1"/>
+		<property name="name" value="张三"/>
+	</bean>
+
+
+	<bean id="superUser" class="com.framework.example.common.entity.SuperUser" parent="example-user" primary="true">
+		<property name="address" value="北京"/>
+	</bean>
 </beans>

@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -56,6 +58,36 @@ public class AnnotationDependencyInjectionTest {
 		FieldInjection fieldInjection = context.getBean(FieldInjection.class);
 		System.out.println(fieldInjection);
 		context.close();
+	}
+
+	@Test
+	@DisplayName("懒加载/延迟注入测试")
+	public void lazyAnnotationInjectionTest() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(context);
+		xmlBeanDefinitionReader.loadBeanDefinitions("classpath:/META-INF/bean-definition-context.xml");
+
+		context.register(LazyInjection.class);
+		context.refresh();
+		LazyInjection lazyObject = context.getBean(LazyInjection.class);
+		System.out.println(lazyObject.getUser());
+		System.out.println("objectProvider lazy inject");
+		lazyObject.getUserObjectProvider().forEach(System.out::println);
+		System.out.println("ObjectFactory lazy inject(unsafe inject)" + lazyObject.getUserObjectFactory().getObject());
+		context.close();
+	}
+
+	@Getter
+	public static class LazyInjection {
+
+		@Autowired
+		private User user;
+
+		@Autowired
+		private ObjectFactory<User> userObjectFactory;
+
+		@Autowired
+		private ObjectProvider<User> userObjectProvider;
 	}
 
 	public static class ConstructorInjection {

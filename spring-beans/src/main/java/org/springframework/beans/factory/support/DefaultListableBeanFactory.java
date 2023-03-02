@@ -1088,7 +1088,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	//---------------------------------------------------------------------
-	// Dependency resolution functionality
+	// Dependency resolution functionality  依赖关系解析方法
 	//---------------------------------------------------------------------
 
 	@Override
@@ -1195,7 +1195,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 									  @Nullable TypeConverter typeConverter) throws BeansException {
 
 		InjectionPoint previousInjectionPoint = ConstructorResolver.setCurrentInjectionPoint(descriptor);
-		try {
+		try {// TODO @XX shortcut 是什么？？
 			Object shortcut = descriptor.resolveShortcut(this);
 			if (shortcut != null) {
 				return shortcut;
@@ -1713,6 +1713,9 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
+	 *
+	 * private Optional<Bean>  optionalBean
+	 * 结合
 	 * Create an {@link Optional} wrapper for the specified dependency.
 	 */
 	private Optional<?> createOptionalDependency(DependencyDescriptor descriptor, @Nullable String beanName, final Object... args) {

@@ -1206,6 +1206,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 			// 获取依赖的类型
 			Class<?> type = descriptor.getDependencyType();
+			// @Value 注入的值，在这里还是 Spel 表达式
 			Object value = getAutowireCandidateResolver().getSuggestedValue(descriptor);
 			if (value != null) {
 				if (value instanceof String) {

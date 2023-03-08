@@ -55,7 +55,7 @@ public class SpringApiDependencyInjectionTest {
 	}
 
 	@Test
-	@DisplayName("基于Bean Definition constructor api 注入")
+	@DisplayName("基于Bean  Definition constructor api 注入")
 	public void testBeanDefinitionConst() {
 
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();

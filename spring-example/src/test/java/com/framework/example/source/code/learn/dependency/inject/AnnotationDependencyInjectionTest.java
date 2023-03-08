@@ -1,5 +1,7 @@
 package com.framework.example.source.code.learn.dependency.inject;
 
+import com.framework.example.annotation.MyAutowire;
+import com.framework.example.annotation.MyInject;
 import com.framework.example.common.entity.User;
 import com.framework.example.common.entity.UserHolder;
 import lombok.Getter;
@@ -11,6 +13,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
@@ -18,7 +21,10 @@ import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * 注解驱动依赖注入测试
@@ -66,6 +72,28 @@ public class AnnotationDependencyInjectionTest {
 	}
 
 	/**
+	 * @see org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#setAutowiredAnnotationTypes(Set)
+	 * @see org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor#setAutowiredAnnotationType(Class)
+	 * @see com.framework.example.annotation.MyInject
+	 * @see com.framework.example.annotation.MyAutowire
+	 */
+	@Test
+	@DisplayName("自定义注解测试 ")
+	public void customAnnotationInjectionTest() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(context);
+		xmlBeanDefinitionReader.loadBeanDefinitions("classpath:/META-INF/bean-definition-context.xml");
+		context.register(CustomAnnotationConfigBean.class);
+		context.register(CustomAnnotationInjection.class);
+		context.refresh();
+		CustomAnnotationInjection injection = context.getBean(CustomAnnotationInjection.class);
+		System.out.println("@Autowired : " + injection.getUser());
+		System.out.println("@MyAutowired : " + injection.getMyAutowiredUser());
+		System.out.println("@MyInject : " + injection.getMyInjectedUser());
+		context.close();
+	}
+
+	/**
 	 * debug method
 	 *
 	 * @see org.springframework.beans.factory.support.DefaultListableBeanFactory#resolveDependency(DependencyDescriptor, String)
@@ -91,11 +119,14 @@ public class AnnotationDependencyInjectionTest {
 	}
 
 	/**
-	 * @see InstantiationAwareBeanPostProcessor#postProcessAfterInstantiation(Object, String) 如果返回false 会忽略对其属性的注入
+	 * @see InstantiationAwareBeanPostProcessor#postProcessAfterInstantiation(Object, String)
+	 * 如果返回false 会直接跳出，后续的postProcessor 将停止对Bean的处理
+	 * 需要结合 orderd 接口一起工作
 	 */
 	@Test
-	@DisplayName("忽略注入测试")
+	@DisplayName("忽略注入测试  没有重现，验证失败。 TODO")
 	public void IgnoreAutowiredInjectionTest() {
+		// TODO @XX 2023/3/7 待验证
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(context);
 		xmlBeanDefinitionReader.loadBeanDefinitions("classpath:/META-INF/bean-definition-context.xml");
@@ -164,6 +195,33 @@ public class AnnotationDependencyInjectionTest {
 		//    static // @Autowired 会忽略掉静态字段
 		User user;
 
+	}
+
+	@ToString
+	@Getter
+	public static class CustomAnnotationInjection {
+
+		@Autowired
+		private
+		//    static // @Autowired 会忽略掉静态字段
+		User user;
+
+		@MyInject
+		private User myInjectedUser;
+
+		@MyAutowire
+		private User myAutowiredUser;
+
+	}
+
+	public static class CustomAnnotationConfigBean {
+
+		@Bean
+		public AutowiredAnnotationBeanPostProcessor myAutowiredPostProcessor() {
+			AutowiredAnnotationBeanPostProcessor postProcessor = new AutowiredAnnotationBeanPostProcessor();
+			postProcessor.setAutowiredAnnotationTypes(new HashSet<>(Arrays.asList(MyAutowire.class, MyInject.class)));
+			return postProcessor;
+		}
 	}
 
 	@ToString

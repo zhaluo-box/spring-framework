@@ -26,6 +26,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.support.ResourceEditorRegistrar;
 import org.springframework.context.*;
 import org.springframework.context.event.*;
@@ -696,7 +697,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 		// Configure the bean factory with context callbacks.
 		// 配置Bean工厂的上下文回调
-
 		// 添加ApplicationAwareProcessor ，给程序定义的Bean实现了ApplicationContextAware接口 注入ApplicationContext对象
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
@@ -711,6 +711,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 		// BeanFactory interface not registered as resolvable type in a plain factory.
 		// MessageSource registered (and found for autowiring) as a bean.
+		// {@link org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates(String, Class, DependencyDescriptor) 中的this.resolvableDependencies}  }
 		// 修正依赖， 这里是注册一些自动装配的特殊规则， 比如是BeanFactory class 接口的实现类， 则在运行时动态指定为当前BeanFactory
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);

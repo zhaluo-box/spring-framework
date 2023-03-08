@@ -122,6 +122,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Map from dependency type to corresponding autowired value.
+	 * @see AbstractBeanFactory
 	 */
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
 
@@ -146,6 +147,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	private final Map<Class<?>, String[]> singletonBeanNamesByType = new ConcurrentHashMap<>(64);
 
 	/**
+	 * 因为concurrentHashMap 无序，所以采用ArrayList 存储BeanDefinition的名称，使其有序
 	 * List of bean definition names, in registration order.
 	 */
 	private volatile List<String> beanDefinitionNames = new ArrayList<>(256);
@@ -709,7 +711,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	public void registerResolvableDependency(Class<?> dependencyType, @Nullable Object autowiredValue) {
 		Assert.notNull(dependencyType, "Dependency type must not be null");
 		if (autowiredValue != null) {
-			// 如果不是ObjectFactory 示例  并且注入类型与依赖一类不匹配 则直接抛出异常
+			// 如果不是ObjectFactory 示例且dependencyType与autowiredValue类型不匹配 则直接抛出异常
 			if (!(autowiredValue instanceof ObjectFactory || dependencyType.isInstance(autowiredValue))) {
 				throw new IllegalArgumentException(
 						"Value [" + autowiredValue + "] does not implement specified dependency type [" + dependencyType.getName() + "]");
@@ -1132,7 +1134,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		if (candidateNames.length == 1) {
 			String beanName = candidateNames[0];
 			return new NamedBeanHolder<>(beanName, (T) getBean(beanName, requiredType.toClass(), args));
-		} else if (candidateNames.length > 1) { // 如果候选BeanName 不是唯一的
+		}
+		else if (candidateNames.length > 1) { // 如果候选BeanName 不是唯一的
 			Map<String, Object> candidates = new LinkedHashMap<>(candidateNames.length);
 			for (String beanName : candidateNames) {
 				// 是否有参数为空并在单例缓存中的BeanName,如果有放入候选candidates 中
@@ -1713,7 +1716,6 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	}
 
 	/**
-	 *
 	 * private Optional<Bean>  optionalBean
 	 * 结合
 	 * Create an {@link Optional} wrapper for the specified dependency.

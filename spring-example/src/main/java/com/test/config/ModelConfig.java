@@ -1,4 +1,4 @@
-package com.test.autoModel.config;
+package com.test.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;

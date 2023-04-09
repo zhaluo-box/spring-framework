@@ -1,6 +1,6 @@
 package com.test.autoMode;
 
-import com.test.autoModel.config.ModelConfig;
+import com.test.config.ModelConfig;
 import com.test.autoModel.defaults.A;
 import com.test.autoModel.inject.F;
 import com.test.autoModel.inject.I;

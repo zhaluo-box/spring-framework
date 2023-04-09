@@ -80,7 +80,7 @@ public class InjectionMetadata {
 
 	/**
 	 * 需要检测的元素
-	 * Autowired required default true
+	 * Autowired required properties default true
 	 */
 	@Nullable
 	private volatile Set<InjectedElement> checkedElements;
@@ -125,11 +125,14 @@ public class InjectionMetadata {
 
 	public void inject(Object target, @Nullable String beanName, @Nullable PropertyValues pvs) throws Throwable {
 		Collection<InjectedElement> checkedElements = this.checkedElements;
+		// 此处需要注入的属性 优选注入必需注入的属性 例如 @Autowired required = true 的属性， 如果没有 退而求其次
+		// 解析注入当前bean 所有需要注入的属性， 在后续真正注入的时候还是会对非必要注入的属性找不到做单独的处理
 		Collection<InjectedElement> elementsToIterate = (checkedElements != null ? checkedElements : this.injectedElements);
+
 		if (!elementsToIterate.isEmpty()) {
 			for (InjectedElement element : elementsToIterate) {
-				// 处理Resource -- InjectedElement 子类 -- ResourceElement
-				// 处理Autowired -- InjectedElement  -- 子类 AutowiredInjectedElement
+				// 处理@Resource -- InjectedElement 子类 -- ResourceElement
+				// 处理@Autowired -- InjectedElement  -- 子类 AutowiredInjectedElement
 				element.inject(target, beanName, pvs);
 			}
 		}
@@ -163,6 +166,7 @@ public class InjectionMetadata {
 	}
 
 	/**
+	 * 什么时候需要 needRefresh
 	 * Check whether the given injection metadata needs to be refreshed.
 	 *
 	 * @param metadata the existing metadata instance

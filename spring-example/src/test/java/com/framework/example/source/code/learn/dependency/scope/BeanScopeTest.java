@@ -37,14 +37,13 @@ public class BeanScopeTest {
 
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
+		context.addBeanFactoryPostProcessor(beanFactory -> beanFactory.registerScope(ThreadLocalScope.SCOPE_NAME, new ThreadLocalScope()));
+		// 为什么自定义写的BeanDefinition  ThreadLocalScope 不生效？？？
 //		AbstractBeanDefinition userDefinition = BeanDefinitionBuilder.genericBeanDefinition(User.class)
 //																	 .setScope(ThreadLocalScope.SCOPE_NAME)
 //																	 .addPropertyValue("name", UUID.randomUUID().toString())
 //																	 .getBeanDefinition();
 //		context.registerBeanDefinition("user", userDefinition);
-		context.addBeanFactoryPostProcessor(beanFactory -> {
-			beanFactory.registerScope(ThreadLocalScope.SCOPE_NAME, new ThreadLocalScope());
-		});
 
 		context.register(BeanConfig.class);
 		context.refresh();

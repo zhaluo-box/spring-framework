@@ -34,6 +34,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 /**
+ *
+ * 主要职责在于把一个注解标记的class解读为BeanDefinition 并注册
  * Convenient adapter for programmatic registration of bean classes.
  *
  * <p>This is an alternative to {@link ClassPathBeanDefinitionScanner}, applying

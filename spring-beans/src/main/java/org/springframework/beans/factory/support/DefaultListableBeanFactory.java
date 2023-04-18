@@ -122,12 +122,14 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	/**
 	 * Map from dependency type to corresponding autowired value.
+	 *
 	 * @see AbstractBeanFactory
 	 */
 	private final Map<Class<?>, Object> resolvableDependencies = new ConcurrentHashMap<>(16);
 
 	/**
 	 * Map of bean definition objects, keyed by bean name.
+	 * BeanDefinition 存放的容器
 	 */
 	private final Map<String, BeanDefinition> beanDefinitionMap = new ConcurrentHashMap<>(256);
 
@@ -1134,8 +1136,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		if (candidateNames.length == 1) {
 			String beanName = candidateNames[0];
 			return new NamedBeanHolder<>(beanName, (T) getBean(beanName, requiredType.toClass(), args));
-		}
-		else if (candidateNames.length > 1) { // 如果候选BeanName 不是唯一的
+		} else if (candidateNames.length > 1) { // 如果候选BeanName 不是唯一的
 			Map<String, Object> candidates = new LinkedHashMap<>(candidateNames.length);
 			for (String beanName : candidateNames) {
 				// 是否有参数为空并在单例缓存中的BeanName,如果有放入候选candidates 中

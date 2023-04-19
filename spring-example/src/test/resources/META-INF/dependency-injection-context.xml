@@ -15,7 +15,6 @@
 	</bean>
 
 	<!-- xml 构造器注入	-->
-
 	<bean id="userHolder3" class="com.framework.example.common.entity.UserHolder" autowire="constructor"/>
 
 </beans>

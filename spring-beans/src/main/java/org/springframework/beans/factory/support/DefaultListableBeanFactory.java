@@ -891,6 +891,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 
 	//---------------------------------------------------------------------
 	// Implementation of BeanDefinitionRegistry interface
+	// 实现了 注册BeanDefinition的接口
 	//---------------------------------------------------------------------
 
 	@Override

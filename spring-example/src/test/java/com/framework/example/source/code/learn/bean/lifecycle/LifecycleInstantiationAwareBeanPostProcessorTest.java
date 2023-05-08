@@ -25,7 +25,7 @@ public class LifecycleInstantiationAwareBeanPostProcessorTest {
 	/**
 	 * 期待： 有返回值，对指定的Bean进行替换，并且后面的逻辑不在对当前Bean的属性进行填充
 	 *
-	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsAfterInitialization(Object, String)
+	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#applyBeanPostProcessorsBeforeInstantiation(Class, String)
 	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean(String, RootBeanDefinition, BeanWrapper)
 	 */
 	@Test

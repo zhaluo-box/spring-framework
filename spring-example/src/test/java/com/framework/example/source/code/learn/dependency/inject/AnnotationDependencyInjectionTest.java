@@ -20,6 +20,7 @@ import org.springframework.beans.factory.config.InstantiationAwareBeanPostProces
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -134,8 +135,8 @@ public class AnnotationDependencyInjectionTest {
 		context.register(IgnoreAutowired.class);
 		context.refresh();
 		IgnoreAutowired ignoreAutowired = context.getBean(IgnoreAutowired.class);
-
-		System.out.println(ignoreAutowired.getUser());
+		System.out.println("ignoreAutowired.getUser() = " + ignoreAutowired.getUser());
+		System.out.println("context.getBean(\"user\", User.class) = " + context.getBean("user", User.class));
 		context.close();
 	}
 
@@ -161,11 +162,29 @@ public class AnnotationDependencyInjectionTest {
 		@Autowired
 		private User user;
 
+		/**
+		 * 对于当前类 @Autowired 注解的字段不生效
+		 *
+		 * @param beanClass the class of the bean to be instantiated
+		 * @param beanName  the name of the bean
+		 * @return
+		 * @throws BeansException
+		 */
 		@Override
-		public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
-
-			return false;
+		public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+			System.out.println("beanName = " + beanName);
+			System.out.println("beanClass = " + beanClass);
+			if (StringUtils.hasText(beanName) && beanName.equals("user") && User.class.equals(beanClass)) {
+				return new User().setId(1000);
+			}
+			return null;
 		}
+
+		//		@Override
+		//		public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+		//
+		//			return false;
+		//		}
 	}
 
 	public static class ConstructorInjection {

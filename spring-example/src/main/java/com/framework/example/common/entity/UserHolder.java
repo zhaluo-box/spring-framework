@@ -1,5 +1,7 @@
 package com.framework.example.common.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -9,6 +11,10 @@ import lombok.ToString;
  */
 @ToString
 public class UserHolder {
+
+	@Getter
+	@Setter
+	private String name;
 
 	public UserHolder() {
 	}

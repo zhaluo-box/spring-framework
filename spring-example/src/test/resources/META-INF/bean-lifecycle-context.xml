@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<bean id="user1" class="com.framework.example.common.entity.User">
+		<property name="age" value="12"/>
+		<property name="id" value="1"/>
+		<property name="name" value="张三"/>
+	</bean>
+
+	<bean id="user2" class="com.framework.example.common.entity.User">
+		<property name="age" value="12"/>
+		<property name="id" value="2"/>
+		<property name="name" value="李四"/>
+	</bean>
+
+	<bean id="user3" class="com.framework.example.common.entity.User">
+		<property name="age" value="12"/>
+		<property name="id" value="3"/>
+		<property name="name" value="王五"/>
+	</bean>
+
+
+	<bean id="userHolder" class="com.framework.example.common.entity.UserHolder">
+		<property name="user" ref="user1"/>
+		<property name="name" value="尼采"/>
+	</bean>
+
+
+	<bean id="userHolder2" class="com.framework.example.common.entity.UserHolder">
+		<constructor-arg ref="user2"/>
+		<property name="name" value="构造器注入就是这么叼"/>
+	</bean>
+</beans>

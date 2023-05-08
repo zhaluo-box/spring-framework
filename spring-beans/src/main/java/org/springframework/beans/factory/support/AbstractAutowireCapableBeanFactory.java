@@ -1072,11 +1072,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// mbd.isSynthetic() 默认是false ,
 			// 如果注册了InstantiationAwareBeanPostProcessors 类型的BeanPostProcessor
 			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
-				// 决定bean的目标对象类型
+				// 推断bean的目标对象类型
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				// 如果不为空
 				if (targetType != null) {
-					// 依次执行BeanPostProcessor 进行实例话
+					// 依次执行BeanPostProcessor 进行实例化
 					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
 					if (bean != null) {
 						// 如果Bean不为空，则对Bean进行后置的包装
@@ -1108,6 +1108,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
 				Object result = ibp.postProcessBeforeInstantiation(beanClass, beanName);
 				// 如果结果不为空，就代表实例已经被创建，就不在需要doCreateBean的逻辑去创建Bean
+				// 如果result ==  null 在采用spring 自己的逻辑，根据xml或者注解进行bean属性填充生成spring 代理Bean
+				// 如果result != null 则代表有逻辑 扩展了spring InstantiationAwareBeanPostProcessor 需要采用result 作为Bean
 				if (result != null) {
 					return result;
 				}
@@ -1350,7 +1352,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof InstantiationAwareBeanPostProcessor) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
-					// 实现定义都Bean的属性进行包装填充，并且不希望spring继续对Bean进行包装，便将continueWithPropertyPopulation 置为false
+					// 实现定义对Bean的属性进行包装填充，并且不希望spring继续对Bean进行包装，便将continueWithPropertyPopulation 置为false
+					// 如果 ibp.postProcessAfterInstantiation 返回false 则跳出整个方法。 不再进行后续的根据名称或者类型进行填充， 但是构造器注入，不再此列
 					if (!ibp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
 						// 后续的逻辑便不再继续执行
 						return;
@@ -1365,10 +1368,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (resolvedAutowireMode == AUTOWIRE_BY_NAME || resolvedAutowireMode == AUTOWIRE_BY_TYPE) {
 			MutablePropertyValues newPvs = new MutablePropertyValues(pvs);
 			// Add property values based on autowire by name if applicable.
+			// 基于名称填充属性
 			if (resolvedAutowireMode == AUTOWIRE_BY_NAME) {
 				autowireByName(beanName, mbd, bw, newPvs);
 			}
 			// Add property values based on autowire by type if applicable.
+			// 基于类型填充属性
 			if (resolvedAutowireMode == AUTOWIRE_BY_TYPE) {
 				autowireByType(beanName, mbd, bw, newPvs);
 			}

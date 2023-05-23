@@ -1143,6 +1143,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Supplier<?> instanceSupplier = mbd.getInstanceSupplier();
 		// supplier 创建Bean , spring 5 扩展了JDK8 Supplier 作为ObjectProvider 一些方法的入参，用于获取Bean对象， Supplier 相对而言要比反射更加快
+		// supplier 是一种辅助创建Bean的方式
 		if (instanceSupplier != null) {
 			return obtainFromSupplier(instanceSupplier, beanName);
 		}

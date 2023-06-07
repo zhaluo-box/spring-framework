@@ -4,7 +4,7 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
-	<bean id="user1" class="com.framework.example.common.entity.User">
+	<bean id="user1" class="com.framework.example.common.entity.User" primary="true">
 		<property name="age" value="12"/>
 		<property name="id" value="1"/>
 		<property name="name" value="张三"/>
@@ -33,4 +33,7 @@
 		<constructor-arg ref="user2"/>
 		<property name="name" value="构造器注入就是这么叼"/>
 	</bean>
+
+
+	<bean id="userHolder3" class="com.framework.example.common.entity.UserHolder" autowire="constructor"/>
 </beans>

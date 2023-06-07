@@ -7,10 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.util.ObjectUtils;
+
+import java.lang.reflect.Constructor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,6 +58,27 @@ public class LifecycleInstantiationAwareBeanPostProcessorTest {
 		assertThat(userHolder2.getUser()).hasNoNullFieldsOrPropertiesExcept("user").describedAs("构造器注入就是这么叼，谁叫这是Java呢");
 
 		context.close();
+	}
+
+	/**
+	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#createBeanInstance(String, RootBeanDefinition, Object[])
+	 * @see org.springframework.beans.factory.support.ConstructorResolver#autowireConstructor(String, RootBeanDefinition, Constructor[], Object[])
+	 */
+	@Test
+	@DisplayName("构造器注入测试")
+	public void testAutowireByConstructor() {
+
+		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
+
+		String[] locations = { "META-INF/bean-lifecycle-context.xml" };
+		int beanNumbers = reader.loadBeanDefinitions(locations);
+
+		System.out.println("beanNumbers = " + beanNumbers);
+
+		UserHolder userHolder = beanFactory.getBean("userHolder3", UserHolder.class);
+
+		System.out.println("userHolder = " + userHolder);
 	}
 
 	public static class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {

@@ -1124,7 +1124,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 *
 	 * @param beanName the name of the bean
 	 * @param mbd      the bean definition for the bean
-	 * @param args     explicit arguments to use for constructor or factory method invocation
+	 * @param args     explicit arguments to use for constructor or factory method invocation  参数=>用于构造器或factory-method调用，猜测是<construct-arg value or ref />
 	 * @return a BeanWrapper for the new instance
 	 * @see #obtainFromSupplier
 	 * @see #instantiateUsingFactoryMethod
@@ -1174,6 +1174,8 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		// Candidate constructors for autowiring? determine 判断、推断、确定 推断构造函数从bean 的后置处理器中
 		Constructor<?>[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
+
+		// 构造器不为空 || 注入类型为构造器注入 || 拥有构造参数的值，（比如通过abstractBeanDefinition#constructorArgumentValues 设置的）  || args 不为空
 		if (ctors != null || mbd.getResolvedAutowireMode() == AUTOWIRE_CONSTRUCTOR || mbd.hasConstructorArgumentValues() || !ObjectUtils.isEmpty(args)) {
 			return autowireConstructor(beanName, mbd, ctors, args);
 		}

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>org.mybatis.spring.mapper.ClassPathMapperScanner</OriginalElement>
+  <nodes>
+    <node x="677.5" y="-14.0">org.springframework.context.support.PostProcessorRegistrationDelegate</node>
+    <node x="704.0" y="64.0">org.springframework.core.env.EnvironmentCapable</node>
+    <node x="289.5" y="220.0">org.mybatis.spring.mapper.MapperScannerConfigurer</node>
+    <node x="868.75" y="270.5">org.mybatis.spring.mapper.ClassPathMapperScanner</node>
+    <node x="151.0" y="142.0">org.mybatis.spring.annotation.MapperScannerRegistrar</node>
+    <node x="481.0" y="64.0">org.springframework.context.ResourceLoaderAware</node>
+    <node x="-194.5" y="142.0">org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor</node>
+    <node x="535.5" y="-14.0">org.springframework.beans.factory.Aware</node>
+    <node x="496.75" y="142.0">org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider</node>
+    <node x="137.5" y="-14.0">org.springframework.beans.factory.config.BeanFactoryPostProcessor</node>
+    <node x="555.75" y="220.0">org.springframework.context.annotation.ClassPathBeanDefinitionScanner</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor" target="org.springframework.beans.factory.config.BeanFactoryPostProcessor" relationship="INTERFACE_GENERALIZATION">
+      <point x="-0.0" y="-14.0" />
+      <point x="-42.5" y="0.0" />
+      <point x="-115.0" y="-0.0" />
+    </edge>
+    <edge source="org.springframework.context.ResourceLoaderAware" target="org.springframework.beans.factory.Aware" relationship="INTERFACE_GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider" target="org.springframework.core.env.EnvironmentCapable" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="691.75" y="117.0" />
+      <point x="801.0" y="117.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.mybatis.spring.mapper.MapperScannerConfigurer" target="org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor" relationship="REALIZATION">
+      <point x="-117.0" y="-0.0" />
+      <point x="-42.5" y="234.0" />
+      <point x="-0.0" y="14.0" />
+    </edge>
+    <edge source="org.mybatis.spring.mapper.ClassPathMapperScanner" target="org.springframework.context.annotation.ClassPathBeanDefinitionScanner" relationship="GENERALIZATION">
+      <point x="-0.0" y="-14.0" />
+      <point x="981.75" y="234.0" />
+      <point x="136.0" y="-0.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.ClassPathBeanDefinitionScanner" target="org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.mybatis.spring.mapper.MapperScannerConfigurer" target="org.springframework.beans.factory.Aware" relationship="REALIZATION">
+      <point x="-0.0" y="-14.0" />
+      <point x="406.5" y="0.0" />
+      <point x="-47.0" y="-0.0" />
+    </edge>
+    <edge source="org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider" target="org.springframework.context.ResourceLoaderAware" relationship="REALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="691.75" y="117.0" />
+      <point x="582.5" y="117.0" />
+      <point x="0.0" y="14.0" />
+    </edge>
+    <edge source="org.mybatis.spring.annotation.MapperScannerRegistrar" target="org.springframework.context.ResourceLoaderAware" relationship="REALIZATION">
+      <point x="-0.0" y="-14.0" />
+      <point x="262.5" y="78.0" />
+      <point x="-101.5" y="-0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="1.0" showDependencies="false" x="450.0" y="142.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

@@ -19,7 +19,7 @@ public class ContextTest {
 		//bean工厂
 //		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 //
-//
+//		API的方式注册 两个BeanFactoryPostProcessor
 //		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(A.class);
 //		//builder.getBeanDefinition().setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 //

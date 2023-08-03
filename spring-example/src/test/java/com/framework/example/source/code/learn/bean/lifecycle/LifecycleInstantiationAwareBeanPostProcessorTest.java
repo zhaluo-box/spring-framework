@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyValues;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -102,6 +103,11 @@ public class LifecycleInstantiationAwareBeanPostProcessorTest {
 			}
 
 			return true;
+		}
+
+		@Override
+		public PropertyValues postProcessProperties(PropertyValues pvs, Object bean, String beanName) throws BeansException {
+			return InstantiationAwareBeanPostProcessor.super.postProcessProperties(pvs, bean, beanName);
 		}
 	}
 }

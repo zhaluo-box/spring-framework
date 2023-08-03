@@ -35,7 +35,8 @@ import java.beans.PropertyDescriptor;
  * {@link BeanPostProcessor} interface as far as possible, or to derive from
  * {@link InstantiationAwareBeanPostProcessorAdapter} in order to be shielded
  * from extensions to this interface.
- * 【译】：注:此接口为专用接口，主要供框架内部使用。建议尽可能实现普通的BeanPostProcessor接口，或者从InstantiationAwareBeanPostProcessorAdapter派生，以便屏蔽对该接口的扩展
+ * 【译】：注:此接口为专用接口，主要供框架内部使用。建议尽可能实现普通的BeanPostProcessor接口，
+ * 或者从InstantiationAwareBeanPostProcessorAdapter派生，以便屏蔽对该接口的扩展
  *
  * @author Juergen Hoeller
  * @author Rod Johnson

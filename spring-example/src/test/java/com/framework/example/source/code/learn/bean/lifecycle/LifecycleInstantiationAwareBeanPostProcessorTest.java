@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Constructor;
@@ -80,6 +82,46 @@ public class LifecycleInstantiationAwareBeanPostProcessorTest {
 		UserHolder userHolder = beanFactory.getBean("userHolder3", UserHolder.class);
 
 		System.out.println("userHolder = " + userHolder);
+	}
+
+	/**
+	 * 构建一个对象 实现了一些Aware 接口 进行测试
+	 * 参考 mercy-spring lesson 97
+	 *
+	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#doCreateBean(String, RootBeanDefinition, Object[])
+	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#populateBean(String, RootBeanDefinition, BeanWrapper)
+	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#initializeBean(String, Object, RootBeanDefinition)
+	 * initializeBean 中简单体现了 两次Aware 接口填充的逻辑， 一种直接填充(AbstractAutowireCapableBeanFactory#invokeAwareMethods)，
+	 * @see org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory#invokeAwareMethods(String, Object)  Aware接口回调
+	 * 一种基于org.springframework.context.support.ApplicationContextAwareProcessor#postProcessBeforeInitialization(Object, String)
+	 * @see org.springframework.context.support.ApplicationContextAwareProcessor#postProcessBeforeInitialization(Object, String)
+	 * note :
+	 * beanFactory & ApplicationContext 的区别
+	 * EnvironmentAware 需要在ApplicationContext 中执行，BeanFactory 中不会
+	 * @see AbstractApplicationContext#prepareBeanFactory(ConfigurableListableBeanFactory) 中的一段代码，‘ApplicationContextAwareProcessor’
+	 * @see org.springframework.context.support.ApplicationContextAwareProcessor#postProcessBeforeInitialization(Object, String)
+	 * prepareBeanFactory（）{
+	 * beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
+	 * }
+	 * 下面三个BeanFactory就可以填充
+	 * • BeanNameAware
+	 * • BeanClassLoaderAware
+	 * • BeanFactoryAware
+	 * 下面的Aware标记接口由 ApplicationContextAwareProcessor 进行处理， 由于ApplicationContextAwareProcessor 是AbstractApplicationContext的内部类，
+	 * 所有只能由applicationContext的进行实现填充，BeanFactory无法进行填充，
+	 * 这也是BeanFactory 和ApplicationContext 的一个区别体现
+	 * • EnvironmentAware
+	 * • EmbeddedValueResolverAware
+	 * • ResourceLoaderAware
+	 * • ApplicationEventPublisherAware
+	 * • MessageSourceAware
+	 * • ApplicationContextAware
+	 */
+	@Test
+	@DisplayName("Aware 接口回调测试")
+	public void awareInvokedCallbackTest() {
+
+		// TODO  2023/8/9 Aware 接口回调测试
 	}
 
 	public static class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {

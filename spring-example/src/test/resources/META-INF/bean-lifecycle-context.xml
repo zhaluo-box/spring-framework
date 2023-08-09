@@ -36,4 +36,6 @@
 
 
 	<bean id="userHolder3" class="com.framework.example.common.entity.UserHolder" autowire="constructor"/>
+
+	<bean id="beanAwareCallBackObject" class="com.framework.example.source.code.learn.bean.lifecycle.BeanAwareCallBackObject"/>
 </beans>

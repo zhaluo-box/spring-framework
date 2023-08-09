@@ -14,6 +14,7 @@ import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.ObjectUtils;
 
 import java.lang.reflect.Constructor;
@@ -107,7 +108,7 @@ public class LifecycleInstantiationAwareBeanPostProcessorTest {
 	 * • BeanNameAware
 	 * • BeanClassLoaderAware
 	 * • BeanFactoryAware
-	 * 下面的Aware标记接口由 ApplicationContextAwareProcessor 进行处理， 由于ApplicationContextAwareProcessor 是AbstractApplicationContext的内部类，
+	 * 下面的Aware标记接口由 ApplicationContextAwareProcessor 进行处理， 由于ApplicationContextAwareProcessor 并不是public 声明的公共类， 是AbstractApplicationContext的包下类，
 	 * 所有只能由applicationContext的进行实现填充，BeanFactory无法进行填充，
 	 * 这也是BeanFactory 和ApplicationContext 的一个区别体现
 	 * • EnvironmentAware
@@ -119,9 +120,16 @@ public class LifecycleInstantiationAwareBeanPostProcessorTest {
 	 */
 	@Test
 	@DisplayName("Aware 接口回调测试")
-	public void awareInvokedCallbackTest() {
+	public void beanAwareCallbackTest() {
 
-		// TODO  2023/8/9 Aware 接口回调测试
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
+
+		String[] locations = { "META-INF/bean-lifecycle-context.xml" };
+		applicationContext.setConfigLocations(locations);
+
+		applicationContext.refresh();
+
+		applicationContext.close();
 	}
 
 	public static class MyInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {

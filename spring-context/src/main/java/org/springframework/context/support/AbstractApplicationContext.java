@@ -26,7 +26,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.support.ResourceEditorRegistrar;
 import org.springframework.context.*;
 import org.springframework.context.event.*;
@@ -778,8 +777,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	}
 
 	/**
-	 * Instantiate and register all BeanPostProcessor beans,
-	 * respecting explicit order if given.
+	 * 实例化并注册所有BeanPostProcessor bean，按照order接口排序，并且需要在应用Bean实例化调用之前。
+	 * Instantiate and register all BeanPostProcessor beans, respecting explicit order if given.
 	 * <p>Must be called before any instantiation of application beans.
 	 */
 	protected void registerBeanPostProcessors(ConfigurableListableBeanFactory beanFactory) {

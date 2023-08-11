@@ -1767,7 +1767,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
-			// 初始化方法回调 xml 中 <bean init-method="xx"/> 的调用 与 initlizedBean.afterPropertiesSet 调用
+			// 初始化方法回调 xml 中 <bean init-method="xx"/> 的调用 与 initializedBean.afterPropertiesSet 调用
 			invokeInitMethods(beanName, wrappedBean, mbd);
 		} catch (Throwable ex) {
 			throw new BeanCreationException((mbd != null ? mbd.getResourceDescription() : null), beanName, "Invocation of init method failed", ex);

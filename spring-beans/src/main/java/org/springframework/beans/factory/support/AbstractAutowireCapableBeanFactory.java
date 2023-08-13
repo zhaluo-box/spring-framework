@@ -514,9 +514,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// 实例化当前Bean
 		BeanWrapper instanceWrapper = null;
 		if (mbd.isSingleton()) {
-			// 从未完成创建的 包装Bean 缓存中移除并获取相关的包装Bean实例，毕竟是单例的，只能存一份
+			// 从未完成创建的 包装Bean 缓存中移除,并获取相关的包装Bean实例，毕竟是单例的，只能存一份
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
+
+		// 在实例缓存中没有获取到，则进行创建
 		if (instanceWrapper == null) {
 			// 创建Bean的时候，这里创建Bean的实例有三种方法
 			//1. 工厂方法创建
@@ -524,15 +526,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			//3. 无参构造方法注入
 			instanceWrapper = createBeanInstance(beanName, mbd, args);
 		}
+
 		// 获取被包装的Bean ，后续对Bean的改动相当于对Wrapper的改动， 反之依然
 		final Object bean = instanceWrapper.getWrappedInstance();
+
 		// 获取实例化对象的类型，
 		Class<?> beanType = instanceWrapper.getWrappedClass();
+
 		if (beanType != NullBean.class) {
 			mbd.resolvedTargetType = beanType;
 		}
 
 		// Allow post-processors to modify the merged bean definition.
+		// 对Bean的Definition 实例对象添加锁，代表同一个BeanDefinition 在这里由于锁的原因只有一份可以通知执行，因为这里面涉及BeanDefinition的合并
 		synchronized (mbd.postProcessingLock) {
 			if (!mbd.postProcessed) {
 				try {
@@ -564,7 +570,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 对Bean属性进行填充赋值
 			populateBean(beanName, mbd, instanceWrapper);
 
-			// 初始化Bean 过程如下
+			// 初始化Bean 过程如下 Aware 的回调，BeanPostProcessor的前置初始化方法回调，& 后置方法回调
 			// 1. 判断是否实现了BeanNameAware BeanClassLoaderAware BeanFactoryAware方法, 如果有,则设置相关的属性
 			// 2. 调用Bean初始化的前置(beanPostProcessor)操作
 			// 3. 执行初始化的方法
@@ -572,6 +578,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			// 如果有 InitMethod 则调用初始化方法
 			// 4. 调用Bean初始化的后置 ( BeanPostProcessor) 操作
 			exposedObject = initializeBean(beanName, exposedObject, mbd);
+
 		} catch (Throwable ex) {
 			if (ex instanceof BeanCreationException && beanName.equals(((BeanCreationException) ex).getBeanName())) {
 				throw (BeanCreationException) ex;
@@ -1745,6 +1752,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 * @see BeanNameAware
 	 * @see BeanClassLoaderAware
 	 * @see BeanFactoryAware
+	 * @see #invokeAwareMethods(String, Object) 调用Aware 回调，
 	 * @see #applyBeanPostProcessorsBeforeInitialization
 	 * @see #invokeInitMethods
 	 * @see #applyBeanPostProcessorsAfterInitialization
@@ -1762,7 +1770,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object wrappedBean = bean;
 		if (mbd == null || !mbd.isSynthetic()) {
-			// @postConstruct 方法  CommonAnnotationBeanPostProcessor.postProcessBeforeInitialization() 处理 准确的讲是 org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization
+			// @postConstruct 方法  CommonAnnotationBeanPostProcessor.postProcessBeforeInitialization() 处理
+			// 准确的讲是 org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization
+			// 部分Aware 在这里回调，org.springframework.context.support.ApplicationContextAwareProcessor#postProcessBeforeInitialization
 			wrappedBean = applyBeanPostProcessorsBeforeInitialization(wrappedBean, beanName);
 		}
 
@@ -1773,6 +1783,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			throw new BeanCreationException((mbd != null ? mbd.getResourceDescription() : null), beanName, "Invocation of init method failed", ex);
 		}
 		if (mbd == null || !mbd.isSynthetic()) {
+			// bean 初始化的后置调用，逐个去调用实现了BeanPostProcessor 的postProcessAfterInitialization 方法
 			wrappedBean = applyBeanPostProcessorsAfterInitialization(wrappedBean, beanName);
 		}
 

@@ -556,7 +556,6 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 				// 方法扫描应用中的所有BeanDefinition并注册到容器中
 				/**
 				 *  invokeBeanFactoryPostProcessors  结尾的s 代表复数，调用多个
-				 *
 				 */
 				invokeBeanFactoryPostProcessors(beanFactory);
 

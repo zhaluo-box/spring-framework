@@ -48,6 +48,7 @@ import org.springframework.util.Assert;
  *
  * 通常用于合并BeanDefinition
  *
+ * @see #setParentName(String)  这是一个根BeanDefinition 所以不能setParentName()
  * @author Rod Johnson
  * @author Juergen Hoeller
  * @see GenericBeanDefinition

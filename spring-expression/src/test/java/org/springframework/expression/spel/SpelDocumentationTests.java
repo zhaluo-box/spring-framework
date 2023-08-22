@@ -178,6 +178,10 @@ public class SpelDocumentationTests extends AbstractExpressionTests {
 		assertThat(city).isEqualTo("SmilJan");
 	}
 
+	/**
+	 * https://docs.spring.io/spring-framework/docs/5.2.25.RELEASE/spring-framework-reference/core.html#expressions-ref-literal
+	 * @throws Exception
+	 */
 	@Test
 	public void testPropertyNavigation() throws Exception {
 		ExpressionParser parser = new SpelExpressionParser();

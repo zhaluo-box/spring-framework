@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.example.org/schema/user"
+			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://www.example.org/schema/user">
+
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+
+
+	<!-- 定义User 类型	-->
+	<xsd:complexType name="User">
+		<xsd:attribute name="id" type="xsd:int" use="required"/>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="liveCity" type="City"/>
+		<xsd:attribute name="livedCity" type="CityList"/>
+
+	</xsd:complexType>
+
+	<!-- 定义CityList类型 -->
+	<xsd:complexType name="CityList">
+		<xsd:sequence>
+			<xsd:element name="city" type="City" minOccurs="0" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:simpleType name="City">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="BEIJING"/>
+			<xsd:enumeration value="SHANGHAI"/>
+			<xsd:enumeration value="CHENGDU"/>
+			<xsd:enumeration value="TAIYUAN"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<!-- 定义 user 元素 -->
+	<xsd:element name="user" type="User"/>
+
+</xsd:schema>

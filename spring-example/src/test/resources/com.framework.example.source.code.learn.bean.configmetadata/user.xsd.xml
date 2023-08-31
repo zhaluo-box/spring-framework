@@ -11,7 +11,7 @@
 		<xsd:attribute name="id" type="xsd:int" use="required"/>
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 		<xsd:attribute name="liveCity" type="City"/>
-		<xsd:attribute name="livedCity" type="CityList"/>
+<!--		<xsd:attribute name="livedCity" type="CityList"/>-->
 
 	</xsd:complexType>
 

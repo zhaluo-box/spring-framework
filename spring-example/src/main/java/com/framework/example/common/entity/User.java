@@ -31,4 +31,9 @@ public class User {
 	 */
 	private List<City> livedCity;
 
+	/**
+	 * 子对象
+	 */
+	private User subUser;
+
 }

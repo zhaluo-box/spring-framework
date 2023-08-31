@@ -9,7 +9,12 @@
         http://www.example.org/schema/user.xsd
 ">
 
+	<bean id="user" class="com.framework.example.common.entity.User">
+		<property name="id" value="2"/>
+		<property name="name" value="son"/>
+		<property name="liveCity" value="BEIJING"/>
+	</bean>
 
-	<user:user id="1" name="王五" liveCity="BEIJING"/>
+	<user:user id="1" name="王五" liveCity="BEIJING" subUser="user"/>
 
 </beans>

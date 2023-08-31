@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 
+import java.util.Map;
+
 /**
  * 配置元信息测试
  * Created  on 2023/8/31 11:11:32
@@ -22,8 +24,8 @@ public class ConfigMetadataTest {
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
 		reader.loadBeanDefinitions("META-INF/user-context.xml");
 
-		User user = beanFactory.getBean(User.class);
-		System.out.println("user = " + user);
+		Map<String, User> beansOfType = beanFactory.getBeansOfType(User.class);
+		System.out.println("beansOfType = " + beansOfType);
 
 	}
 }

@@ -26,8 +26,16 @@ public class UserBeanDefinitionParse extends AbstractSimpleBeanDefinitionParser 
 		setPropertyValue("liveCity", element, builder);
 		// TODO  对于集合属性的解析
 		setPropertyValue("livedCity", element, builder);
+		setPropertyReference("subUser", element, builder);
 
 		postProcess(builder, element);
+	}
+
+	private static void setPropertyReference(String attributeName, Element element, BeanDefinitionBuilder builder) {
+		String attributeValue = element.getAttribute(attributeName);
+		if (StringUtils.hasText(attributeValue)) {
+			builder.addPropertyReference(attributeName, attributeValue);// -> <property name="" ref=""/>
+		}
 	}
 
 	private void setPropertyValue(String attributeName, Element element, BeanDefinitionBuilder builder) {

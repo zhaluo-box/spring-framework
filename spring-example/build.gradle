@@ -28,7 +28,7 @@ dependencies {
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.18.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.18.0'
 
-
+    compile('org.yaml:snakeyaml:2.0')
     compile(project(":spring-context"))
 
     //主要是为了数据源  datasource

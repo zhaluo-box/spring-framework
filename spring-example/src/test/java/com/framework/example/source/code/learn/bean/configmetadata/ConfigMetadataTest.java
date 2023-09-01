@@ -33,7 +33,7 @@ public class ConfigMetadataTest {
 
 	@Test
 	@DisplayName("扩展spring xml 名称空间测试")
-	public void extensionXmlNameSpaceTest() {
+	public void extensibleXmlNameSpaceTest() {
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
 		reader.loadBeanDefinitions("META-INF/user-context.xml");
@@ -65,7 +65,7 @@ public class ConfigMetadataTest {
 	 */
 	@Test
 	@DisplayName("扩展spring xml 名称空间测试2")
-	public void extensionXmlNameSpaceTest2() {
+	public void extensibleXmlNameSpaceTest2() {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
 		//		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
 		//		reader.loadBeanDefinitions("META-INF/user-context.xml");

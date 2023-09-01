@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+		xmlns:tns="http://www.example.com/user"
+		targetNamespace="http://www.example.com/user"
+		elementFormDefault="qualified">
+	<complexType name="User">
+		<sequence>
+			<element name="id" type="int"/>
+			<element name="name" type="string"/>
+			<element name="age" type="int"/>
+			<element name="liveCity" type="tns:City"/>
+			<element name="livedCity" type="tns:CityList"/>
+			<element name="subUser" type="tns:User"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="CityList">
+		<sequence>
+			<element name="city" type="tns:City" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<simpleType name="City">
+		<restriction base="string">
+			<enumeration value="BEIJING"/>
+			<enumeration value="SHANGHAI"/>
+			<enumeration value="CHENGDU"/>
+			<enumeration value="TAIYUAN"/>
+		</restriction>
+	</simpleType>
+
+	<element name="User" type="tns:User"/>
+	<element name="CityList" type="tns:CityList"/>
+
+</schema>

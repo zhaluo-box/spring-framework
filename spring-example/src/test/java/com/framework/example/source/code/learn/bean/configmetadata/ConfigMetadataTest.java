@@ -4,14 +4,20 @@ import com.framework.example.common.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.support.PropertiesBeanDefinitionReader;
+import org.springframework.beans.factory.xml.BeanDefinitionParserDelegate;
+import org.springframework.beans.factory.xml.DefaultBeanDefinitionDocumentReader;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.AbstractRefreshableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.io.Resource;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,22 +34,60 @@ public class ConfigMetadataTest {
 	@Test
 	@DisplayName("扩展spring xml 名称空间测试")
 	public void extensionXmlNameSpaceTest() {
-
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(beanFactory);
 		reader.loadBeanDefinitions("META-INF/user-context.xml");
 
 		Map<String, User> beansOfType = beanFactory.getBeansOfType(User.class);
 		System.out.println("beansOfType = " + beansOfType);
-
 	}
 
 	/**
-	 * yml 配置bean  与 spring @configProperties 的联系 ？
+	 * <p>
+	 * 触发时机
+	 *
+	 * @see AbstractApplicationContext#obtainFreshBeanFactory()
+	 * @see AbstractRefreshableApplicationContext#refreshBeanFactory()
+	 * @see org.springframework.context.support.AbstractXmlApplicationContext#loadBeanDefinitions(XmlBeanDefinitionReader)
+	 * @see XmlBeanDefinitionReader#doLoadBeanDefinitions(InputSource, Resource)
+	 * @see DefaultBeanDefinitionDocumentReader#parseBeanDefinitions(Element, BeanDefinitionParserDelegate)  这里是解析自定义元素和spring 自带元素的地方
+	 * @see org.springframework.beans.factory.xml.BeanDefinitionParserDelegate#parseCustomElement(Element, BeanDefinition)
+	 * </p>
+	 *
+	 * <p>
+	 * 核心流程
+	 * BeanDefinitionParserDelegate#parseCustomElement(org.w3c.dom.Element, BeanDefinition)
+	 * 获取 namespace
+	 * 通过 namespace 解析 NamespaceHandler
+	 * 构造 ParserContext
+	 * 解析元素，获取 BeanDefinintion:
+	 * </p>
+	 */
+	@Test
+	@DisplayName("扩展spring xml 名称空间测试2")
+	public void extensionXmlNameSpaceTest2() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+		//		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
+		//		reader.loadBeanDefinitions("META-INF/user-context.xml");
+		// context.register(XmlImportConfig.class);
+
+		context.setConfigLocation("classpath:/META-INF/user-context.xml");
+
+		context.refresh();
+
+		Map<String, User> beansOfType = context.getBeansOfType(User.class);
+		System.out.println("beansOfType = " + beansOfType);
+
+		context.close();
+	}
+
+	/**
+	 * yml 配置bean 与 spring @configProperties 的联系 ？
 	 * 由于 spring Beans 中 optional("org.yaml:snakeyaml")， 所以测试的时候需要手动添加依赖 compile('org.yaml:snakeyaml:2.0')
 	 */
 	@Test
 	@DisplayName("yml 配置Bean元信息 测试")
+	@SuppressWarnings("all")
 	public void yamlConfigBeanTest() {
 		// 创建 IoC 底层容器
 		DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
@@ -113,6 +157,15 @@ public class ConfigMetadataTest {
 		@Bean
 		public User user(@Value("${user.name}") String name, @Value("${user.id}") int id) {
 			return new User().setName(name).setId(id);
+		}
+	}
+
+	@Configuration
+	@ImportResource("classpath:/META-INF/user-context.xml")
+	public static class XmlImportConfig {
+
+		{
+			System.out.println("XmlImportConfig init!");
 		}
 	}
 }

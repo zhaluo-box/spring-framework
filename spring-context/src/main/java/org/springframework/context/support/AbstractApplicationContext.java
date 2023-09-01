@@ -530,7 +530,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	public void refresh() throws BeansException, IllegalStateException {
 		// 同步锁, 启动或者关闭监听器
 		synchronized (this.startupShutdownMonitor) {
-			// Prepare this context for refreshing.
+			// Prepare this context for refreshing. 准备此上下文以进行刷新
 			// 主要刷新启动与关闭标识 以及启动时间, 加载校验环境变量
 			prepareRefresh();
 

@@ -16,13 +16,13 @@
 
 package org.springframework.core.io;
 
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 
 /**
  * {@link Resource} implementation for a given byte array.
@@ -35,10 +35,10 @@ import org.springframework.util.Assert;
  *
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 1.2.3
  * @see java.io.ByteArrayInputStream
  * @see InputStreamResource
  * @see org.springframework.mail.javamail.MimeMessageHelper#addAttachment(String, InputStreamSource)
+ * @since 1.2.3
  */
 public class ByteArrayResource extends AbstractResource {
 
@@ -46,9 +46,9 @@ public class ByteArrayResource extends AbstractResource {
 
 	private final String description;
 
-
 	/**
 	 * Create a new {@code ByteArrayResource}.
+	 *
 	 * @param byteArray the byte array to wrap
 	 */
 	public ByteArrayResource(byte[] byteArray) {
@@ -57,7 +57,8 @@ public class ByteArrayResource extends AbstractResource {
 
 	/**
 	 * Create a new {@code ByteArrayResource} with a description.
-	 * @param byteArray the byte array to wrap
+	 *
+	 * @param byteArray   the byte array to wrap
 	 * @param description where the byte array comes from
 	 */
 	public ByteArrayResource(byte[] byteArray, @Nullable String description) {
@@ -65,7 +66,6 @@ public class ByteArrayResource extends AbstractResource {
 		this.byteArray = byteArray;
 		this.description = (description != null ? description : "");
 	}
-
 
 	/**
 	 * Return the underlying byte array.
@@ -93,6 +93,7 @@ public class ByteArrayResource extends AbstractResource {
 	/**
 	 * This implementation returns a ByteArrayInputStream for the
 	 * underlying byte array.
+	 *
 	 * @see java.io.ByteArrayInputStream
 	 */
 	@Override
@@ -109,15 +110,14 @@ public class ByteArrayResource extends AbstractResource {
 		return "Byte array resource [" + this.description + "]";
 	}
 
-
 	/**
 	 * This implementation compares the underlying byte array.
+	 *
 	 * @see java.util.Arrays#equals(byte[], byte[])
 	 */
 	@Override
 	public boolean equals(@Nullable Object other) {
-		return (this == other || (other instanceof ByteArrayResource &&
-				Arrays.equals(((ByteArrayResource) other).byteArray, this.byteArray)));
+		return (this == other || (other instanceof ByteArrayResource && Arrays.equals(((ByteArrayResource) other).byteArray, this.byteArray)));
 	}
 
 	/**

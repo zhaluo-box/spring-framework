@@ -121,6 +121,7 @@ public interface Resource extends InputStreamSource {
 	File getFile() throws IOException;
 
 	/**
+	 * NIO  提供的接口
 	 * Return a {@link ReadableByteChannel}.
 	 * <p>It is expected that each call creates a <i>fresh</i> channel.
 	 * <p>The default implementation returns {@link Channels#newChannel(InputStream)}

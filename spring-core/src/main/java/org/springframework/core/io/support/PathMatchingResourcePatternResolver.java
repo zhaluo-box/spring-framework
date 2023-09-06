@@ -268,7 +268,11 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		return this.pathMatcher;
 	}
 
-
+	/**
+	 * 委派 getResourceLoader（） 进行实现
+	 * @param location the resource location
+	 * @return
+	 */
 	@Override
 	public Resource getResource(String location) {
 		return getResourceLoader().getResource(location);

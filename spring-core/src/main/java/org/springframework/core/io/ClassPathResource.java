@@ -188,12 +188,20 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	@Override
 	public InputStream getInputStream() throws IOException {
 		InputStream is;
-		// TODO @wmz 2023/9/5  getResourceAsStream 的区别
+		//  getResourceAsStream 的区别 ？
+		// 如果class 不为空
 		if (this.clazz != null) {
+			// 基于当前类的包路径（package-private）来查找资源
 			is = this.clazz.getResourceAsStream(this.path);
-		} else if (this.classLoader != null) {
+		}
+		// 如果classLoader 不为null
+		else if (this.classLoader != null) {
+			// 从类加载器中获取资源的输入流
 			is = this.classLoader.getResourceAsStream(this.path);
-		} else {
+		}
+		// class & classloader 都为空
+		else {
+			// 用于从系统类加载器中获取资源的输入流 例如 jdk  lib 下的资源
 			is = ClassLoader.getSystemResourceAsStream(this.path);
 		}
 		if (is == null) {

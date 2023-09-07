@@ -3,6 +3,9 @@ package com.framework.example.source.code.learn.resource;
 import org.apache.logging.log4j.core.util.IOUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ApplicationContextAwareProcessor;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
@@ -12,6 +15,9 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * {@link AbstractApplicationContext#prepareBeanFactory(ConfigurableListableBeanFactory)}
+ * 中体现了注入 abstractApplication & ResourceLoader 是同一个对象
+ * {@link ApplicationContextAwareProcessor#invokeAwareInterfaces(Object)} 这里也体现了注入的是同一个对象
  * Created  on 2023/9/7 11:11:28
  *
  * @author zl

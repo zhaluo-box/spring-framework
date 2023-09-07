@@ -716,6 +716,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		// {@link org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates(String, Class, DependencyDescriptor) 中的this.resolvableDependencies}  }
 		// 修正依赖， 这里是注册一些自动装配的特殊规则， 比如是BeanFactory class 接口的实现类， 则在运行时动态指定为当前BeanFactory
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
+		// 下面三个都是this, 当 @autowired 的时候注入下面三个类型的时候注入的都是同一个对象
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);

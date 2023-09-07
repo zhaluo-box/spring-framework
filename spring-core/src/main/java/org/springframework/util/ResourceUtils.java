@@ -299,8 +299,7 @@ public abstract class ResourceUtils {
 	}
 
 	/**
-	 * Extract the URL for the actual jar file from the given URL
-	 * (which may point to a resource in a jar file or to a jar file itself).
+	 * Extract the URL for the actual jar file from the given URL  (which may point to a resource in a jar file or to a jar file itself).
 	 * @param jarUrl the original URL
 	 * @return the URL for the actual jar file
 	 * @throws MalformedURLException if no valid jar file URL could be extracted

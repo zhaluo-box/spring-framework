@@ -809,7 +809,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			}
 		}
 
-		//
+		// 如果没有指定MessageSource， 则生成一个层次性的DelegatingMessageSource(), 并注册（约定名称= MESSAGE_SOURCE_BEAN_NAME）。
 		else {
 			// Use empty MessageSource to be able to accept getMessage calls.
 			DelegatingMessageSource dms = new DelegatingMessageSource();

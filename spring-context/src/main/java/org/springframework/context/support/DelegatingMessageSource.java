@@ -16,13 +16,13 @@
 
 package org.springframework.context.support;
 
-import java.util.Locale;
-
 import org.springframework.context.HierarchicalMessageSource;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.lang.Nullable;
+
+import java.util.Locale;
 
 /**
  * Empty {@link MessageSource} that delegates all calls to the parent MessageSource.
@@ -32,14 +32,13 @@ import org.springframework.lang.Nullable;
  * define its own MessageSource. Not intended for direct use in applications.
  *
  * @author Juergen Hoeller
- * @since 1.1.5
  * @see AbstractApplicationContext
+ * @since 1.1.5
  */
 public class DelegatingMessageSource extends MessageSourceSupport implements HierarchicalMessageSource {
 
 	@Nullable
 	private MessageSource parentMessageSource;
-
 
 	@Override
 	public void setParentMessageSource(@Nullable MessageSource parent) {
@@ -52,16 +51,18 @@ public class DelegatingMessageSource extends MessageSourceSupport implements Hie
 		return this.parentMessageSource;
 	}
 
-
 	@Override
 	@Nullable
 	public String getMessage(String code, @Nullable Object[] args, @Nullable String defaultMessage, Locale locale) {
+		// 如果父不为空则使用父解析
 		if (this.parentMessageSource != null) {
 			return this.parentMessageSource.getMessage(code, args, defaultMessage, locale);
 		}
+		// 如果指定了默认的，则使用默认的解析
 		else if (defaultMessage != null) {
 			return renderDefaultMessage(defaultMessage, args, locale);
 		}
+		// 否则返回null
 		else {
 			return null;
 		}
@@ -71,8 +72,7 @@ public class DelegatingMessageSource extends MessageSourceSupport implements Hie
 	public String getMessage(String code, @Nullable Object[] args, Locale locale) throws NoSuchMessageException {
 		if (this.parentMessageSource != null) {
 			return this.parentMessageSource.getMessage(code, args, locale);
-		}
-		else {
+		} else {
 			throw new NoSuchMessageException(code, locale);
 		}
 	}
@@ -81,8 +81,7 @@ public class DelegatingMessageSource extends MessageSourceSupport implements Hie
 	public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
 		if (this.parentMessageSource != null) {
 			return this.parentMessageSource.getMessage(resolvable, locale);
-		}
-		else {
+		} else {
 			if (resolvable.getDefaultMessage() != null) {
 				return renderDefaultMessage(resolvable.getDefaultMessage(), resolvable.getArguments(), locale);
 			}
@@ -91,7 +90,6 @@ public class DelegatingMessageSource extends MessageSourceSupport implements Hie
 			throw new NoSuchMessageException(code, locale);
 		}
 	}
-
 
 	@Override
 	public String toString() {

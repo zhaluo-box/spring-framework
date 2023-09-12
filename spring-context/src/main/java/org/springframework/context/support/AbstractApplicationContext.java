@@ -786,6 +786,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	}
 
 	/**
+	 * I18N 国际化， 国际化的初始化
+	 * #containsLocalBean() 从当前Factory 查找， note: & containsBean() 的区别，containsBean会层次性的从父类查找
 	 * Initialize the MessageSource.
 	 * Use parent's if none defined in this context.
 	 */
@@ -805,7 +807,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			if (logger.isTraceEnabled()) {
 				logger.trace("Using MessageSource [" + this.messageSource + "]");
 			}
-		} else {
+		}
+
+		//
+		else {
 			// Use empty MessageSource to be able to accept getMessage calls.
 			DelegatingMessageSource dms = new DelegatingMessageSource();
 			dms.setParentMessageSource(getInternalParentMessageSource());

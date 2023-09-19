@@ -16,33 +16,7 @@
 
 package org.springframework.validation.beanvalidation;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.validation.Configuration;
-import javax.validation.ConstraintValidatorFactory;
-import javax.validation.MessageInterpolator;
-import javax.validation.ParameterNameProvider;
-import javax.validation.TraversableResolver;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-import javax.validation.ValidationProviderResolver;
-import javax.validation.Validator;
-import javax.validation.ValidatorContext;
-import javax.validation.ValidatorFactory;
-import javax.validation.bootstrap.GenericBootstrap;
-import javax.validation.bootstrap.ProviderSpecificBootstrap;
-
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -55,6 +29,15 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ReflectionUtils;
+
+import javax.validation.*;
+import javax.validation.bootstrap.GenericBootstrap;
+import javax.validation.bootstrap.ProviderSpecificBootstrap;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * This is the central class for {@code javax.validation} (JSR-303) setup in a Spring
@@ -80,14 +63,13 @@ import org.springframework.util.ReflectionUtils;
  * {@code javax.validation} API being present but no explicit Validator having been configured.
  *
  * @author Juergen Hoeller
- * @since 3.0
  * @see javax.validation.ValidatorFactory
  * @see javax.validation.Validator
  * @see javax.validation.Validation#buildDefaultValidatorFactory()
  * @see javax.validation.ValidatorFactory#getValidator()
+ * @since 3.0
  */
-public class LocalValidatorFactoryBean extends SpringValidatorAdapter
-		implements ValidatorFactory, ApplicationContextAware, InitializingBean, DisposableBean {
+public class LocalValidatorFactoryBean extends SpringValidatorAdapter implements ValidatorFactory, ApplicationContextAware, InitializingBean, DisposableBean {
 
 	@SuppressWarnings("rawtypes")
 	@Nullable
@@ -119,10 +101,10 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 	@Nullable
 	private ValidatorFactory validatorFactory;
 
-
 	/**
 	 * Specify the desired provider class, if any.
 	 * <p>If not specified, JSR-303's default search mechanism will be used.
+	 *
 	 * @see javax.validation.Validation#byProvider(Class)
 	 * @see javax.validation.Validation#byDefaultProvider()
 	 */
@@ -134,6 +116,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 	/**
 	 * Specify a JSR-303 {@link ValidationProviderResolver} for bootstrapping the
 	 * provider of choice, as an alternative to {@code META-INF} driven resolution.
+	 *
 	 * @since 4.3
 	 */
 	public void setValidationProviderResolver(ValidationProviderResolver validationProviderResolver) {
@@ -165,6 +148,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 	 * In particular, the {@code MessageSource} instance specified here should not apply
 	 * {@link org.springframework.context.support.AbstractMessageSource#setUseCodeAsDefaultMessage
 	 * "useCodeAsDefaultMessage"} behavior. Please double-check your setup accordingly.
+	 *
 	 * @see ResourceBundleMessageInterpolator
 	 */
 	public void setValidationMessageSource(MessageSource messageSource) {
@@ -208,6 +192,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 	 * Specify bean validation properties to be passed to the validation provider.
 	 * <p>Can be populated with a String "value" (parsed via PropertiesEditor)
 	 * or a "props" element in XML bean definitions.
+	 *
 	 * @see javax.validation.Configuration#addProperty(String, String)
 	 */
 	public void setValidationProperties(Properties jpaProperties) {
@@ -217,6 +202,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 	/**
 	 * Specify bean validation properties to be passed to the validation provider as a Map.
 	 * <p>Can be populated with a "map" or "props" element in XML bean definitions.
+	 *
 	 * @see javax.validation.Configuration#addProperty(String, String)
 	 */
 	public void setValidationPropertyMap(@Nullable Map<String, String> validationProperties) {
@@ -239,9 +225,8 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 		this.applicationContext = applicationContext;
 	}
 
-
 	@Override
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void afterPropertiesSet() {
 		Configuration<?> configuration;
 		if (this.providerClass != null) {
@@ -250,8 +235,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 				bootstrap = bootstrap.providerResolver(this.validationProviderResolver);
 			}
 			configuration = bootstrap.configure();
-		}
-		else {
+		} else {
 			GenericBootstrap bootstrap = Validation.byDefaultProvider();
 			if (this.validationProviderResolver != null) {
 				bootstrap = bootstrap.providerResolver(this.validationProviderResolver);
@@ -264,8 +248,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 			try {
 				Method eclMethod = configuration.getClass().getMethod("externalClassLoader", ClassLoader.class);
 				ReflectionUtils.invokeMethod(eclMethod, configuration, this.applicationContext.getClassLoader());
-			}
-			catch (NoSuchMethodException ex) {
+			} catch (NoSuchMethodException ex) {
 				// Ignore - no Hibernate Validator 5.2+ or similar provider
 			}
 		}
@@ -282,8 +265,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 
 		ConstraintValidatorFactory targetConstraintValidatorFactory = this.constraintValidatorFactory;
 		if (targetConstraintValidatorFactory == null && this.applicationContext != null) {
-			targetConstraintValidatorFactory =
-					new SpringConstraintValidatorFactory(this.applicationContext.getAutowireCapableBeanFactory());
+			targetConstraintValidatorFactory = new SpringConstraintValidatorFactory(this.applicationContext.getAutowireCapableBeanFactory());
 		}
 		if (targetConstraintValidatorFactory != null) {
 			configuration.constraintValidatorFactory(targetConstraintValidatorFactory);
@@ -301,8 +283,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 					InputStream stream = location.getInputStream();
 					mappingStreams.add(stream);
 					configuration.addMapping(stream);
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					closeMappingStreams(mappingStreams);
 					throw new IllegalStateException("Cannot read mapping resource: " + location);
 				}
@@ -317,8 +298,7 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 		try {
 			this.validatorFactory = configuration.buildValidatorFactory();
 			setTargetValidator(this.validatorFactory.getValidator());
-		}
-		finally {
+		} finally {
 			closeMappingStreams(mappingStreams);
 		}
 	}
@@ -329,25 +309,23 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 			@Override
 			public List<String> getParameterNames(Constructor<?> constructor) {
 				String[] paramNames = discoverer.getParameterNames(constructor);
-				return (paramNames != null ? Arrays.asList(paramNames) :
-						defaultProvider.getParameterNames(constructor));
+				return (paramNames != null ? Arrays.asList(paramNames) : defaultProvider.getParameterNames(constructor));
 			}
+
 			@Override
 			public List<String> getParameterNames(Method method) {
 				String[] paramNames = discoverer.getParameterNames(method);
-				return (paramNames != null ? Arrays.asList(paramNames) :
-						defaultProvider.getParameterNames(method));
+				return (paramNames != null ? Arrays.asList(paramNames) : defaultProvider.getParameterNames(method));
 			}
 		});
 	}
 
-	private void closeMappingStreams(@Nullable List<InputStream> mappingStreams){
+	private void closeMappingStreams(@Nullable List<InputStream> mappingStreams) {
 		if (!CollectionUtils.isEmpty(mappingStreams)) {
 			for (InputStream stream : mappingStreams) {
 				try {
 					stream.close();
-				}
-				catch (IOException ignored) {
+				} catch (IOException ignored) {
 				}
 			}
 		}
@@ -357,12 +335,12 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 	 * Post-process the given Bean Validation configuration,
 	 * adding to or overriding any of its settings.
 	 * <p>Invoked right before building the {@link ValidatorFactory}.
+	 *
 	 * @param configuration the Configuration object, pre-populated with
-	 * settings driven by LocalValidatorFactoryBean's properties
+	 *                      settings driven by LocalValidatorFactoryBean's properties
 	 */
 	protected void postProcessConfiguration(Configuration<?> configuration) {
 	}
-
 
 	@Override
 	public Validator getValidator() {
@@ -419,16 +397,14 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 		if (type == null || !ValidatorFactory.class.isAssignableFrom(type)) {
 			try {
 				return super.unwrap(type);
-			}
-			catch (ValidationException ex) {
+			} catch (ValidationException ex) {
 				// Ignore - we'll try ValidatorFactory unwrapping next
 			}
 		}
 		if (this.validatorFactory != null) {
 			try {
 				return this.validatorFactory.unwrap(type);
-			}
-			catch (ValidationException ex) {
+			} catch (ValidationException ex) {
 				// Ignore if just being asked for ValidatorFactory
 				if (ValidatorFactory.class == type) {
 					return (T) this.validatorFactory;
@@ -450,7 +426,6 @@ public class LocalValidatorFactoryBean extends SpringValidatorAdapter
 	public void destroy() {
 		close();
 	}
-
 
 	/**
 	 * Inner class to avoid a hard-coded Hibernate Validator dependency.

@@ -16,20 +16,12 @@
 
 package org.springframework.beans;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Spliterator;
-import java.util.Spliterators;
-import java.util.stream.Stream;
-
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
+
+import java.io.Serializable;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * The default implementation of the {@link PropertyValues} interface.
@@ -51,10 +43,10 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	private volatile boolean converted = false;
 
-
 	/**
 	 * Creates a new empty MutablePropertyValues object.
 	 * <p>Property values can be added with the {@code add} method.
+	 *
 	 * @see #add(String, Object)
 	 */
 	public MutablePropertyValues() {
@@ -65,6 +57,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	 * Deep copy constructor. Guarantees PropertyValue references
 	 * are independent, although it can't deep copy objects currently
 	 * referenced by individual PropertyValue objects.
+	 *
 	 * @param original the PropertyValues to copy
 	 * @see #addPropertyValues(PropertyValues)
 	 */
@@ -77,14 +70,14 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 			for (PropertyValue pv : pvs) {
 				this.propertyValueList.add(new PropertyValue(pv));
 			}
-		}
-		else {
+		} else {
 			this.propertyValueList = new ArrayList<>(0);
 		}
 	}
 
 	/**
 	 * Construct a new MutablePropertyValues object from a Map.
+	 *
 	 * @param original a Map with property values keyed by property name Strings
 	 * @see #addPropertyValues(Map)
 	 */
@@ -93,10 +86,8 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 		// There is no replacement of existing property values.
 		if (original != null) {
 			this.propertyValueList = new ArrayList<>(original.size());
-			original.forEach((attrName, attrValue) -> this.propertyValueList.add(
-					new PropertyValue(attrName.toString(), attrValue)));
-		}
-		else {
+			original.forEach((attrName, attrValue) -> this.propertyValueList.add(new PropertyValue(attrName.toString(), attrValue)));
+		} else {
 			this.propertyValueList = new ArrayList<>(0);
 		}
 	}
@@ -106,13 +97,12 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	 * PropertyValue objects as-is.
 	 * <p>This is a constructor for advanced usage scenarios.
 	 * It is not intended for typical programmatic use.
+	 *
 	 * @param propertyValueList a List of PropertyValue objects
 	 */
 	public MutablePropertyValues(@Nullable List<PropertyValue> propertyValueList) {
-		this.propertyValueList =
-				(propertyValueList != null ? propertyValueList : new ArrayList<>());
+		this.propertyValueList = (propertyValueList != null ? propertyValueList : new ArrayList<>());
 	}
-
 
 	/**
 	 * Return the underlying List of PropertyValue objects in its raw form.
@@ -135,6 +125,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	 * Copy all given PropertyValues into this object. Guarantees PropertyValue
 	 * references are independent, although it can't deep copy objects currently
 	 * referenced by individual PropertyValue objects.
+	 *
 	 * @param other the PropertyValues to copy
 	 * @return this in order to allow for adding multiple property values in a chain
 	 */
@@ -150,14 +141,14 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	/**
 	 * Add all property values from the given Map.
+	 *
 	 * @param other a Map with property values keyed by property name,
-	 * which must be a String
+	 *              which must be a String
 	 * @return this in order to allow for adding multiple property values in a chain
 	 */
 	public MutablePropertyValues addPropertyValues(@Nullable Map<?, ?> other) {
 		if (other != null) {
-			other.forEach((attrName, attrValue) -> addPropertyValue(
-					new PropertyValue(attrName.toString(), attrValue)));
+			other.forEach((attrName, attrValue) -> addPropertyValue(new PropertyValue(attrName.toString(), attrValue)));
 		}
 		return this;
 	}
@@ -165,6 +156,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	/**
 	 * Add a PropertyValue object, replacing any existing one for the
 	 * corresponding property or getting merged with it (if applicable).
+	 *
 	 * @param pv the PropertyValue object to add
 	 * @return this in order to allow for adding multiple property values in a chain
 	 */
@@ -186,7 +178,8 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	 * a property name and a property value.
 	 * <p>Note: As of Spring 3.0, we recommend using the more concise
 	 * and chaining-capable variant {@link #add}.
-	 * @param propertyName name of the property
+	 *
+	 * @param propertyName  name of the property
 	 * @param propertyValue value of the property
 	 * @see #addPropertyValue(PropertyValue)
 	 */
@@ -197,7 +190,8 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	/**
 	 * Add a PropertyValue object, replacing any existing one for the
 	 * corresponding property or getting merged with it (if applicable).
-	 * @param propertyName name of the property
+	 *
+	 * @param propertyName  name of the property
 	 * @param propertyValue value of the property
 	 * @return this in order to allow for adding multiple property values in a chain
 	 */
@@ -217,6 +211,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 	/**
 	 * Merges the value of the supplied 'new' {@link PropertyValue} with that of
 	 * the current {@link PropertyValue} if merging is supported and enabled.
+	 *
 	 * @see Mergeable
 	 */
 	private PropertyValue mergeIfRequired(PropertyValue newPv, PropertyValue currentPv) {
@@ -233,6 +228,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	/**
 	 * Remove the given PropertyValue, if contained.
+	 *
 	 * @param pv the PropertyValue to remove
 	 */
 	public void removePropertyValue(PropertyValue pv) {
@@ -241,13 +237,13 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	/**
 	 * Overloaded version of {@code removePropertyValue} that takes a property name.
+	 *
 	 * @param propertyName name of the property
 	 * @see #removePropertyValue(PropertyValue)
 	 */
 	public void removePropertyValue(String propertyName) {
 		this.propertyValueList.remove(getPropertyValue(propertyName));
 	}
-
 
 	@Override
 	public Iterator<PropertyValue> iterator() {
@@ -282,11 +278,12 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	/**
 	 * Get the raw property value, if any.
+	 *
 	 * @param propertyName the name to search for
 	 * @return the raw property value, or {@code null} if none found
-	 * @since 4.0
 	 * @see #getPropertyValue(String)
 	 * @see PropertyValue#getValue()
+	 * @since 4.0
 	 */
 	@Nullable
 	public Object get(String propertyName) {
@@ -314,8 +311,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	@Override
 	public boolean contains(String propertyName) {
-		return (getPropertyValue(propertyName) != null ||
-				(this.processedProperties != null && this.processedProperties.contains(propertyName)));
+		return (getPropertyValue(propertyName) != null || (this.processedProperties != null && this.processedProperties.contains(propertyName)));
 	}
 
 	@Override
@@ -323,13 +319,13 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 		return this.propertyValueList.isEmpty();
 	}
 
-
 	/**
 	 * Register the specified property as "processed" in the sense
 	 * of some processor calling the corresponding setter method
 	 * outside of the PropertyValue(s) mechanism.
 	 * <p>This will lead to {@code true} being returned from
 	 * a {@link #contains} call for the specified property.
+	 *
 	 * @param propertyName the name of the property.
 	 */
 	public void registerProcessedProperty(String propertyName) {
@@ -341,6 +337,7 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 
 	/**
 	 * Clear the "processed" registration of the given property, if any.
+	 *
 	 * @since 3.2.13
 	 */
 	public void clearProcessedProperty(String propertyName) {
@@ -365,11 +362,9 @@ public class MutablePropertyValues implements PropertyValues, Serializable {
 		return this.converted;
 	}
 
-
 	@Override
 	public boolean equals(@Nullable Object other) {
-		return (this == other || (other instanceof MutablePropertyValues &&
-				this.propertyValueList.equals(((MutablePropertyValues) other).propertyValueList)));
+		return (this == other || (other instanceof MutablePropertyValues && this.propertyValueList.equals(((MutablePropertyValues) other).propertyValueList)));
 	}
 
 	@Override

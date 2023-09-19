@@ -15,11 +15,11 @@ import java.util.List;
 @Accessors(chain = true)
 public class User {
 
-	private int id;
+	private Integer id;
 
 	private String name;
 
-	private int age;
+	private Integer age;
 
 	/**
 	 * 生活的城市

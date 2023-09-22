@@ -130,6 +130,7 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	/**
 	 * 类型转换器
+	 *
 	 * @see PropertyEditor
 	 */
 	@Nullable
@@ -149,26 +150,42 @@ public class DataBinder implements PropertyEditorRegistry, TypeConverter {
 
 	private final List<Validator> validators = new ArrayList<>();
 
+	/**
+	 * 是否忽略未知字段，默认值：true
+	 */
 	private boolean ignoreUnknownFields = true;
 
+	/**
+	 * 是否忽略非法字段，默认值：false
+	 */
 	private boolean ignoreInvalidFields = false;
 
+	/**
+	 * 是否自动增加嵌套路径，默认值：true
+	 */
 	private boolean autoGrowNestedPaths = true;
 
 	private int autoGrowCollectionLimit = DEFAULT_AUTO_GROW_COLLECTION_LIMIT;
 
+	/**
+	 * 绑定字段白名单
+	 */
 	@Nullable
 	private String[] allowedFields;
 
+	/**
+	 * 绑定字段黑名单
+	 */
 	@Nullable
 	private String[] disallowedFields;
 
+	/**
+	 * 必须绑定字段
+	 */
 	@Nullable
 	private String[] requiredFields;
 
-
 	private BindingErrorProcessor bindingErrorProcessor = new DefaultBindingErrorProcessor();
-
 
 	/**
 	 * Create a new DataBinder instance, with default object name.

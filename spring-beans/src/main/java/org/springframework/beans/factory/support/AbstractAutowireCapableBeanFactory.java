@@ -1628,9 +1628,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 *
+	 * note : 必须深度复制对象 List<PropertyValue>
+	 *
 	 * Apply the given property values, resolving any runtime references
-	 * to other beans in this bean factory. Must use deep copy, so we
-	 * don't permanently modify this property.
+	 * to other beans in this bean factory. Must use deep copy, so we don't permanently modify this property.
 	 *
 	 * @param beanName the bean name passed for better exception information
 	 * @param mbd      the merged bean definition

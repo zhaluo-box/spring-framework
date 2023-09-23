@@ -20,6 +20,11 @@ import java.beans.PropertyDescriptor;
 
 /**
  * The central interface of Spring's low-level JavaBeans infrastructure.
+ * <p>
+ * 通常不是直接使用 ，而是通过 {@link org.springframework.beans.factory.BeanFactory} or  {@link org.springframework.validation.DataBinder}.
+ * 其中 BeanFactory 是在getBean  获取不到Bean,进行创建Bean的时候，使用BeanWrapper
+ *
+ *
  *
  * <p>Typically not used directly but rather implicitly via a
  * {@link org.springframework.beans.factory.BeanFactory} or a
@@ -64,13 +69,13 @@ public interface BeanWrapper extends ConfigurablePropertyAccessor {
 	int getAutoGrowCollectionLimit();
 
 	/**
-	 * 实例
+	 * 获取实例
 	 * Return the bean instance wrapped by this object.
 	 */
 	Object getWrappedInstance();
 
 	/**
-	 * Class类型
+	 * 获取Class类型
 	 * Return the type of the wrapped bean instance.
 	 */
 	Class<?> getWrappedClass();

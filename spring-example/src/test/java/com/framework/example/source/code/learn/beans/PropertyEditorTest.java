@@ -1,8 +1,15 @@
 package com.framework.example.source.code.learn.beans;
 
+import com.framework.example.common.entity.LifeCyclePreview;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.PropertyEditorRegistrar;
+import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.awt.*;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
@@ -17,7 +24,7 @@ import java.util.Properties;
  *
  * @author zl
  */
-class PropertyEditorTest {
+public class PropertyEditorTest {
 
 	@Test
 	@DisplayName("测试")
@@ -36,7 +43,36 @@ class PropertyEditorTest {
 		System.out.println(propertyEditor.getAsText());
 	}
 
-	static class StringToPropertiesPropertyEditor extends PropertyEditorSupport implements PropertyEditor {
+	/**
+	 * note:propertyEditor 注册了也没生效
+	 */
+	@Test
+	@DisplayName("自定义PropertyEditorRegistrar 测试")
+	void customPropertyEditorRegistrarTest() {
+
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+
+		XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(context);
+		reader.loadBeanDefinitions("META-INF/property-editor-context.xml");
+
+		//		context.register(CustomPropertyEditorRegistrar.class);  propertyEditor 注册了也没生效
+		context.refresh();
+
+		LifeCyclePreview lifeCyclePreview = context.getBean("lifeCyclePreview", LifeCyclePreview.class);
+		System.out.println("lifeCyclePreview = " + lifeCyclePreview);
+
+		context.close();
+	}
+
+	public static class CustomPropertyEditorRegistrar implements PropertyEditorRegistrar {
+
+		@Override
+		public void registerCustomEditors(PropertyEditorRegistry registry) {
+			registry.registerCustomEditor(LifeCyclePreview.class, "context", new StringToPropertiesPropertyEditor());
+		}
+	}
+
+	public static class StringToPropertiesPropertyEditor extends PropertyEditorSupport implements PropertyEditor {
 
 		@Override
 		public void setAsText(String text) throws IllegalArgumentException {
@@ -71,6 +107,79 @@ class PropertyEditorTest {
 			}
 
 			return textBuilder.toString();
+		}
+
+		@Override
+		public Object getValue() {
+			return super.getValue();
+		}
+
+		@Override
+		public Object getSource() {
+			return super.getSource();
+		}
+
+		@Override
+		public void firePropertyChange() {
+			super.firePropertyChange();
+		}
+
+		public StringToPropertiesPropertyEditor() {
+			super();
+		}
+
+		public StringToPropertiesPropertyEditor(Object source) {
+			super(source);
+		}
+
+		@Override
+		public void setSource(Object source) {
+			super.setSource(source);
+		}
+
+		@Override
+		public void setValue(Object value) {
+			super.setValue(value);
+		}
+
+		@Override
+		public boolean isPaintable() {
+			return super.isPaintable();
+		}
+
+		@Override
+		public void paintValue(Graphics gfx, Rectangle box) {
+			super.paintValue(gfx, box);
+		}
+
+		@Override
+		public String getJavaInitializationString() {
+			return super.getJavaInitializationString();
+		}
+
+		@Override
+		public String[] getTags() {
+			return super.getTags();
+		}
+
+		@Override
+		public Component getCustomEditor() {
+			return super.getCustomEditor();
+		}
+
+		@Override
+		public boolean supportsCustomEditor() {
+			return super.supportsCustomEditor();
+		}
+
+		@Override
+		public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+			super.addPropertyChangeListener(listener);
+		}
+
+		@Override
+		public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
+			super.removePropertyChangeListener(listener);
 		}
 	}
 

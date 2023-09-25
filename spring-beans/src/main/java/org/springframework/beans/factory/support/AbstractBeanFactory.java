@@ -1342,8 +1342,8 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	}
 
 	private void copyRelevantMergedBeanDefinitionCaches(RootBeanDefinition previous, RootBeanDefinition mbd) {
-		if (ObjectUtils.nullSafeEquals(mbd.getBeanClassName(), previous.getBeanClassName())
-			&& ObjectUtils.nullSafeEquals(mbd.getFactoryBeanName(),previous.getFactoryBeanName())
+		if (ObjectUtils.nullSafeEquals(mbd.getBeanClassName(), previous.getBeanClassName()) && ObjectUtils.nullSafeEquals(mbd.getFactoryBeanName(),
+																														  previous.getFactoryBeanName())
 			&& ObjectUtils.nullSafeEquals(mbd.getFactoryMethodName(), previous.getFactoryMethodName())) {
 			ResolvableType targetType = mbd.targetType;
 			ResolvableType previousTargetType = previous.targetType;

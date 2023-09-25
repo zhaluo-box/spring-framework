@@ -56,7 +56,6 @@ public class ConversionServiceFactoryBean implements FactoryBean<ConversionServi
 	@Nullable
 	private GenericConversionService conversionService;
 
-
 	/**
 	 * Configure the set of custom converter objects that should be added:
 	 * implementing {@link org.springframework.core.convert.converter.Converter},
@@ -82,7 +81,6 @@ public class ConversionServiceFactoryBean implements FactoryBean<ConversionServi
 	protected GenericConversionService createConversionService() {
 		return new DefaultConversionService();
 	}
-
 
 	// implementing FactoryBean
 

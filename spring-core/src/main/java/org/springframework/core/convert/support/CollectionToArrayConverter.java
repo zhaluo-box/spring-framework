@@ -43,11 +43,9 @@ final class CollectionToArrayConverter implements ConditionalGenericConverter {
 
 	private final ConversionService conversionService;
 
-
 	public CollectionToArrayConverter(ConversionService conversionService) {
 		this.conversionService = conversionService;
 	}
-
 
 	@Override
 	public Set<ConvertiblePair> getConvertibleTypes() {
@@ -56,8 +54,7 @@ final class CollectionToArrayConverter implements ConditionalGenericConverter {
 
 	@Override
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-		return ConversionUtils.canConvertElements(sourceType.getElementTypeDescriptor(),
-				targetType.getElementTypeDescriptor(), this.conversionService);
+		return ConversionUtils.canConvertElements(sourceType.getElementTypeDescriptor(), targetType.getElementTypeDescriptor(), this.conversionService);
 	}
 
 	@Override
@@ -72,8 +69,7 @@ final class CollectionToArrayConverter implements ConditionalGenericConverter {
 		Object array = Array.newInstance(targetElementType.getType(), sourceCollection.size());
 		int i = 0;
 		for (Object sourceElement : sourceCollection) {
-			Object targetElement = this.conversionService.convert(sourceElement,
-					sourceType.elementTypeDescriptor(sourceElement), targetElementType);
+			Object targetElement = this.conversionService.convert(sourceElement, sourceType.elementTypeDescriptor(sourceElement), targetElementType);
 			Array.set(array, i++, targetElement);
 		}
 		return array;

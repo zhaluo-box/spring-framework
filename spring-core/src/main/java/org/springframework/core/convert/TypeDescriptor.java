@@ -68,6 +68,9 @@ public class TypeDescriptor implements Serializable {
 
 	private final Class<?> type;
 
+	/**
+	 * 专门针对泛型的一个处理
+	 */
 	private final ResolvableType resolvableType;
 
 	private final AnnotatedElementAdapter annotatedElement;

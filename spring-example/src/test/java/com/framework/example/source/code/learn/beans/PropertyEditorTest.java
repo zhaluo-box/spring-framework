@@ -3,10 +3,17 @@ package com.framework.example.source.code.learn.beans;
 import com.framework.example.common.entity.LifeCyclePreview;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
+import org.springframework.beans.TypeConverterDelegate;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.core.convert.TypeDescriptor;
 
 import java.awt.*;
 import java.beans.PropertyChangeListener;
@@ -45,6 +52,14 @@ public class PropertyEditorTest {
 
 	/**
 	 * note:propertyEditor 注册了也没生效
+	 * <p>
+	 * 通过find usage 进行推断代码
+	 *
+	 * @see BeanWrapperImpl#convertForProperty(Object, String)
+	 * @see TypeConverterDelegate#convertIfNecessary(String, Object, Object, Class, TypeDescriptor)
+	 * @see AbstractBeanFactory#getTypeConverter()
+	 * @see AbstractBeanFactory#setConversionService(ConversionService) 查看这个方法调用的地方
+	 * @see AbstractApplicationContext#finishBeanFactoryInitialization(ConfigurableListableBeanFactory) 约定了 conversionService 的ID名称
 	 */
 	@Test
 	@DisplayName("自定义PropertyEditorRegistrar 测试")

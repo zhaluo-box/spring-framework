@@ -37,6 +37,7 @@ import java.beans.PropertyEditor;
 public interface PropertyEditorRegistry {
 
 	/**
+	 * 注册一个自定义property editor 用于给定类型的所有属性
 	 * Register the given custom property editor for all properties of the given type.
 	 *
 	 * @param requiredType   the type of the property
@@ -45,6 +46,7 @@ public interface PropertyEditorRegistry {
 	void registerCustomEditor(Class<?> requiredType, PropertyEditor propertyEditor);
 
 	/**
+	 * 注册一个自定义property editor 用于给定类型的，指定属性
 	 * Register the given custom property editor for the given type and
 	 * property, or for all properties of the given type.
 	 * <p>If the property path denotes an array or Collection property,
@@ -71,6 +73,7 @@ public interface PropertyEditorRegistry {
 	void registerCustomEditor(@Nullable Class<?> requiredType, @Nullable String propertyPath, PropertyEditor propertyEditor);
 
 	/**
+	 * 查找自定义property editor 基于给定的类型与属性
 	 * Find a custom property editor for the given type and property.
 	 *
 	 * @param requiredType the type of the property (can be {@code null} if a property

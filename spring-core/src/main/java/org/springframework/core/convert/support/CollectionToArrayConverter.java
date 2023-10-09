@@ -16,16 +16,16 @@
 
 package org.springframework.core.convert.support;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Converts a Collection to an array.
@@ -52,6 +52,12 @@ final class CollectionToArrayConverter implements ConditionalGenericConverter {
 		return Collections.singleton(new ConvertiblePair(Collection.class, Object[].class));
 	}
 
+	/**
+	 * 判定的是两个集合元素的匹配度， 其实就是泛型
+	 * @param sourceType the type descriptor of the field we are converting from
+	 * @param targetType the type descriptor of the field we are converting to
+	 * @return
+	 */
 	@Override
 	public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
 		return ConversionUtils.canConvertElements(sourceType.getElementTypeDescriptor(), targetType.getElementTypeDescriptor(), this.conversionService);
@@ -68,6 +74,7 @@ final class CollectionToArrayConverter implements ConditionalGenericConverter {
 		Assert.state(targetElementType != null, "No target element type");
 		Object array = Array.newInstance(targetElementType.getType(), sourceCollection.size());
 		int i = 0;
+		// 成员注意convert
 		for (Object sourceElement : sourceCollection) {
 			Object targetElement = this.conversionService.convert(sourceElement, sourceType.elementTypeDescriptor(sourceElement), targetElementType);
 			Array.set(array, i++, targetElement);

@@ -16,11 +16,11 @@
 
 package org.springframework.beans;
 
-import java.lang.reflect.Field;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.lang.Nullable;
+
+import java.lang.reflect.Field;
 
 /**
  * Interface that defines type conversion methods. Typically (but not necessarily)

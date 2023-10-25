@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
-import org.springframework.beans.TypeConverterDelegate;
+
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -56,7 +56,7 @@ public class PropertyEditorTest {
 	 * 通过find usage 进行推断代码
 	 *
 	 * @see BeanWrapperImpl#convertForProperty(Object, String)
-	 * @see TypeConverterDelegate#convertIfNecessary(String, Object, Object, Class, TypeDescriptor)
+	 * @see org.springframework.beans.TypeConverterDelegate#convertIfNecessary(String, Object, Object, Class, TypeDescriptor)
 	 * @see AbstractBeanFactory#getTypeConverter()
 	 * @see AbstractBeanFactory#setConversionService(ConversionService) 查看这个方法调用的地方
 	 * @see AbstractApplicationContext#finishBeanFactoryInitialization(ConfigurableListableBeanFactory) 约定了 conversionService 的ID名称

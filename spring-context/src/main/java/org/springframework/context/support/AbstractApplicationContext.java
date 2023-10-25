@@ -396,6 +396,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 		// Decorate event as an ApplicationEvent if necessary
 		ApplicationEvent applicationEvent;
+
+		// ApplicationEvent & PayloadApplicationEvent
 		if (event instanceof ApplicationEvent) {
 			applicationEvent = (ApplicationEvent) event;
 		} else {
@@ -412,6 +414,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			getApplicationEventMulticaster().multicastEvent(applicationEvent, eventType);
 		}
 
+		// spring ，会因层次性上下文（父子上下文）， 一个事件被执行多次。
 		// Publish event via parent context as well...
 		if (this.parent != null) {
 			if (this.parent instanceof AbstractApplicationContext) {
@@ -591,8 +594,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 				// Last step: publish corresponding(相应的事件) event.
 				// 初始化容器的生命周期处理器（默认使用DefaultLifecycleProcessor）,调用扩展了SmartLifecycle
 				// 当spring容器加载所有Bean并完成初始化之后， 会接着回调实现该接口的类中对应的方法（start()方法）
-				// 并发布荣放弃刷新完毕事件ContextRefreshEvent 给对应的事件监听者
+				// 并发布刷新完毕事件ContextRefreshEvent 给对应的事件监听者
 				finishRefresh();
+
 			} catch (BeansException ex) {
 				if (logger.isWarnEnabled()) {
 					logger.warn("Exception encountered during context initialization - " + "cancelling refresh attempt: " + ex);

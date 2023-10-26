@@ -827,6 +827,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	}
 
 	/**
+	 * 初始化 ApplicationEventMulticaster
 	 * Initialize the ApplicationEventMulticaster.
 	 * Uses SimpleApplicationEventMulticaster if none defined in the context.
 	 *
@@ -834,14 +835,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	 */
 	protected void initApplicationEventMulticaster() {
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
-		// 如果容器存在applicationEventMulticaster 的Bean的实例，则赋值给容器ApplicationEventMulticaster
+		// 如果当前容器（beanFactory.containsLocalBean）存在applicationEventMulticaster 的Bean的实例，则赋值给容器ApplicationEventMulticaster
 		if (beanFactory.containsLocalBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME)) {
 			this.applicationEventMulticaster = beanFactory.getBean(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, ApplicationEventMulticaster.class);
 			if (logger.isTraceEnabled()) {
 				logger.trace("Using ApplicationEventMulticaster [" + this.applicationEventMulticaster + "]");
 			}
-		} else {
-			// 新建一个SimpleApplicationEventMulticaster 事件派发器, 并注册到上下文
+		}
+		// 新建一个SimpleApplicationEventMulticaster 事件派发器, 并【注册】到上下文，bean的名称是约定好的
+		else {
 			this.applicationEventMulticaster = new SimpleApplicationEventMulticaster(beanFactory);
 			beanFactory.registerSingleton(APPLICATION_EVENT_MULTICASTER_BEAN_NAME, this.applicationEventMulticaster);
 			if (logger.isTraceEnabled()) {

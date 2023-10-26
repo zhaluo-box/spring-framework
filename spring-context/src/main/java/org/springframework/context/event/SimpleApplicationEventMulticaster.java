@@ -48,12 +48,17 @@ import org.springframework.util.ErrorHandler;
  */
 public class SimpleApplicationEventMulticaster extends AbstractApplicationEventMulticaster {
 
+	/**
+	 * 异步的线程池
+	 */
 	@Nullable
 	private Executor taskExecutor;
 
+	/**
+	 * 一场处理
+	 */
 	@Nullable
 	private ErrorHandler errorHandler;
-
 
 	/**
 	 * Create a new SimpleApplicationEventMulticaster.
@@ -68,7 +73,6 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 		setBeanFactory(beanFactory);
 	}
 
-
 	/**
 	 * Set a custom executor (typically a {@link org.springframework.core.task.TaskExecutor})
 	 * to invoke each listener with.
@@ -78,6 +82,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	 * caller until all listeners have been executed. However, note that asynchronous
 	 * execution will not participate in the caller's thread context (class loader,
 	 * transaction association) unless the TaskExecutor explicitly supports this.
+	 *
 	 * @see org.springframework.core.task.SyncTaskExecutor
 	 * @see org.springframework.core.task.SimpleAsyncTaskExecutor
 	 */
@@ -106,6 +111,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 	 * {@link org.springframework.scheduling.support.TaskUtils#LOG_AND_SUPPRESS_ERROR_HANDLER})
 	 * or an implementation that logs exceptions while nevertheless propagating them
 	 * (e.g. {@link org.springframework.scheduling.support.TaskUtils#LOG_AND_PROPAGATE_ERROR_HANDLER}).
+	 *
 	 * @since 4.1
 	 */
 	public void setErrorHandler(@Nullable ErrorHandler errorHandler) {
@@ -114,13 +120,13 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 
 	/**
 	 * Return the current error handler for this multicaster.
+	 *
 	 * @since 4.1
 	 */
 	@Nullable
 	protected ErrorHandler getErrorHandler() {
 		return this.errorHandler;
 	}
-
 
 	@Override
 	public void multicastEvent(ApplicationEvent event) {
@@ -134,8 +140,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 		for (ApplicationListener<?> listener : getApplicationListeners(event, type)) {
 			if (executor != null) {
 				executor.execute(() -> invokeListener(listener, event));
-			}
-			else {
+			} else {
 				invokeListener(listener, event);
 			}
 		}
@@ -147,31 +152,34 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 
 	/**
 	 * Invoke the given listener with the given event.
+	 *
 	 * @param listener the ApplicationListener to invoke
-	 * @param event the current event to propagate
+	 * @param event    the current event to propagate
 	 * @since 4.1
 	 */
 	protected void invokeListener(ApplicationListener<?> listener, ApplicationEvent event) {
 		ErrorHandler errorHandler = getErrorHandler();
+
+		// 异常处理器不为空的情况，由提供的异常处理器，决定如何处理异常
 		if (errorHandler != null) {
 			try {
 				doInvokeListener(listener, event);
-			}
-			catch (Throwable err) {
+			} catch (Throwable err) {
 				errorHandler.handleError(err);
 			}
 		}
+		// 否则异常将向上抛出， 值得一提的是空指针和类型转换异常，会被压制，只会打印一些信息
+		// 给出的解释是lambda 表达式有可能无法解析推断类型
 		else {
 			doInvokeListener(listener, event);
 		}
 	}
 
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void doInvokeListener(ApplicationListener listener, ApplicationEvent event) {
 		try {
 			listener.onApplicationEvent(event);
-		}
-		catch (ClassCastException ex) {
+		} catch (ClassCastException ex) {
 			String msg = ex.getMessage();
 			if (msg == null || matchesClassCastMessage(msg, event.getClass())) {
 				// Possibly a lambda-defined listener which we could not resolve the generic event type for
@@ -180,8 +188,7 @@ public class SimpleApplicationEventMulticaster extends AbstractApplicationEventM
 				if (logger.isTraceEnabled()) {
 					logger.trace("Non-matching event type for listener: " + listener, ex);
 				}
-			}
-			else {
+			} else {
 				throw ex;
 			}
 		}

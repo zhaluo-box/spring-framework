@@ -385,6 +385,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 	/**
 	 * Publish the given event to all listeners.
+	 * Note : payloadApplicationEvent 扩展了 applicationEvent ，并实现了ResolvableTypeProvider 提供了泛型的转换
+	 * <p>
+	 * <br/>
+	 *
+	 * ？？ 方法中，使用到的earlyApplicationEvents 后期怎么办了？？
+	 *
+	 * <p>  earlyApplicationEvents的存在是为了解决，在 applicationEventMulticaster 初始化之前，就有人通过API发布了事件，而产生的一个临时存储，
+	 * 在调用{@link #registerListeners()} 之后再次使用API进行添加，并将earlyApplicationEvents 置为null
+	 * </p>
 	 *
 	 * @param event     the event to publish (may be an {@link ApplicationEvent}
 	 *                  or a payload object to be turned into a {@link PayloadApplicationEvent})
@@ -411,6 +420,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		if (this.earlyApplicationEvents != null) {
 			this.earlyApplicationEvents.add(applicationEvent);
 		} else {
+
 			getApplicationEventMulticaster().multicastEvent(applicationEvent, eventType);
 		}
 
@@ -573,7 +583,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
-				// 初始化事件派发器,并注册为单例Bean
+				// 初始化事件派发器,并注册为单例Bean  （SimpleApplicationEventMulticaster） Note: 注意containLoacalBean
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.

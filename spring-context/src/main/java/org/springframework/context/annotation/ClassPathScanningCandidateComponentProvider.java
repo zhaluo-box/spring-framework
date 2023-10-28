@@ -293,10 +293,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
-	 * Scan the class path for candidate components.
+	 * {@link Indexed}  这是spring 5 提出的一个新的特性，用来提升性能，顾名思义监理索引
 	 *
 	 * @param basePackage the package to check for annotated classes
 	 * @return a corresponding Set of autodetected bean definitions
+	 * <p>
+	 * Scan the class path for candidate components.
 	 */
 	public Set<BeanDefinition> findCandidateComponents(String basePackage) {
 		if (this.componentsIndex != null && indexSupportsIncludeFilters()) {
@@ -401,6 +403,12 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 		return candidates;
 	}
 
+	/**
+	 * 基于基础包路径获取候选BeanDefinition
+	 *
+	 * @param basePackage 基础包路径
+	 * @return return BeanDefinition Set Collection
+	 */
 	private Set<BeanDefinition> scanCandidateComponents(String basePackage) {
 		Set<BeanDefinition> candidates = new LinkedHashSet<>();
 		try {
@@ -414,6 +422,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 				}
 				try {
 					MetadataReader metadataReader = getMetadataReaderFactory().getMetadataReader(resource);
+					// 判定过滤器，包含&排除Filter
 					if (isCandidateComponent(metadataReader)) {
 						ScannedGenericBeanDefinition sbd = new ScannedGenericBeanDefinition(metadataReader);
 						sbd.setSource(resource);
@@ -460,6 +469,7 @@ public class ClassPathScanningCandidateComponentProvider implements EnvironmentC
 	}
 
 	/**
+	 * 两个过滤器进行判定
 	 * Determine whether the given class does not match any exclude filter
 	 * and does match at least one include filter.
 	 *

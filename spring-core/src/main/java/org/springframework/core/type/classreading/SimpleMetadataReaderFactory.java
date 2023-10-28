@@ -26,6 +26,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ClassUtils;
 
 /**
+ * 基于ASM进行读取
+ * <p>
  * Simple implementation of the {@link MetadataReaderFactory} interface,
  * creating a new ASM {@link org.springframework.asm.ClassReader} for every request.
  *
@@ -36,7 +38,6 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 
 	private final ResourceLoader resourceLoader;
 
-
 	/**
 	 * Create a new SimpleMetadataReaderFactory for the default class loader.
 	 */
@@ -46,8 +47,9 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 
 	/**
 	 * Create a new SimpleMetadataReaderFactory for the given resource loader.
+	 *
 	 * @param resourceLoader the Spring ResourceLoader to use
-	 * (also determines the ClassLoader to use)
+	 *                       (also determines the ClassLoader to use)
 	 */
 	public SimpleMetadataReaderFactory(@Nullable ResourceLoader resourceLoader) {
 		this.resourceLoader = (resourceLoader != null ? resourceLoader : new DefaultResourceLoader());
@@ -55,13 +57,12 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 
 	/**
 	 * Create a new SimpleMetadataReaderFactory for the given class loader.
+	 *
 	 * @param classLoader the ClassLoader to use
 	 */
 	public SimpleMetadataReaderFactory(@Nullable ClassLoader classLoader) {
-		this.resourceLoader =
-				(classLoader != null ? new DefaultResourceLoader(classLoader) : new DefaultResourceLoader());
+		this.resourceLoader = (classLoader != null ? new DefaultResourceLoader(classLoader) : new DefaultResourceLoader());
 	}
-
 
 	/**
 	 * Return the ResourceLoader that this MetadataReaderFactory has been
@@ -71,24 +72,27 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 		return this.resourceLoader;
 	}
 
-
+	/**
+	 * 通过路径 进行获取
+	 *
+	 * @param className the class name (to be resolved to a ".class" file)
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public MetadataReader getMetadataReader(String className) throws IOException {
 		try {
-			String resourcePath = ResourceLoader.CLASSPATH_URL_PREFIX +
-					ClassUtils.convertClassNameToResourcePath(className) + ClassUtils.CLASS_FILE_SUFFIX;
+			String resourcePath = ResourceLoader.CLASSPATH_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(className) + ClassUtils.CLASS_FILE_SUFFIX;
 			Resource resource = this.resourceLoader.getResource(resourcePath);
 			return getMetadataReader(resource);
-		}
-		catch (FileNotFoundException ex) {
+		} catch (FileNotFoundException ex) {
 			// Maybe an inner class name using the dot name syntax? Need to use the dollar syntax here...
 			// ClassUtils.forName has an equivalent check for resolution into Class references later on.
 			int lastDotIndex = className.lastIndexOf('.');
 			if (lastDotIndex != -1) {
-				String innerClassName =
-						className.substring(0, lastDotIndex) + '$' + className.substring(lastDotIndex + 1);
-				String innerClassResourcePath = ResourceLoader.CLASSPATH_URL_PREFIX +
-						ClassUtils.convertClassNameToResourcePath(innerClassName) + ClassUtils.CLASS_FILE_SUFFIX;
+				String innerClassName = className.substring(0, lastDotIndex) + '$' + className.substring(lastDotIndex + 1);
+				String innerClassResourcePath =
+						ResourceLoader.CLASSPATH_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(innerClassName) + ClassUtils.CLASS_FILE_SUFFIX;
 				Resource innerClassResource = this.resourceLoader.getResource(innerClassResourcePath);
 				if (innerClassResource.exists()) {
 					return getMetadataReader(innerClassResource);
@@ -98,6 +102,13 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 		}
 	}
 
+	/**
+	 * 通过资源获取
+	 *
+	 * @param resource the resource (pointing to a ".class" file)
+	 * @return
+	 * @throws IOException
+	 */
 	@Override
 	public MetadataReader getMetadataReader(Resource resource) throws IOException {
 		return new SimpleMetadataReader(resource, this.resourceLoader.getClassLoader());

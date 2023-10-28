@@ -37,13 +37,16 @@ import org.springframework.lang.Nullable;
  */
 public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 
-	/** Default maximum number of entries for a local MetadataReader cache: 256. */
+	/**
+	 * Default maximum number of entries for a local MetadataReader cache: 256.
+	 */
 	public static final int DEFAULT_CACHE_LIMIT = 256;
 
-	/** MetadataReader cache: either local or shared at the ResourceLoader level. */
+	/**
+	 * MetadataReader cache: either local or shared at the ResourceLoader level.
+	 */
 	@Nullable
 	private Map<Resource, MetadataReader> metadataReaderCache;
-
 
 	/**
 	 * Create a new CachingMetadataReaderFactory for the default class loader,
@@ -57,6 +60,7 @@ public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 	/**
 	 * Create a new CachingMetadataReaderFactory for the given {@link ClassLoader},
 	 * using a local resource cache.
+	 *
 	 * @param classLoader the ClassLoader to use
 	 */
 	public CachingMetadataReaderFactory(@Nullable ClassLoader classLoader) {
@@ -67,21 +71,19 @@ public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 	/**
 	 * Create a new CachingMetadataReaderFactory for the given {@link ResourceLoader},
 	 * using a shared resource cache if supported or a local resource cache otherwise.
+	 *
 	 * @param resourceLoader the Spring ResourceLoader to use
-	 * (also determines the ClassLoader to use)
+	 *                       (also determines the ClassLoader to use)
 	 * @see DefaultResourceLoader#getResourceCache
 	 */
 	public CachingMetadataReaderFactory(@Nullable ResourceLoader resourceLoader) {
 		super(resourceLoader);
 		if (resourceLoader instanceof DefaultResourceLoader) {
-			this.metadataReaderCache =
-					((DefaultResourceLoader) resourceLoader).getResourceCache(MetadataReader.class);
-		}
-		else {
+			this.metadataReaderCache = ((DefaultResourceLoader) resourceLoader).getResourceCache(MetadataReader.class);
+		} else {
 			setCacheLimit(DEFAULT_CACHE_LIMIT);
 		}
 	}
-
 
 	/**
 	 * Specify the maximum number of entries for the MetadataReader cache.
@@ -92,11 +94,9 @@ public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 	public void setCacheLimit(int cacheLimit) {
 		if (cacheLimit <= 0) {
 			this.metadataReaderCache = null;
-		}
-		else if (this.metadataReaderCache instanceof LocalResourceCache) {
+		} else if (this.metadataReaderCache instanceof LocalResourceCache) {
 			((LocalResourceCache) this.metadataReaderCache).setCacheLimit(cacheLimit);
-		}
-		else {
+		} else {
 			this.metadataReaderCache = new LocalResourceCache(cacheLimit);
 		}
 	}
@@ -107,12 +107,10 @@ public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 	public int getCacheLimit() {
 		if (this.metadataReaderCache instanceof LocalResourceCache) {
 			return ((LocalResourceCache) this.metadataReaderCache).getCacheLimit();
-		}
-		else {
+		} else {
 			return (this.metadataReaderCache != null ? Integer.MAX_VALUE : 0);
 		}
 	}
-
 
 	@Override
 	public MetadataReader getMetadataReader(Resource resource) throws IOException {
@@ -124,8 +122,7 @@ public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 				this.metadataReaderCache.put(resource, metadataReader);
 			}
 			return metadataReader;
-		}
-		else if (this.metadataReaderCache != null) {
+		} else if (this.metadataReaderCache != null) {
 			synchronized (this.metadataReaderCache) {
 				MetadataReader metadataReader = this.metadataReaderCache.get(resource);
 				if (metadataReader == null) {
@@ -134,8 +131,7 @@ public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 				}
 				return metadataReader;
 			}
-		}
-		else {
+		} else {
 			return super.getMetadataReader(resource);
 		}
 	}
@@ -148,13 +144,11 @@ public class CachingMetadataReaderFactory extends SimpleMetadataReaderFactory {
 			synchronized (this.metadataReaderCache) {
 				this.metadataReaderCache.clear();
 			}
-		}
-		else if (this.metadataReaderCache != null) {
+		} else if (this.metadataReaderCache != null) {
 			// Shared resource cache -> reset to local cache.
 			setCacheLimit(DEFAULT_CACHE_LIMIT);
 		}
 	}
-
 
 	@SuppressWarnings("serial")
 	private static class LocalResourceCache extends LinkedHashMap<Resource, MetadataReader> {

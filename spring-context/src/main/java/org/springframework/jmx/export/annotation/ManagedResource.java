@@ -26,6 +26,7 @@ import java.lang.annotation.Target;
 import org.springframework.core.annotation.AliasFor;
 
 /**
+ * 针对Java JMX的一种补充说明
  * Class-level annotation that indicates to register instances of a class
  * with a JMX server, corresponding to the {@code ManagedResource} attribute.
  *
@@ -37,8 +38,8 @@ import org.springframework.core.annotation.AliasFor;
  * @author Rob Harrop
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 1.2
  * @see org.springframework.jmx.export.metadata.ManagedResource
+ * @since 1.2
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -49,11 +50,9 @@ public @interface ManagedResource {
 	/**
 	 * Alias for the {@link #objectName} attribute, for simple default usage.
 	 */
-	@AliasFor("objectName")
-	String value() default "";
+	@AliasFor("objectName") String value() default "";
 
-	@AliasFor("value")
-	String objectName() default "";
+	@AliasFor("value") String objectName() default "";
 
 	String description() default "";
 

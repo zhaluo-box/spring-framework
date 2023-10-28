@@ -28,6 +28,8 @@ import org.springframework.core.annotation.AliasFor;
 import org.springframework.core.type.filter.TypeFilter;
 
 /**
+ * 如何被解析 {@link ConfigurationClassParser} & {@link ComponentScanAnnotationParser}
+ * <p>
  * Configures component scanning directives for use with @{@link Configuration} classes.
  * Provides support parallel with Spring XML's {@code <context:component-scan>} element.
  *
@@ -49,8 +51,8 @@ import org.springframework.core.type.filter.TypeFilter;
  * @author Chris Beams
  * @author Juergen Hoeller
  * @author Sam Brannen
- * @since 3.1
  * @see Configuration
+ * @since 3.1
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -64,8 +66,7 @@ public @interface ComponentScan {
 	 * are needed &mdash; for example, {@code @ComponentScan("org.my.pkg")}
 	 * instead of {@code @ComponentScan(basePackages = "org.my.pkg")}.
 	 */
-	@AliasFor("basePackages")
-	String[] value() default {};
+	@AliasFor("basePackages") String[] value() default {};
 
 	/**
 	 * Base packages to scan for annotated components.
@@ -74,8 +75,7 @@ public @interface ComponentScan {
 	 * <p>Use {@link #basePackageClasses} for a type-safe alternative to
 	 * String-based package names.
 	 */
-	@AliasFor("value")
-	String[] basePackages() default {};
+	@AliasFor("value") String[] basePackages() default {};
 
 	/**
 	 * Type-safe alternative to {@link #basePackages} for specifying the packages
@@ -93,6 +93,7 @@ public @interface ComponentScan {
 	 * use its inherited bean name generator, e.g. the default
 	 * {@link AnnotationBeanNameGenerator} or any custom instance supplied to the
 	 * application context at bootstrap time.
+	 *
 	 * @see AnnotationConfigApplicationContext#setBeanNameGenerator(BeanNameGenerator)
 	 * @see AnnotationBeanNameGenerator
 	 * @see FullyQualifiedAnnotationBeanNameGenerator
@@ -110,6 +111,7 @@ public @interface ComponentScan {
 	 * <p>The default is defer to the default behavior of the component scanner used to
 	 * execute the actual scan.
 	 * <p>Note that setting this attribute overrides any value set for {@link #scopeResolver}.
+	 *
 	 * @see ClassPathBeanDefinitionScanner#setScopedProxyMode(ScopedProxyMode)
 	 */
 	ScopedProxyMode scopedProxy() default ScopedProxyMode.DEFAULT;
@@ -134,6 +136,7 @@ public @interface ComponentScan {
 	 * <p>Note that these filters will be applied in addition to the default filters, if specified.
 	 * Any type under the specified base packages which matches a given filter will be included,
 	 * even if it does not match the default filters (i.e. is not annotated with {@code @Component}).
+	 *
 	 * @see #resourcePattern()
 	 * @see #useDefaultFilters()
 	 */
@@ -141,6 +144,7 @@ public @interface ComponentScan {
 
 	/**
 	 * Specifies which types are not eligible for component scanning.
+	 *
 	 * @see #resourcePattern
 	 */
 	Filter[] excludeFilters() default {};
@@ -148,10 +152,10 @@ public @interface ComponentScan {
 	/**
 	 * Specify whether scanned beans should be registered for lazy initialization.
 	 * <p>Default is {@code false}; switch this to {@code true} when desired.
+	 *
 	 * @since 4.1
 	 */
 	boolean lazyInit() default false;
-
 
 	/**
 	 * Declares the type filter to be used as an {@linkplain ComponentScan#includeFilters
@@ -164,6 +168,7 @@ public @interface ComponentScan {
 		/**
 		 * The type of filter to use.
 		 * <p>Default is {@link FilterType#ANNOTATION}.
+		 *
 		 * @see #classes
 		 * @see #pattern
 		 */
@@ -171,10 +176,10 @@ public @interface ComponentScan {
 
 		/**
 		 * Alias for {@link #classes}.
+		 *
 		 * @see #classes
 		 */
-		@AliasFor("classes")
-		Class<?>[] value() default {};
+		@AliasFor("classes") Class<?>[] value() default {};
 
 		/**
 		 * The class or classes to use as the filter.
@@ -202,12 +207,12 @@ public @interface ComponentScan {
 		 * </ul>
 		 * <p>Specifying zero classes is permitted but will have no effect on component
 		 * scanning.
-		 * @since 4.2
+		 *
 		 * @see #value
 		 * @see #type
+		 * @since 4.2
 		 */
-		@AliasFor("value")
-		Class<?>[] classes() default {};
+		@AliasFor("value") Class<?>[] classes() default {};
 
 		/**
 		 * The pattern (or patterns) to use for the filter, as an alternative
@@ -216,6 +221,7 @@ public @interface ComponentScan {
 		 * this is an AspectJ type pattern expression. If {@link #type} is
 		 * set to {@link FilterType#REGEX REGEX}, this is a regex pattern
 		 * for the fully-qualified class names to match.
+		 *
 		 * @see #type
 		 * @see #classes
 		 */

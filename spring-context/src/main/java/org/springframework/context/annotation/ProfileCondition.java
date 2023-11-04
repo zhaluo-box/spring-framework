@@ -31,6 +31,13 @@ import org.springframework.util.MultiValueMap;
  */
 class ProfileCondition implements Condition {
 
+	/**
+	 *
+	 * @param context the condition context
+	 * @param metadata the metadata of the {@link org.springframework.core.type.AnnotationMetadata class}
+	 * or {@link org.springframework.core.type.MethodMetadata method} being checked
+	 * @return
+	 */
 	@Override
 	public boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
 		MultiValueMap<String, Object> attrs = metadata.getAllAnnotationAttributes(Profile.class.getName());

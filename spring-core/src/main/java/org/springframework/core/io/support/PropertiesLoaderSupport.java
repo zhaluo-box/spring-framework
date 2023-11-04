@@ -41,7 +41,9 @@ import org.springframework.util.PropertiesPersister;
  */
 public abstract class PropertiesLoaderSupport {
 
-	/** Logger available to subclasses. */
+	/**
+	 * Logger available to subclasses.
+	 */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Nullable
@@ -59,14 +61,13 @@ public abstract class PropertiesLoaderSupport {
 
 	private PropertiesPersister propertiesPersister = new DefaultPropertiesPersister();
 
-
 	/**
 	 * Set local properties, e.g. via the "props" tag in XML bean definitions.
 	 * These can be considered defaults, to be overridden by properties
 	 * loaded from files.
 	 */
 	public void setProperties(Properties properties) {
-		this.localProperties = new Properties[] {properties};
+		this.localProperties = new Properties[] { properties };
 	}
 
 	/**
@@ -83,7 +84,7 @@ public abstract class PropertiesLoaderSupport {
 	 * that follows JDK 1.5's properties XML format.
 	 */
 	public void setLocation(Resource location) {
-		this.locations = new Resource[] {location};
+		this.locations = new Resource[] { location };
 	}
 
 	/**
@@ -123,6 +124,7 @@ public abstract class PropertiesLoaderSupport {
 	 * <p>Default is none, using the {@code java.util.Properties}
 	 * default encoding.
 	 * <p>Only applies to classic properties files, not to XML files.
+	 *
 	 * @see org.springframework.util.PropertiesPersister#load
 	 */
 	public void setFileEncoding(String encoding) {
@@ -132,13 +134,12 @@ public abstract class PropertiesLoaderSupport {
 	/**
 	 * Set the PropertiesPersister to use for parsing properties files.
 	 * The default is DefaultPropertiesPersister.
+	 *
 	 * @see org.springframework.util.DefaultPropertiesPersister
 	 */
 	public void setPropertiesPersister(@Nullable PropertiesPersister propertiesPersister) {
-		this.propertiesPersister =
-				(propertiesPersister != null ? propertiesPersister : new DefaultPropertiesPersister());
+		this.propertiesPersister = (propertiesPersister != null ? propertiesPersister : new DefaultPropertiesPersister());
 	}
-
 
 	/**
 	 * Return a merged Properties instance containing both the
@@ -168,6 +169,7 @@ public abstract class PropertiesLoaderSupport {
 
 	/**
 	 * Load properties into the given instance.
+	 *
 	 * @param props the Properties instance to load into
 	 * @throws IOException in case of I/O errors
 	 * @see #setLocations
@@ -179,16 +181,13 @@ public abstract class PropertiesLoaderSupport {
 					logger.trace("Loading properties file from " + location);
 				}
 				try {
-					PropertiesLoaderUtils.fillProperties(
-							props, new EncodedResource(location, this.fileEncoding), this.propertiesPersister);
-				}
-				catch (FileNotFoundException | UnknownHostException | SocketException ex) {
+					PropertiesLoaderUtils.fillProperties(props, new EncodedResource(location, this.fileEncoding), this.propertiesPersister);
+				} catch (FileNotFoundException | UnknownHostException | SocketException ex) {
 					if (this.ignoreResourceNotFound) {
 						if (logger.isDebugEnabled()) {
 							logger.debug("Properties resource not found: " + ex.getMessage());
 						}
-					}
-					else {
+					} else {
 						throw ex;
 					}
 				}

@@ -29,10 +29,10 @@ import org.springframework.util.StringValueResolver;
  * with no scope specified for any contextual objects to access.
  *
  * @author Juergen Hoeller
- * @since 4.3
  * @see ConfigurableBeanFactory#resolveEmbeddedValue(String)
  * @see ConfigurableBeanFactory#getBeanExpressionResolver()
  * @see BeanExpressionContext
+ * @since 4.3
  */
 public class EmbeddedValueResolver implements StringValueResolver {
 
@@ -41,12 +41,10 @@ public class EmbeddedValueResolver implements StringValueResolver {
 	@Nullable
 	private final BeanExpressionResolver exprResolver;
 
-
 	public EmbeddedValueResolver(ConfigurableBeanFactory beanFactory) {
 		this.exprContext = new BeanExpressionContext(beanFactory, null);
 		this.exprResolver = beanFactory.getBeanExpressionResolver();
 	}
-
 
 	@Override
 	@Nullable

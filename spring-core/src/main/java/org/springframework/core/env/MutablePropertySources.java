@@ -36,13 +36,12 @@ import org.springframework.lang.Nullable;
  *
  * @author Chris Beams
  * @author Juergen Hoeller
- * @since 3.1
  * @see PropertySourcesPropertyResolver
+ * @since 3.1
  */
 public class MutablePropertySources implements PropertySources {
 
 	private final List<PropertySource<?>> propertySourceList = new CopyOnWriteArrayList<>();
-
 
 	/**
 	 * Create a new {@link MutablePropertySources} object.
@@ -60,7 +59,6 @@ public class MutablePropertySources implements PropertySources {
 			addLast(propertySource);
 		}
 	}
-
 
 	@Override
 	public Iterator<PropertySource<?>> iterator() {
@@ -97,7 +95,6 @@ public class MutablePropertySources implements PropertySources {
 		}
 		return null;
 	}
-
 
 	/**
 	 * Add the given property source object with highest precedence.
@@ -154,6 +151,7 @@ public class MutablePropertySources implements PropertySources {
 
 	/**
 	 * Remove and return the property source with the given name, {@code null} if not found.
+	 *
 	 * @param name the name of the property source to find and remove
 	 */
 	@Nullable
@@ -166,7 +164,8 @@ public class MutablePropertySources implements PropertySources {
 
 	/**
 	 * Replace the property source with the given name with the given property source object.
-	 * @param name the name of the property source to find and replace
+	 *
+	 * @param name           the name of the property source to find and replace
 	 * @param propertySource the replacement property source
 	 * @throws IllegalArgumentException if no property source with the given name is present
 	 * @see #contains
@@ -190,15 +189,13 @@ public class MutablePropertySources implements PropertySources {
 		return this.propertySourceList.toString();
 	}
 
-
 	/**
 	 * Ensure that the given property source is not being added relative to itself.
 	 */
 	protected void assertLegalRelativeAddition(String relativePropertySourceName, PropertySource<?> propertySource) {
 		String newPropertySourceName = propertySource.getName();
 		if (relativePropertySourceName.equals(newPropertySourceName)) {
-			throw new IllegalArgumentException(
-					"PropertySource named '" + newPropertySourceName + "' cannot be added relative to itself");
+			throw new IllegalArgumentException("PropertySource named '" + newPropertySourceName + "' cannot be added relative to itself");
 		}
 	}
 
@@ -219,6 +216,7 @@ public class MutablePropertySources implements PropertySources {
 
 	/**
 	 * Assert that the named property source is present and return its index.
+	 *
 	 * @param name {@linkplain PropertySource#getName() name of the property source} to find
 	 * @throws IllegalArgumentException if the named property source is not present
 	 */

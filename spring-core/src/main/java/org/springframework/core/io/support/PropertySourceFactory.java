@@ -19,22 +19,29 @@ package org.springframework.core.io.support;
 import java.io.IOException;
 
 import org.springframework.core.env.PropertySource;
+import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 
 /**
  * Strategy interface for creating resource-based {@link PropertySource} wrappers.
  *
  * @author Juergen Hoeller
- * @since 4.3
  * @see DefaultPropertySourceFactory
+ * @since 4.3
  */
 public interface PropertySourceFactory {
 
 	/**
+	 * 参数name 允许为空，也就是 {@link PropertySource#name} 可以为空，如果为空由 {@link PropertySourceFactory} 生成
+	 * <p>
+	 * eg: {@link ResourcePropertySource#getNameForResource(Resource)}
+	 * 这是一个生成的案例，基于Class.simpleName + @ + hashCode　生成
+	 * <p>
 	 * Create a {@link PropertySource} that wraps the given resource.
-	 * @param name the name of the property source
-	 * (can be {@code null} in which case the factory implementation
-	 * will have to generate a name based on the given resource)
+	 *
+	 * @param name     the name of the property source
+	 *                 (can be {@code null} in which case the factory implementation
+	 *                 will have to generate a name based on the given resource)
 	 * @param resource the resource (potentially encoded) to wrap
 	 * @return the new {@link PropertySource} (never {@code null})
 	 * @throws IOException if resource resolution failed

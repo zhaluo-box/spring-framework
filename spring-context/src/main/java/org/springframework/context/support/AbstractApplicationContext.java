@@ -388,7 +388,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	 * Note : payloadApplicationEvent 扩展了 applicationEvent ，并实现了ResolvableTypeProvider 提供了泛型的转换
 	 * <p>
 	 * <br/>
-	 *
+	 * <p>
 	 * ？？ 方法中，使用到的earlyApplicationEvents 后期怎么办了？？
 	 *
 	 * <p>  earlyApplicationEvents的存在是为了解决，在 applicationEventMulticaster 初始化之前，就有人通过API发布了事件，而产生的一个临时存储，
@@ -716,8 +716,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		// 添加ApplicationAwareProcessor ，给程序定义的Bean实现了ApplicationContextAware接口 注入ApplicationContext对象
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
 
-		// 如果某个Bean中依赖了以下几个接口的实现类， 则在自动装配的时候忽略它们
-		// spring会通过其他的方式来处理这些以来
+
+		/*
+		 * 如果某个Bean中依赖了以下几个接口的实现类， 则在自动装配的时候忽略它们
+		 *  spring 会在在Bean 初始化的时候通过 {@link ApplicationContextAwareProcessor} 进行装配
+		 */
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);
 		beanFactory.ignoreDependencyInterface(EmbeddedValueResolverAware.class);
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
@@ -729,6 +732,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		// MessageSource registered (and found for autowiring) as a bean.
 		// {@link org.springframework.beans.factory.support.DefaultListableBeanFactory#findAutowireCandidates(String, Class, DependencyDescriptor) 中的this.resolvableDependencies}  }
 		// 修正依赖， 这里是注册一些自动装配的特殊规则， 比如是BeanFactory class 接口的实现类， 则在运行时动态指定为当前BeanFactory
+		// 这里这些ResolvableDependency 其实本身不是Bean，它们是BeanFactory或者ApplicationContext 这些容器自身。
+
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		// 下面三个都是this, 当 @autowired 的时候注入下面三个类型的时候注入的都是同一个对象
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
@@ -751,13 +756,16 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		}
 
 		// Register default environment beans.
-		// 注册一些默认环境Bean
+		// 注意 这里使用的containLocalBean  ,就是如果当前beanFactory 不包含，不检查其父Factory,
+		// 如果不包含，则将当前ApplicationContext 的Environment 注册为单例Bean， Bean的名称是固定的一个常量
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
 		}
+		// 同理 systemProperties　这个Bean也是上面的逻辑，　只不过systemProperties与 Environment 存在一个包含关系
 		if (!beanFactory.containsLocalBean(SYSTEM_PROPERTIES_BEAN_NAME)) {
 			beanFactory.registerSingleton(SYSTEM_PROPERTIES_BEAN_NAME, getEnvironment().getSystemProperties());
 		}
+		// 同理 systemEnvironment　这个Bean也是上面的逻辑，　只不过systemEnvironment与 Environment 存在一个包含关系
 		if (!beanFactory.containsLocalBean(SYSTEM_ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(SYSTEM_ENVIRONMENT_BEAN_NAME, getEnvironment().getSystemEnvironment());
 		}

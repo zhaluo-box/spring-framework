@@ -156,12 +156,12 @@ import org.springframework.core.io.support.PropertySourceFactory;
  * @author Juergen Hoeller
  * @author Phillip Webb
  * @author Sam Brannen
- * @since 3.1
  * @see PropertySources
  * @see Configuration
  * @see org.springframework.core.env.PropertySource
  * @see org.springframework.core.env.ConfigurableEnvironment#getPropertySources()
  * @see org.springframework.core.env.MutablePropertySources
+ * @since 3.1
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -175,13 +175,16 @@ public @interface PropertySource {
 	 * {@link org.springframework.core.io.support.DefaultPropertySourceFactory}:
 	 * derived from the resource description through a corresponding name-less
 	 * {@link org.springframework.core.io.support.ResourcePropertySource} constructor).
+	 *
 	 * @see org.springframework.core.env.PropertySource#getName()
 	 * @see org.springframework.core.io.Resource#getDescription()
 	 */
 	String name() default "";
 
 	/**
+	 * 仅仅支持properties & xml ，其他的格式不支持，按照生命的顺序添加到 Environment 拥有的propertySource 中
 	 * Indicate the resource location(s) of the properties file to be loaded.
+	 *
 	 * <p>Both traditional and XML-based properties file formats are supported
 	 * &mdash; for example, {@code "classpath:/com/myco/app.properties"}
 	 * or {@code "file:/path/to/file.xml"}.
@@ -200,22 +203,29 @@ public @interface PropertySource {
 	 * ignored.
 	 * <p>{@code true} is appropriate if the properties file is completely optional.
 	 * Default is {@code false}.
+	 *
 	 * @since 4.0
 	 */
 	boolean ignoreResourceNotFound() default false;
 
 	/**
+	 * 4.3 版本开始支持 字符集编码
 	 * A specific character encoding for the given resources, e.g. "UTF-8".
+	 *
 	 * @since 4.3
 	 */
 	String encoding() default "";
 
 	/**
+	 *
+	 * 指定自定义的 PropertySourceFactory ， 默认的 factory 仅支持标准的 资源文件，也就是properties & xml，
+	 * 例如yaml 是不支持的
 	 * Specify a custom {@link PropertySourceFactory}, if any.
 	 * <p>By default, a default factory for standard resource files will be used.
-	 * @since 4.3
+	 *
 	 * @see org.springframework.core.io.support.DefaultPropertySourceFactory
 	 * @see org.springframework.core.io.support.ResourcePropertySource
+	 * @since 4.3
 	 */
 	Class<? extends PropertySourceFactory> factory() default PropertySourceFactory.class;
 

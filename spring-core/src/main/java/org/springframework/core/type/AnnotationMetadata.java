@@ -41,7 +41,7 @@ import org.springframework.core.annotation.MergedAnnotations.SearchStrategy;
 public interface AnnotationMetadata extends ClassMetadata, AnnotatedTypeMetadata {
 
 	/**
-	 * {@link java.lang.annotation.Annotation#annotationType()}  为啥这里使用Set\<String\> 进行表达
+	 * {@link java.lang.annotation.Annotation#annotationType()}  为啥这里使用Set<String> 进行表达
 	 * 为啥注解的类型，采用String 字符串进行表达，是因为ASM 在读取的时候直接读取的字节码，读取元信息，这些元信息都是字符串进行描述
 	 * <p>
 	 * Get the fully qualified class names of all annotation types that

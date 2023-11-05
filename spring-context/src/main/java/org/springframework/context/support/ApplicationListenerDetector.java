@@ -31,6 +31,11 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.ObjectUtils;
 
 /**
+ * 这个类不单在Bean初始化之后记录Bean的名称，还有是否单例，
+ * 初始化之后天Listener
+ * 销毁之前移除Listener
+ * <p>
+ * <p>
  * {@code BeanPostProcessor} that detects beans which implement the {@code ApplicationListener}
  * interface. This catches beans that can't reliably be detected by {@code getBeanNamesForType}
  * and related operations which only work against top-level beans.
@@ -51,11 +56,9 @@ class ApplicationListenerDetector implements DestructionAwareBeanPostProcessor, 
 
 	private final transient Map<String, Boolean> singletonNames = new ConcurrentHashMap<>(256);
 
-
 	public ApplicationListenerDetector(AbstractApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
-
 
 	@Override
 	public void postProcessMergedBeanDefinition(RootBeanDefinition beanDefinition, Class<?> beanType, String beanName) {
@@ -77,14 +80,12 @@ class ApplicationListenerDetector implements DestructionAwareBeanPostProcessor, 
 			if (Boolean.TRUE.equals(flag)) {
 				// singleton bean (top-level or inner): register on the fly
 				this.applicationContext.addApplicationListener((ApplicationListener<?>) bean);
-			}
-			else if (Boolean.FALSE.equals(flag)) {
+			} else if (Boolean.FALSE.equals(flag)) {
 				if (logger.isWarnEnabled() && !this.applicationContext.containsBean(beanName)) {
 					// inner bean with other scope - can't reliably process events
-					logger.warn("Inner bean '" + beanName + "' implements ApplicationListener interface " +
-							"but is not reachable for event multicasting by its containing ApplicationContext " +
-							"because it does not have singleton scope. Only top-level listener beans are allowed " +
-							"to be of non-singleton scope.");
+					logger.warn("Inner bean '" + beanName + "' implements ApplicationListener interface "
+								+ "but is not reachable for event multicasting by its containing ApplicationContext "
+								+ "because it does not have singleton scope. Only top-level listener beans are allowed " + "to be of non-singleton scope.");
 				}
 				this.singletonNames.remove(beanName);
 			}
@@ -99,8 +100,7 @@ class ApplicationListenerDetector implements DestructionAwareBeanPostProcessor, 
 				ApplicationEventMulticaster multicaster = this.applicationContext.getApplicationEventMulticaster();
 				multicaster.removeApplicationListener((ApplicationListener<?>) bean);
 				multicaster.removeApplicationListenerBean(beanName);
-			}
-			catch (IllegalStateException ex) {
+			} catch (IllegalStateException ex) {
 				// ApplicationEventMulticaster not initialized yet - no need to remove a listener
 			}
 		}
@@ -111,11 +111,10 @@ class ApplicationListenerDetector implements DestructionAwareBeanPostProcessor, 
 		return (bean instanceof ApplicationListener);
 	}
 
-
 	@Override
 	public boolean equals(@Nullable Object other) {
-		return (this == other || (other instanceof ApplicationListenerDetector &&
-				this.applicationContext == ((ApplicationListenerDetector) other).applicationContext));
+		return (this == other || (other instanceof ApplicationListenerDetector
+								  && this.applicationContext == ((ApplicationListenerDetector) other).applicationContext));
 	}
 
 	@Override

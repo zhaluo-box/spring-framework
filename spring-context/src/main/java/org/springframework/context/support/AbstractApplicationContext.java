@@ -548,9 +548,8 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
-			// 告诉子类启动refreshBeanFactory()方法， Bean定义资源文件的载入
-			// 从子类的refreshBeanFactory() 方法启动， 里面有抽象方法
-			// 针对XML配置。 最终创建内部容器，该容器负责bean 的创建与管理， 此步会进行BeanDefinition的注册
+			// BeanFactory 的刷新(如果存在销毁、关闭,重新创建)， 自定义BeanFactory　的一些配置，
+			// 并将BeanFactory与context 关联起来， 还涉及到loadBeanDefinition
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
@@ -629,14 +628,21 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	}
 
 	/**
-	 * 设置启动时间 激活标识等
+	 * - 启动时间 - startupDate
+	 * - 状态标识 - closed(false)、active(true)
+	 * - 初始化 PropertySources - initPropertySources()
+	 * - 检验 Environment 中必须属性
+	 * - 初始化事件监听器集合
+	 * - 初始化早期 Spring 事件集合
 	 * Prepare this context for refreshing, setting its startup date and
 	 * active flag as well as performing any initialization of property sources.
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
-		//		设置启动时间, 设置容器为激活
+		// 设置启动时间（时间戳）
 		this.startupDate = System.currentTimeMillis();
+
+		// 设置状态表示
 		this.closed.set(false);
 		this.active.set(true);
 
@@ -649,16 +655,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		}
 
 		// Initialize any placeholder property sources in the context environment.
-		// 初始化Environment 的propertySource 属性
+		// 初始化Environment 的propertySource 属性， 子类实现，会触发提前创建Environment
 		// 样例 <context:property-placeholder location = "classpath:/config/load.properties/>
 		// 通常web环境下会实现当前方法，
 		initPropertySources();
-		// 校验 environment 的requiredProperties 是否都存在
+
+		// 校验 environment 中的必须属性
 		// Validate that all properties marked as required are resolvable:
 		// see ConfigurablePropertyResolver#setRequiredProperties
 		getEnvironment().validateRequiredProperties();
 
-		// 初始化准备一些早期的事件监听者
+		// 初始化 早期的事件监听者集合
 		// Store pre-refresh ApplicationListeners...
 		if (this.earlyApplicationListeners == null) {
 			this.earlyApplicationListeners = new LinkedHashSet<>(this.applicationListeners);
@@ -668,7 +675,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			this.applicationListeners.addAll(this.earlyApplicationListeners);
 		}
 
-		// 允许收集早期的事件， 将在multicaster 可用的时候发布
+		// 初始化早期spring 事件集合
 		// Allow for the collection of early ApplicationEvents,
 		// to be published once the multicaster is available...
 		this.earlyApplicationEvents = new LinkedHashSet<>();
@@ -685,6 +692,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	}
 
 	/**
+	 * - 返回 Spring 应用上下文底层 BeanFactory - {@link #getBeanFactory()}
 	 * Tell the subclass to refresh the internal bean factory.
 	 *
 	 * @return the fresh BeanFactory instance
@@ -708,17 +716,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 		beanFactory.setBeanClassLoader(getClassLoader()); // 设置类加载器实例
 		// 设置BeanFactory的表达式语言处理器， Spring3开始增加了对语言表达式的支持， 默认可以使用#{bean.xxx}
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver(beanFactory.getBeanClassLoader()));
-		// 为beanFactory 增加一个默认的propertyEditor
+		// 为beanFactory 增加一个默认的propertyEditorRegistrar
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
 		// 配置Bean工厂的上下文回调
 		// 添加ApplicationAwareProcessor ，给程序定义的Bean实现了ApplicationContextAware接口 注入ApplicationContext对象
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
-
-
 		/*
-		 * 如果某个Bean中依赖了以下几个接口的实现类， 则在自动装配的时候忽略它们
+		 * 如果某个Bean中依赖了以下几个接口的实现类， 则在自动装配的时候忽略它们,因为这些Aware 本身就是Set一系列的内容，Autowired 也没啥意义
 		 *  spring 会在在Bean 初始化的时候通过 {@link ApplicationContextAwareProcessor} 进行装配
 		 */
 		beanFactory.ignoreDependencyInterface(EnvironmentAware.class);

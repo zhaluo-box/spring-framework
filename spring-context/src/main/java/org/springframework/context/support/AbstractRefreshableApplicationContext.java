@@ -112,10 +112,20 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	}
 
 	/**
+	 * - 销毁或关闭 BeanFactory，如果已存在的话
 	 * <p>
-	 * 此实现执行此上下文的底层beanFactory的实际刷新，关闭先前的beanFactory（如果有的话），
-	 * 并为上下文生命周期的下一阶段初始化新的beanFactory。
-	 * </p>
+	 * - 创建 BeanFactory - createBeanFactory()
+	 * <p>
+	 * - 设置 BeanFactory Id 其实是把Application#id 给BeanFactory
+	 * <p>
+	 * - 设置“是否允许 BeanDefinition 重复定义” {@link #customizeBeanFactory(DefaultListableBeanFactory)}
+	 * <p>
+	 * - 设置“是否允许循环引用（依赖）” - {@link #customizeBeanFactory(DefaultListableBeanFactory)}
+	 * <p>
+	 * - 加载 BeanDefinition - {@link #loadBeanDefinitions(DefaultListableBeanFactory)} 方法
+	 * <p>
+	 * - 关联新建 BeanFactory 到 Spring 应用上下文
+	 * <p>
 	 * This implementation performs an actual refresh of this context's underlying
 	 * bean factory, shutting down the previous bean factory (if any) and
 	 * initializing a fresh bean factory for the next phase of the context's lifecycle.
@@ -130,6 +140,8 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 			DefaultListableBeanFactory beanFactory = createBeanFactory();
 			beanFactory.setSerializationId(getId());
 			customizeBeanFactory(beanFactory);
+
+			// 主要看子类实现.例如xml reader加载xml中的BeanDefinition , annotationReader 扫描架子注解BeanDefinition ..
 			loadBeanDefinitions(beanFactory);
 			this.beanFactory = beanFactory;
 		} catch (IOException ex) {
@@ -200,6 +212,12 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	}
 
 	/**
+	 * 自定义BeanFactory
+	 * <p>
+	 * - 是否允许BeanDefinition 覆盖
+	 * <p>
+	 * - 是否允许循环依赖
+	 * <p>
 	 * Customize the internal bean factory used by this context.
 	 * Called for each {@link #refresh()} attempt.
 	 * <p>The default implementation applies this context's

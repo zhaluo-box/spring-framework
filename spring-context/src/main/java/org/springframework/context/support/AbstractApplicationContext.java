@@ -931,6 +931,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 			getApplicationEventMulticaster().addApplicationListenerBean(listenerBeanName);
 		}
 
+		// 回放早期事件，因为我们在前期注册BeanPostProcessor 之类的环境中也有可能注册一些监听器，但是那是事件发布器还没注册好，所以现在进行回访投递
 		// Publish early application events now that we finally have a multicaster...
 		Set<ApplicationEvent> earlyEventsToProcess = this.earlyApplicationEvents;
 		this.earlyApplicationEvents = null;
@@ -978,6 +979,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		// 允许缓存所有Bean定义元数据， 不希望有进一步的更改
+		// 冻结配置，标记
 		beanFactory.freezeConfiguration();
 
 		// Instantiate all remaining (non-lazy-init) singletons.

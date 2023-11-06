@@ -32,7 +32,7 @@ import org.springframework.util.ObjectUtils;
 
 /**
  * 这个类不单在Bean初始化之后记录Bean的名称，还有是否单例，
- * 初始化之后天Listener
+ * 初始化之后添Listener
  * 销毁之前移除Listener
  * <p>
  * <p>

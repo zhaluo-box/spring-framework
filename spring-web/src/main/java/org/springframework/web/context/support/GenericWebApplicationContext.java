@@ -61,8 +61,7 @@ import org.springframework.web.context.ServletContextAware;
  * @author Chris Beams
  * @since 1.2
  */
-public class GenericWebApplicationContext extends GenericApplicationContext
-		implements ConfigurableWebApplicationContext, ThemeSource {
+public class GenericWebApplicationContext extends GenericApplicationContext implements ConfigurableWebApplicationContext, ThemeSource {
 
 	@Nullable
 	private ServletContext servletContext;
@@ -70,9 +69,9 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 	@Nullable
 	private ThemeSource themeSource;
 
-
 	/**
 	 * Create a new GenericWebApplicationContext.
+	 *
 	 * @see #setServletContext
 	 * @see #registerBeanDefinition
 	 * @see #refresh
@@ -83,6 +82,7 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 
 	/**
 	 * Create a new GenericWebApplicationContext for the given ServletContext.
+	 *
 	 * @param servletContext the ServletContext to run in
 	 * @see #registerBeanDefinition
 	 * @see #refresh
@@ -93,6 +93,7 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 
 	/**
 	 * Create a new GenericWebApplicationContext with the given DefaultListableBeanFactory.
+	 *
 	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
 	 * @see #setServletContext
 	 * @see #registerBeanDefinition
@@ -104,7 +105,8 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 
 	/**
 	 * Create a new GenericWebApplicationContext with the given DefaultListableBeanFactory.
-	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
+	 *
+	 * @param beanFactory    the DefaultListableBeanFactory instance to use for this context
 	 * @param servletContext the ServletContext to run in
 	 * @see #registerBeanDefinition
 	 * @see #refresh
@@ -113,7 +115,6 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 		super(beanFactory);
 		this.servletContext = servletContext;
 	}
-
 
 	/**
 	 * Set the ServletContext that this WebApplicationContext runs in.
@@ -144,6 +145,7 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 
 	/**
 	 * Register ServletContextAwareProcessor.
+	 *
 	 * @see ServletContextAwareProcessor
 	 */
 	@Override
@@ -158,6 +160,7 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 
 	/**
 	 * This implementation supports file paths beneath the root of the ServletContext.
+	 *
 	 * @see ServletContextResource
 	 */
 	@Override
@@ -168,6 +171,7 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 
 	/**
 	 * This implementation supports pattern matching in unexpanded WARs too.
+	 *
 	 * @see ServletContextResourcePatternResolver
 	 */
 	@Override
@@ -202,7 +206,6 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 		return this.themeSource.getTheme(themeName);
 	}
 
-
 	// ---------------------------------------------------------------------
 	// Pseudo-implementation of ConfigurableWebApplicationContext
 	// ---------------------------------------------------------------------
@@ -215,8 +218,7 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 	@Override
 	@Nullable
 	public ServletConfig getServletConfig() {
-		throw new UnsupportedOperationException(
-				"GenericWebApplicationContext does not support getServletConfig()");
+		throw new UnsupportedOperationException("GenericWebApplicationContext does not support getServletConfig()");
 	}
 
 	@Override
@@ -227,16 +229,14 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 	@Override
 	@Nullable
 	public String getNamespace() {
-		throw new UnsupportedOperationException(
-				"GenericWebApplicationContext does not support getNamespace()");
+		throw new UnsupportedOperationException("GenericWebApplicationContext does not support getNamespace()");
 	}
 
 	@Override
 	public void setConfigLocation(String configLocation) {
 		if (StringUtils.hasText(configLocation)) {
 			throw new UnsupportedOperationException(
-					"GenericWebApplicationContext does not support setConfigLocation(). " +
-					"Do you still have an 'contextConfigLocations' init-param set?");
+					"GenericWebApplicationContext does not support setConfigLocation(). " + "Do you still have an 'contextConfigLocations' init-param set?");
 		}
 	}
 
@@ -244,15 +244,13 @@ public class GenericWebApplicationContext extends GenericApplicationContext
 	public void setConfigLocations(String... configLocations) {
 		if (!ObjectUtils.isEmpty(configLocations)) {
 			throw new UnsupportedOperationException(
-					"GenericWebApplicationContext does not support setConfigLocations(). " +
-					"Do you still have an 'contextConfigLocations' init-param set?");
+					"GenericWebApplicationContext does not support setConfigLocations(). " + "Do you still have an 'contextConfigLocations' init-param set?");
 		}
 	}
 
 	@Override
 	public String[] getConfigLocations() {
-		throw new UnsupportedOperationException(
-				"GenericWebApplicationContext does not support getConfigLocations()");
+		throw new UnsupportedOperationException("GenericWebApplicationContext does not support getConfigLocations()");
 	}
 
 }

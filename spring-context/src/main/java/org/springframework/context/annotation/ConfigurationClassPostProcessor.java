@@ -312,6 +312,7 @@ public class ConfigurationClassPostProcessor
 				this.reader = new ConfigurationClassBeanDefinitionReader(registry, this.sourceExtractor, this.resourceLoader, this.environment,
 																		 this.importBeanNameGenerator, parser.getImportRegistry());
 			}
+			// 通过reader 进行加载这些配置类
 			this.reader.loadBeanDefinitions(configClasses);
 			alreadyParsed.addAll(configClasses);
 

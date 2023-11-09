@@ -204,6 +204,7 @@ public interface BeanDefinition extends AttributeAccessor, BeanMetadataElement {
 	 * constructor arguments, or with no arguments if none are specified.
 	 * The method will be invoked on the specified factory bean, if any,
 	 * or otherwise as a static method on the local bean class.
+	 * @see org.springframework.context.annotation.Bean
 	 * @see #setFactoryBeanName
 	 * @see #setBeanClassName
 	 */

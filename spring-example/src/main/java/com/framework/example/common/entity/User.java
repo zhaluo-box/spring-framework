@@ -3,6 +3,8 @@ package com.framework.example.common.entity;
 import com.framework.example.common.enums.City;
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-public class User {
+public class User implements InitializingBean, DisposableBean {
 
 	private Integer id;
 
@@ -36,4 +38,13 @@ public class User {
 	 */
 	private User subUser;
 
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("user bean 销毁！");
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("user bean 初始化！");
+	}
 }

@@ -64,8 +64,7 @@ public abstract class AnnotationConfigUtils {
 	 *
 	 * @see AutowiredAnnotationBeanPostProcessor
 	 */
-	public static final String CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME
-			= "org.springframework.context.annotation.internalConfigurationAnnotationProcessor";
+	public static final String CONFIGURATION_ANNOTATION_PROCESSOR_BEAN_NAME = "org.springframework.context.annotation.internalConfigurationAnnotationProcessor";
 
 	/**
 	 * The bean name of the internally managed BeanNameGenerator for use when processing

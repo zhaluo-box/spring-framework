@@ -310,6 +310,7 @@ class ConfigurationClassParser {
 
 		// Process individual @Bean methods
 		Set<MethodMetadata> beanMethods = retrieveBeanMethodMetadata(sourceClass);
+		// 重点关注 BeanMethod
 		for (MethodMetadata methodMetadata : beanMethods) {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
 		}
@@ -416,7 +417,6 @@ class ConfigurationClassParser {
 	}
 
 	/**
-	 *
 	 * {@link org.springframework.context.annotation.PropertySource}
 	 * Process the given <code>@PropertySource</code> annotation metadata.
 	 *

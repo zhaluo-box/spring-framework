@@ -170,6 +170,7 @@ public class GenericApplicationContext extends AbstractApplicationContext implem
 	}
 
 	/**
+	 * 循环引用的开关
 	 * Set whether to allow circular references between beans - and automatically
 	 * try to resolve them.
 	 * <p>Default is "true". Turn this off to throw an exception when encountering

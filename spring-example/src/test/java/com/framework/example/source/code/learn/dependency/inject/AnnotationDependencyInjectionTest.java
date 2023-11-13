@@ -4,6 +4,7 @@ import com.framework.example.annotation.MyAutowire;
 import com.framework.example.annotation.MyInject;
 import com.framework.example.common.entity.User;
 import com.framework.example.common.entity.UserHolder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -22,10 +23,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 注解驱动依赖注入测试
@@ -34,6 +32,27 @@ import java.util.Set;
  * @author zl
  */
 public class AnnotationDependencyInjectionTest {
+
+	@Test
+	@DisplayName("循环引用（依赖）测试")
+	public void CircularReferencesTest() {
+		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
+		// 注册 Configuration Class
+		context.register(CircularReferencesConfig.class);
+
+		// 如果设置为 false，则抛出异常信息如：currently in creation: Is there an unresolvable circular reference?
+		// 默认值为 true
+		context.setAllowCircularReferences(true);
+
+		// 启动 Spring 应用上下文
+		context.refresh();
+
+		System.out.println("Student : " + context.getBean(Student.class));
+		System.out.println("ClassRoom : " + context.getBean(ClassRoom.class));
+
+		// 关闭 Spring 应用上下文
+		context.close();
+	}
 
 	@Test
 	@DisplayName("方法注入测试")
@@ -138,6 +157,55 @@ public class AnnotationDependencyInjectionTest {
 		System.out.println("ignoreAutowired.getUser() = " + ignoreAutowired.getUser());
 		System.out.println("context.getBean(\"user\", User.class) = " + context.getBean("user", User.class));
 		context.close();
+	}
+
+	public static class CircularReferencesConfig {
+
+		@Bean
+		public static Student student() {
+			Student student = new Student();
+			student.setId(1L);
+			student.setName("张三");
+			return student;
+		}
+
+		@Bean
+		public static ClassRoom classRoom() {
+			ClassRoom classRoom = new ClassRoom();
+			classRoom.setName("C122");
+			return classRoom;
+		}
+
+	}
+
+	@Getter
+	@Setter
+	public static class Student {
+		private Long id;
+
+		private String name;
+
+		@Autowired
+		private ClassRoom classRoom;
+
+		@Override
+		public String toString() {
+			return "Student{" + "id=" + id + ", name='" + name + '\'' + ", classRoom=" + classRoom.getName() + '}';
+		}
+	}
+
+	@Getter
+	@Setter
+	public static class ClassRoom {
+		private String name;
+
+		@Autowired
+		private Collection<Student> students;
+
+		@Override
+		public String toString() {
+			return "ClassRoom{" + "name='" + name + '\'' + ", students=" + students.getClass() + '}';
+		}
 	}
 
 	@Getter

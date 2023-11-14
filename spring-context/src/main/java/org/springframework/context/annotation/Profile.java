@@ -88,15 +88,15 @@ import org.springframework.core.env.Profiles;
  * @author Chris Beams
  * @author Phillip Webb
  * @author Sam Brannen
- * @since 3.1
  * @see ConfigurableEnvironment#setActiveProfiles
  * @see ConfigurableEnvironment#setDefaultProfiles
  * @see AbstractEnvironment#ACTIVE_PROFILES_PROPERTY_NAME
  * @see AbstractEnvironment#DEFAULT_PROFILES_PROPERTY_NAME
  * @see Conditional
  * @see org.springframework.test.context.ActiveProfiles
+ * @since 3.1
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Conditional(ProfileCondition.class)

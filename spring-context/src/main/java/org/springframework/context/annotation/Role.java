@@ -40,19 +40,20 @@ import org.springframework.beans.factory.config.BeanDefinition;
  * is different than that of the @{@link Lazy} annotation, for example.
  *
  * @author Chris Beams
- * @since 3.1
  * @see BeanDefinition#ROLE_APPLICATION
  * @see BeanDefinition#ROLE_INFRASTRUCTURE
  * @see BeanDefinition#ROLE_SUPPORT
  * @see Bean
+ * @since 3.1
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Role {
 
 	/**
 	 * Set the role hint for the associated bean.
+	 *
 	 * @see BeanDefinition#ROLE_APPLICATION
 	 * @see BeanDefinition#ROLE_INFRASTRUCTURE
 	 * @see BeanDefinition#ROLE_SUPPORT

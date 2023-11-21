@@ -34,21 +34,17 @@ import org.springframework.util.StringUtils;
  *
  * @author Chris Beams
  * @author Stephane Nicoll
- * @since 3.1
  * @see EnableCaching
  * @see ProxyCachingConfiguration
+ * @since 3.1
  */
 public class CachingConfigurationSelector extends AdviceModeImportSelector<EnableCaching> {
 
-	private static final String PROXY_JCACHE_CONFIGURATION_CLASS =
-			"org.springframework.cache.jcache.config.ProxyJCacheConfiguration";
+	private static final String PROXY_JCACHE_CONFIGURATION_CLASS = "org.springframework.cache.jcache.config.ProxyJCacheConfiguration";
 
-	private static final String CACHE_ASPECT_CONFIGURATION_CLASS_NAME =
-			"org.springframework.cache.aspectj.AspectJCachingConfiguration";
+	private static final String CACHE_ASPECT_CONFIGURATION_CLASS_NAME = "org.springframework.cache.aspectj.AspectJCachingConfiguration";
 
-	private static final String JCACHE_ASPECT_CONFIGURATION_CLASS_NAME =
-			"org.springframework.cache.aspectj.AspectJJCacheConfiguration";
-
+	private static final String JCACHE_ASPECT_CONFIGURATION_CLASS_NAME = "org.springframework.cache.aspectj.AspectJJCacheConfiguration";
 
 	private static final boolean jsr107Present;
 
@@ -60,7 +56,6 @@ public class CachingConfigurationSelector extends AdviceModeImportSelector<Enabl
 		jcacheImplPresent = ClassUtils.isPresent(PROXY_JCACHE_CONFIGURATION_CLASS, classLoader);
 	}
 
-
 	/**
 	 * Returns {@link ProxyCachingConfiguration} or {@code AspectJCachingConfiguration}
 	 * for {@code PROXY} and {@code ASPECTJ} values of {@link EnableCaching#mode()},
@@ -69,12 +64,12 @@ public class CachingConfigurationSelector extends AdviceModeImportSelector<Enabl
 	@Override
 	public String[] selectImports(AdviceMode adviceMode) {
 		switch (adviceMode) {
-			case PROXY:
-				return getProxyImports();
-			case ASPECTJ:
-				return getAspectJImports();
-			default:
-				return null;
+		case PROXY:
+			return getProxyImports();
+		case ASPECTJ:
+			return getAspectJImports();
+		default:
+			return null;
 		}
 	}
 

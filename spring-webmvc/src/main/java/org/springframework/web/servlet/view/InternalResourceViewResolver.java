@@ -38,22 +38,20 @@ import org.springframework.util.ClassUtils;
  * no matter whether the underlying resource actually exists.
  *
  * @author Juergen Hoeller
- * @since 17.02.2003
  * @see #setViewClass
  * @see #setPrefix
  * @see #setSuffix
  * @see #setRequestContextAttribute
  * @see InternalResourceView
  * @see JstlView
+ * @since 17.02.2003
  */
 public class InternalResourceViewResolver extends UrlBasedViewResolver {
 
-	private static final boolean jstlPresent = ClassUtils.isPresent(
-			"javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.class.getClassLoader());
+	private static final boolean jstlPresent = ClassUtils.isPresent("javax.servlet.jsp.jstl.core.Config", InternalResourceViewResolver.class.getClassLoader());
 
 	@Nullable
 	private Boolean alwaysInclude;
-
 
 	/**
 	 * Sets the default {@link #setViewClass view class} to {@link #requiredViewClass}:
@@ -71,6 +69,7 @@ public class InternalResourceViewResolver extends UrlBasedViewResolver {
 	/**
 	 * A convenience constructor that allows for specifying {@link #setPrefix prefix}
 	 * and {@link #setSuffix suffix} as constructor arguments.
+	 *
 	 * @param prefix the prefix that gets prepended to view names when building a URL
 	 * @param suffix the suffix that gets appended to view names when building a URL
 	 * @since 4.3
@@ -80,7 +79,6 @@ public class InternalResourceViewResolver extends UrlBasedViewResolver {
 		setPrefix(prefix);
 		setSuffix(suffix);
 	}
-
 
 	/**
 	 * This resolver requires {@link InternalResourceView}.
@@ -94,12 +92,12 @@ public class InternalResourceViewResolver extends UrlBasedViewResolver {
 	 * Specify whether to always include the view rather than forward to it.
 	 * <p>Default is "false". Switch this flag on to enforce the use of a
 	 * Servlet include, even if a forward would be possible.
+	 *
 	 * @see InternalResourceView#setAlwaysInclude
 	 */
 	public void setAlwaysInclude(boolean alwaysInclude) {
 		this.alwaysInclude = alwaysInclude;
 	}
-
 
 	@Override
 	protected AbstractUrlBasedView buildView(String viewName) throws Exception {

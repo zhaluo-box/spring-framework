@@ -996,6 +996,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
+	 * 做分发的地方
 	 * Process the actual dispatching to the handler.
 	 * <p>The handler will be obtained by applying the servlet's HandlerMappings in order.
 	 * The HandlerAdapter will be obtained by querying the servlet's installed HandlerAdapters
@@ -1042,18 +1043,22 @@ public class DispatcherServlet extends FrameworkServlet {
 					}
 				}
 
+				// 拦截器的前置处理 -责任链处理
 				if (!mappedHandler.applyPreHandle(processedRequest, response)) {
 					return;
 				}
 
-				// Actually invoke the handler.
+				// Actually invoke the handler. 实际调用处理
 				mv = ha.handle(processedRequest, response, mappedHandler.getHandler());
 
 				if (asyncManager.isConcurrentHandlingStarted()) {
 					return;
 				}
 
+				// 应用视图处理器
 				applyDefaultViewName(processedRequest, mv);
+
+				// 应用后置拦截器的后置处理 -责任链处理
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			} catch (Exception ex) {
 				dispatchException = ex;
@@ -1062,6 +1067,8 @@ public class DispatcherServlet extends FrameworkServlet {
 				// making them available for @ExceptionHandler methods and other scenarios.
 				dispatchException = new NestedServletException("Handler dispatch failed", err);
 			}
+
+			// 处理返回结果、包含视图的跳转
 			processDispatchResult(processedRequest, response, mappedHandler, mv, dispatchException);
 		} catch (Exception ex) {
 			triggerAfterCompletion(processedRequest, response, mappedHandler, ex);
@@ -1133,6 +1140,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 		if (mappedHandler != null) {
 			// Exception (if any) is already handled..
+			// 执行拦截器的完成处理操作
 			mappedHandler.triggerAfterCompletion(request, response, null);
 		}
 	}
@@ -1218,6 +1226,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	}
 
 	/**
+	 * 获取执行链
 	 * Return the HandlerExecutionChain for this request.
 	 * <p>Tries all handler mappings in order.
 	 *

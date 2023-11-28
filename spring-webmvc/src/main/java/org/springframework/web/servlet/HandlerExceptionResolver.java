@@ -41,16 +41,16 @@ public interface HandlerExceptionResolver {
 	 * <p>The returned {@code ModelAndView} may be {@linkplain ModelAndView#isEmpty() empty}
 	 * to indicate that the exception has been resolved successfully but that no view
 	 * should be rendered, for instance by setting a status code.
-	 * @param request current HTTP request
+	 *
+	 * @param request  current HTTP request
 	 * @param response current HTTP response
-	 * @param handler the executed handler, or {@code null} if none chosen at the
-	 * time of the exception (for example, if multipart resolution failed)
-	 * @param ex the exception that got thrown during handler execution
+	 * @param handler  the executed handler, or {@code null} if none chosen at the
+	 *                 time of the exception (for example, if multipart resolution failed)
+	 * @param ex       the exception that got thrown during handler execution
 	 * @return a corresponding {@code ModelAndView} to forward to,
 	 * or {@code null} for default processing in the resolution chain
 	 */
 	@Nullable
-	ModelAndView resolveException(
-			HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex);
+	ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, @Nullable Object handler, Exception ex);
 
 }

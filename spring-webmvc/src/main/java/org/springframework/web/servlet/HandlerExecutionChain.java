@@ -145,7 +145,7 @@ public class HandlerExecutionChain {
 	}
 
 	/**
-	 * 应用注册的拦截器的　前置拦截方法（　preHandle）
+	 * 应用注册的拦截器的　前置拦截方法（　preHandle） 链式调用
 	 * Apply preHandle methods of registered interceptors.
 	 *
 	 * @return {@code true} if the execution chain should proceed with the
@@ -171,6 +171,7 @@ public class HandlerExecutionChain {
 	}
 
 	/**
+	 * 链式（逆序）调用拦截器的后置拦截处理
 	 * Apply postHandle methods of registered interceptors.
 	 */
 	void applyPostHandle(HttpServletRequest request, HttpServletResponse response, @Nullable ModelAndView mv) throws Exception {
@@ -186,6 +187,7 @@ public class HandlerExecutionChain {
 	}
 
 	/**
+	 * 链式调用拦截器的完成逻辑
 	 * Trigger afterCompletion callbacks on the mapped HandlerInterceptors.
 	 * Will just invoke afterCompletion for all interceptors whose preHandle invocation
 	 * has successfully completed and returned true.

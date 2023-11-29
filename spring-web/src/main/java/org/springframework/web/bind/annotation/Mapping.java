@@ -22,13 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * 一个表示注解，标记为 Mapping 注解
  * Meta annotation that indicates a web mapping annotation.
  *
  * @author Juergen Hoeller
- * @since 3.0
  * @see RequestMapping
+ * @since 3.0
  */
-@Target({ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Mapping {
 

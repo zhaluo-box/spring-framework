@@ -34,6 +34,7 @@ public class ResourceLoaderTest {
 	public void testGetResource() {
 
 		String currentJavaFilePath = System.getProperty("user.dir") + "/src/test/java/com/framework/example/source/code/learn/resource/ResourceLoaderTest.java";
+
 		// 构建文件系统资源加载器
 		FileSystemResourceLoader fileSystemResourceLoader = new FileSystemResourceLoader();
 		Resource resource = fileSystemResourceLoader.getResource(currentJavaFilePath);

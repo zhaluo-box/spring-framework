@@ -176,6 +176,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader i
 	private final AtomicBoolean closed = new AtomicBoolean();
 
 	/**
+	 * 同步监听用于 refresh & destroy
 	 * Synchronization monitor for the "refresh" and "destroy".
 	 */
 	private final Object startupShutdownMonitor = new Object();
